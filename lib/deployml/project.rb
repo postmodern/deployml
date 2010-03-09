@@ -229,7 +229,12 @@ module DeploYML
     #   The `rsync` compatible URI.
     #
     def rsync_uri(uri)
-      ssh_uri(uri) + ':' + uri.path
+      new_uri = uri.host
+
+      new_uri = "#{uri.user}@#{new_uri}" if uri.user
+      new_uri = "#{new_uri}:#{uri.path}" unless uri.path.empty?
+
+      return new_uri
     end
 
     #

@@ -79,10 +79,21 @@ module DeploYML
     def download!
     end
 
+    def update!
+    end
+
     def upload!
+      sh 'rsync', '-a', '--delete-after', local_copy, @dest
     end
 
     def deploy!
+      unless File.directory?(local_copy)
+        download!
+      else
+        update!
+      end
+
+      upload!
     end
 
     protected

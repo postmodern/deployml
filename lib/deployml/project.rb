@@ -141,7 +141,7 @@ module DeploYML
     # Uploads the local copy of the project to the destination URI.
     #
     def upload!
-      options = ['-a', '--delete-before']
+      options = rsync_options('-a', '--delete-before')
       target = rsync_uri(@dest)
 
       # add --exclude options
@@ -238,6 +238,40 @@ module DeploYML
     end
 
     #
+    # Generates options for `ssh`.
+    #
+    # @param [Array] opts
+    #   Specific options to pass to `ssh`.
+    #
+    # @return [Array]
+    #   Options to pass to `ssh`.
+    #
+    def ssh_options(*opts)
+      options = []
+
+      options << '-v' if @debug
+
+      return options + opts
+    end
+
+    #
+    # Generates options for `rsync`.
+    #
+    # @param [Array] opts
+    #   Specific options to pass to `rsync`.
+    #
+    # @return [Array]
+    #   Options to pass to `rsync`.
+    #
+    def rsync_options(*opts)
+      options = []
+
+      options << '-vv' if @debug
+
+      return options + opts
+    end
+
+    #
     # Changes directories.
     #
     # @param [String] path
@@ -286,11 +320,12 @@ module DeploYML
     #
     def remote_sh(program,*args)
       if @dest.host
+        options = ssh_options()
         target = ssh_uri(@dest)
         command = [program,*args].join(' ')
 
         debug "[#{@dest.host}] #{command}"
-        return system('ssh',target,command.dump)
+        return system('ssh',*options,target,command.dump)
       else
         return sh(program,*args)
       end

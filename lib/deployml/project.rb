@@ -89,6 +89,19 @@ module DeploYML
       end
     end
 
+    def cd(path,&block)
+      if block
+        pwd = Dir.pwd
+        Dir.chdir(path)
+
+        block.call()
+
+        Dir.chdir(pwd)
+      else
+        Dir.chdir(path)
+      end
+    end
+
     def sh(program,*args)
       debug "#{program} #{args.join(' ')}"
 

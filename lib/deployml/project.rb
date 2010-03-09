@@ -33,38 +33,38 @@ module DeploYML
     # Debugging
     attr_accessor :debug
 
-    def initialize(options={})
-      @scm = (options[:scm] || DEFAULT_SCM).to_sym
+    def initialize(config={})
+      @scm = (config[:scm] || DEFAULT_SCM).to_sym
 
       unless SCMS.has_key?(@scm)
         raise(InvalidConfig,"Unknown SCM #{@scm} given for the :scm option",caller)
       end
 
-      unless (@source = normalize_uri(options[:source]))
+      unless (@source = normalize_uri(config[:source]))
         raise(InvalidConfig,":source option must contain either a Hash or a String",caller)
       end
 
-      unless (@dest = normalize_uri(options[:dest]))
+      unless (@dest = normalize_uri(config[:dest]))
         raise(InvalidConfig,":dest option must contain either a Hash or a String",caller)
       end
 
-      @debug = options[:debug]
-      @ssh = (options[:ssh] || DEFAULT_SSH)
+      @debug = config[:debug]
+      @ssh = (config[:ssh] || DEFAULT_SSH)
 
       extend SCMS[@scm]
 
-      super(options)
+      super(config)
     end
 
     def self.from_yaml(path)
       path = path.to_s
-      options = YAML.load_file(path)
+      config = YAML.load_file(path)
 
-      unless options.kind_of?(Hash)
+      unless config.kind_of?(Hash)
         raise(InvalidConfig,"The YAML Deployr configuration file #{path.dump} must contain a Hash",caller)
       end
 
-      return self.new(options)
+      return self.new(config)
     end
 
     def download!

@@ -142,11 +142,12 @@ module DeploYML
     #
     def upload!
       options = ['-a', '--delete-before']
+      target = ssh_uri(@dest)
 
       # add --exclude options
       @exclude.each { |pattern| options << "--exclude=#{pattern}" }
 
-      sh('rsync',*options,local_copy,@dest)
+      sh('rsync',*options,local_copy,target)
     end
 
     #
@@ -201,6 +202,24 @@ module DeploYML
     end
 
     #
+    # Converts a given URI to one compatible with `ssh`.
+    #
+    # @param [Addressable::URI] uri
+    #   The URI to convert.
+    #
+    # @return [String]
+    #   The `ssh` compatible URI.
+    #
+    def ssh_uri(uri)
+      new_uri = uri.host
+
+      new_uri = "#{uri.user}@#{new_uri}" if uri.user
+      new_uri = "#{new_uri}:#{uri.port}" if uri.port
+
+      return new_uri
+    end
+
+    #
     # Changes directories.
     #
     # @param [String] path
@@ -248,12 +267,8 @@ module DeploYML
     #   The additional arguments to run with the program.
     #
     def remote_sh(program,*args)
-      target = @dest.host
-
-      if target
-        target = "#{@dest.user}@#{target}" if @dest.user
-        target = "#{target}:#{@dest.port}" if @dest.port
-
+      if @dest.host
+        target = ssh_uri(@dest)
         command = [program,*args].join(' ')
 
         debug "[#{@dest.host}] #{command}"

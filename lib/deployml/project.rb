@@ -1,10 +1,25 @@
 require 'deployml/exceptions/invalid_config'
+require 'deployml/scm'
 
 module DeploYML
   class Project
 
     # Default SCM to use
     DEFAULT_SCM = :rsync
+
+    # Default SSH command to use
+    DEFAULT_SSH = 'ssh'
+
+    # Mapping of possible :scm values to their SCM handler classes.
+    SCMS = {
+      :sub_version => SCM::SubVersion,
+      :subversion => SCM::SubVersion,
+      :svn => SCM::SubVersion,
+      :hg => SCM::Mercurial,
+      :mercurial => SCM::Mercurial,
+      :git => SCM::Git,
+      :rsync => SCM::Rsync
+    }
 
     # Source Code Manager to interact with
     attr_accessor :scm
@@ -15,8 +30,15 @@ module DeploYML
     # Destination to deploy to
     attr_accessor :dest
 
+    # Debugging
+    attr_accessor :debug
+
     def initialize(options={})
       @scm = (options[:scm] || DEFAULT_SCM).to_sym
+
+      unless SCMS.has_key?(@scm)
+        raise(InvalidConfig,"Unknown SCM #{@scm} given for the :scm option",caller)
+      end
 
       unless (@source = normalize_uri(options[:source]))
         raise(InvalidConfig,":source option must contain either a Hash or a String",caller)
@@ -25,6 +47,11 @@ module DeploYML
       unless (@dest = normalize_uri(options[:dest]))
         raise(InvalidConfig,":dest option must contain either a Hash or a String",caller)
       end
+
+      @debug = options[:debug]
+      @ssh = (options[:ssh] || DEFAULT_SSH)
+
+      extend SCMS[@scm]
     end
 
     def self.from_yaml(path)
@@ -38,6 +65,15 @@ module DeploYML
       return self.new(options)
     end
 
+    def download!
+    end
+
+    def upload!
+    end
+
+    def deploy!
+    end
+
     protected
 
     def normalize_uri(uri)
@@ -49,6 +85,32 @@ module DeploYML
       else
         nil
       end
+    end
+
+    def sh(program,*args)
+      debug "#{program} #{args.join(' ')}"
+
+      return system(program,*args)
+    end
+
+    def remote_sh(program,*args)
+      target = @dest.host
+
+      if target
+        target = "#{@dest.user}@#{target}" if @dest.user
+        target = "#{target}:#{@dest.port}" if @dest.port
+
+        command = [program,*args].join(' ')
+
+        debug "[#{@dest.host}] #{command}"
+        return system(@ssh,target,command.dump)
+      else
+        return sh(program,*args)
+      end
+    end
+
+    def debug(message)
+      STDERR.puts ">>> #{message}" if @debug
     end
 
   end

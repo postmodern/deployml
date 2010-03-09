@@ -40,6 +40,8 @@ module DeploYML
     attr_accessor :debug
 
     def initialize(config={})
+      config = normalize_hash(config)
+
       @scm = (config[:scm] || DEFAULT_SCM).to_sym
 
       unless SCMS.has_key?(@scm)
@@ -85,13 +87,17 @@ module DeploYML
 
     protected
 
+    def normalize_hash(hash)
+      normalized = {}
+      hash.each { |name,value| normalized[name.to_sym] = value }
+
+      return normalized
+    end
+
     def normalize_uri(uri)
       case uri
       when Hash
-        uri = Addressable::URI.new
-        uri.each { |name,value| uri.send("#{name}=",value) }
-
-        return uri
+        Addressable::URI.new(normalize_hash(uri))
       when String
         Addressable::URI.parse(uri)
       else

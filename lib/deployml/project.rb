@@ -52,6 +52,8 @@ module DeploYML
       @ssh = (options[:ssh] || DEFAULT_SSH)
 
       extend SCMS[@scm]
+
+      super(options)
     end
 
     def self.from_yaml(path)

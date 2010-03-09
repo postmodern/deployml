@@ -88,7 +88,10 @@ module DeploYML
     def normalize_uri(uri)
       case uri
       when Hash
-        Addressable::URI.new(uri)
+        uri = Addressable::URI.new
+        uri.each { |name,value| uri.send("#{name}=",value) }
+
+        return uri
       when String
         Addressable::URI.parse(uri)
       else

@@ -42,6 +42,29 @@ module DeploYML
     # The file-path patterns to exclude from deployment
     attr_reader :exclude
 
+    #
+    # Creates a new {Project} using the given configuration.
+    #
+    # @param [Hash] config
+    #   The configuration for the project.
+    #
+    # @option config [Symbol, String] :scm (:rsync)
+    #   The SCM that the project is stored within.
+    #
+    # @option config [String, Hash] :source
+    #   The source URI of the project SCM.
+    #
+    # @option config [String, Hash] :dest
+    #   The destination URI to upload the project to.
+    #
+    # @option config [Boolean] :debug
+    #   Specifies whether to enable debugging.
+    #
+    # @raise [InvalidConfig]
+    #   Either the given `:scm` option was not unrecognized, the `:source`
+    #   option was not a String or Hash or the `:dest` option was not a
+    #   String or Hash.
+    #
     def initialize(config={})
       config = normalize_hash(config)
 
@@ -68,6 +91,18 @@ module DeploYML
       super(config)
     end
 
+    #
+    # Creates a new {Project} from a YAML configuration file.
+    #
+    # @param [String] path
+    #   The path to the YAML configuration file.
+    #
+    # @return [Project]
+    #   The new project.
+    #
+    # @raise [InvalidConfig]
+    #   The YAML configuration file did not contain a Hash.
+    #
     def self.from_yaml(path)
       path = path.to_s
       config = YAML.load_file(path)
@@ -79,12 +114,21 @@ module DeploYML
       return self.new(config)
     end
 
+    #
+    # Place-holder download method.
+    #
     def download!
     end
 
+    #
+    # Place-holder update method.
+    #
     def update!
     end
 
+    #
+    # Uploads the local copy of the project to the destination URI.
+    #
     def upload!
       options = ['-a', '--delete-before']
 
@@ -94,6 +138,9 @@ module DeploYML
       sh('rsync',*options,local_copy,@dest)
     end
 
+    #
+    # Deploys the project.
+    #
     def deploy!
       unless File.directory?(local_copy)
         download!
@@ -106,6 +153,15 @@ module DeploYML
 
     protected
 
+    #
+    # Normalizes the keys of a Hash.
+    #
+    # @param [Hash] hash
+    #   The un-normalized hash.
+    #
+    # @return [Hash{Symbol => Object}]
+    #   The normalized hash.
+    #
     def normalize_hash(hash)
       normalized = {}
       hash.each { |name,value| normalized[name.to_sym] = value }
@@ -113,6 +169,15 @@ module DeploYML
       return normalized
     end
 
+    #
+    # Normalizes a given URI.
+    #
+    # @param [Hash, String] uri
+    #   The un-normalized URI.
+    #
+    # @return [Addressable::URI, nil]
+    #   The normalized URI.
+    #
     def normalize_uri(uri)
       case uri
       when Hash
@@ -124,6 +189,16 @@ module DeploYML
       end
     end
 
+    #
+    # Changes directories.
+    #
+    # @param [String] path
+    #   Path to the new directory.
+    #
+    # @yield []
+    #   If a block is given, then the directory will only be changed
+    #   temporarily, then changed back after the block has finished.
+    #
     def cd(path,&block)
       if block
         pwd = Dir.pwd
@@ -137,12 +212,30 @@ module DeploYML
       end
     end
 
+    #
+    # Runs a program locally.
+    #
+    # @param [String] program
+    #   The name or path of the program to run.
+    #
+    # @param [Array] args
+    #   The additional arguments to run with the program.
+    #
     def sh(program,*args)
       debug "#{program} #{args.join(' ')}"
 
       return system(program,*args)
     end
 
+    #
+    # Runs a program remotely on the destination server.
+    #
+    # @param [String] program
+    #   The name or path of the program to run.
+    #
+    # @param [Array] args
+    #   The additional arguments to run with the program.
+    #
     def remote_sh(program,*args)
       target = @dest.host
 
@@ -159,6 +252,12 @@ module DeploYML
       end
     end
 
+    #
+    # Prints a debugging message, only if {#debug} is enabled.
+    #
+    # @param [String] message
+    #   The message to print.
+    #
     def debug(message)
       STDERR.puts ">>> #{message}" if @debug
     end

@@ -10,6 +10,9 @@ module DeploYML
     # Default SSH command to use
     DEFAULT_SSH = 'ssh'
 
+    # Directory name to store the local copy in
+    LOCAL_COPY = '.deploy'
+
     # Mapping of possible :scm values to their SCM handler classes.
     SCMS = {
       :sub_version => SCM::SubVersion,
@@ -29,6 +32,9 @@ module DeploYML
 
     # Destination to deploy to
     attr_accessor :dest
+
+    # Path to the local copy
+    attr_reader :local_copy
 
     # Debugging
     attr_accessor :debug
@@ -50,6 +56,7 @@ module DeploYML
 
       @debug = config[:debug]
       @ssh = (config[:ssh] || DEFAULT_SSH)
+      @local_copy = File.join(Dir.pwd,LOCAL_COPY)
 
       extend SCMS[@scm]
 

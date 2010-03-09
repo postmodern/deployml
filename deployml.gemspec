@@ -9,13 +9,33 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-03-08}
+  s.date = %q{2010-03-09}
   s.description = %q{DeploYML is a simple deployment solution that uses a single YAML file and does not require Ruby to be installed on the server.}
   s.email = %q{postmodern.mod3@gmail.com}
   s.extra_rdoc_files = [
     "ChangeLog.md",
     "LICENSE.txt",
     "README.md"
+  ]
+  s.files = [
+    ".gitignore",
+    ".specopts",
+    ".yardopts",
+    "ChangeLog.md",
+    "LICENSE.txt",
+    "README.md",
+    "Rakefile",
+    "deployml.gemspec",
+    "lib/deployml/exceptions/invalid_config.rb",
+    "lib/deployml/project.rb",
+    "lib/deployml/scm.rb",
+    "lib/deployml/scm/git.rb",
+    "lib/deployml/scm/mercurial.rb",
+    "lib/deployml/scm/rsync.rb",
+    "lib/deployml/scm/sub_version.rb",
+    "lib/deployml/version.rb",
+    "spec/deployml_spec.rb",
+    "spec/spec_helper.rb"
   ]
   s.has_rdoc = %q{yard}
   s.homepage = %q{http://github.com/postmodern/deployr}

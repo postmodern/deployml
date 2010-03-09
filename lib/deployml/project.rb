@@ -2,6 +2,7 @@ require 'deployml/exceptions/invalid_config'
 require 'deployml/scm'
 
 require 'addressable/uri'
+require 'set'
 
 module DeploYML
   class Project

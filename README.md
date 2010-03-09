@@ -11,10 +11,34 @@ doesn not require Ruby to be installed on the server.
 
 ## Features
 
-* Requires only *one* YAML file.
-* Does not require Ruby be installed on the server.
+* Requires only *one* YAML file with only *three* things:
+
+        scm: git
+        source: git@dev.example.com/var/git/project.git
+        dest: deploy@www.example.com/var/www/site
+
+* Does not require anything else to be installed on the servers.
+* Maintains separation between the production and development servers,
+  for security reasons.
+* Supports many common SCMs:
+  * SubVersion (SVN)
+  * Mercurial (Hg)
+  * Git
+  * Rsync
 
 ## Examples
+
+Specifying `source` and `dest` URIs as Hashes:
+      
+    scm: git
+    source:
+      user: git
+      host: dev.example.com
+      path: /var/git/project.git
+    dest:
+      user: deploy
+      host: www.example.com
+      path: /var/www/site
 
 ## Install
 

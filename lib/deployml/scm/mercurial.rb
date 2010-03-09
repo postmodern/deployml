@@ -2,6 +2,7 @@ module DeploYML
   module SCM
     module Mercurial
       def initialize(config={})
+        self.exclude += ['.hg']
       end
 
       def download!

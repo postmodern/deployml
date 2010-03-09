@@ -2,6 +2,7 @@ module DeploYML
   module SCM
     module SubVersion
       def initialize(config={})
+        self.exclude += ['.svn']
       end
 
       def download!

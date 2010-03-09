@@ -2,6 +2,7 @@ module DeploYML
   module SCM
     module Git
       def initialize(config={})
+        self.exclude += ['.git', '.gitignore']
       end
 
       def download!

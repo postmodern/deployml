@@ -9,9 +9,6 @@ module DeploYML
     # Default SCM to use
     DEFAULT_SCM = :rsync
 
-    # Default SSH command to use
-    DEFAULT_SSH = 'ssh'
-
     # Directory name to store the local copy in
     LOCAL_COPY = '.deploy'
 
@@ -59,7 +56,6 @@ module DeploYML
       end
 
       @debug = config[:debug]
-      @ssh = (config[:ssh] || DEFAULT_SSH)
       @local_copy = File.join(Dir.pwd,LOCAL_COPY)
 
       extend SCMS[@scm]
@@ -147,7 +143,7 @@ module DeploYML
         command = [program,*args].join(' ')
 
         debug "[#{@dest.host}] #{command}"
-        return system(@ssh,target,command.dump)
+        return system('ssh',target,command.dump)
       else
         return sh(program,*args)
       end

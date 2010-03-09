@@ -38,6 +38,9 @@ module DeploYML
     # Debugging
     attr_accessor :debug
 
+    # The file-path patterns to exclude from deployment
+    attr_reader :exclude
+
     def initialize(config={})
       config = normalize_hash(config)
 
@@ -57,6 +60,7 @@ module DeploYML
 
       @debug = config[:debug]
       @local_copy = File.join(Dir.pwd,LOCAL_COPY)
+      @exclude = Set[]
 
       extend SCMS[@scm]
 
@@ -81,7 +85,12 @@ module DeploYML
     end
 
     def upload!
-      sh 'rsync', '-a', '--delete-after', local_copy, @dest
+      options = ['-a', '--delete-after']
+
+      # add --exclude options
+      @exclude.each { |pattern| options << "--exclude=#{pattern}" }
+
+      sh('rsync',*options,local_copy,@dest)
     end
 
     def deploy!

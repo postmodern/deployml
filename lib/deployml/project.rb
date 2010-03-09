@@ -86,7 +86,7 @@ module DeploYML
     end
 
     def upload!
-      options = ['-a', '--delete-after']
+      options = ['-a', '--delete-before']
 
       # add --exclude options
       @exclude.each { |pattern| options << "--exclude=#{pattern}" }

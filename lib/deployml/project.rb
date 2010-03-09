@@ -142,7 +142,7 @@ module DeploYML
     #
     def upload!
       options = ['-a', '--delete-before']
-      target = ssh_uri(@dest)
+      target = rsync_uri(@dest)
 
       # add --exclude options
       @exclude.each { |pattern| options << "--exclude=#{pattern}" }
@@ -217,6 +217,19 @@ module DeploYML
       new_uri = "#{new_uri}:#{uri.port}" if uri.port
 
       return new_uri
+    end
+
+    #
+    # Converts a given URI to one compatible with `rsync`.
+    #
+    # @param [Addressable::URI] uri
+    #   The URI to convert.
+    #
+    # @return [String]
+    #   The `rsync` compatible URI.
+    #
+    def rsync_uri(uri)
+      ssh_uri(uri) + ':' + uri.path
     end
 
     #

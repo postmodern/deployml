@@ -57,6 +57,9 @@ module DeploYML
     # @option config [String, Hash] :dest
     #   The destination URI to upload the project to.
     #
+    # @option config [String, Array<String>] :exclude
+    #   File-path pattern or list of patterns to exclude from deployment.
+    #
     # @option config [Boolean] :debug
     #   Specifies whether to enable debugging.
     #
@@ -82,9 +85,17 @@ module DeploYML
         raise(InvalidConfig,":dest option must contain either a Hash or a String",caller)
       end
 
+      @exclude = Set[]
+
+      case options[:exclude]
+      when Array
+        @exclude += options[:exclude]
+      when String
+        @exclude << options[:exclude]
+      end
+
       @debug = config[:debug]
       @local_copy = File.join(Dir.pwd,LOCAL_COPY)
-      @exclude = Set[]
 
       extend SCMS[@scm]
 

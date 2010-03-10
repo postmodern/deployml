@@ -1,10 +1,13 @@
 require 'deployml/exceptions/invalid_config'
-require 'deployml/scm'
 
 require 'addressable/uri'
 require 'set'
 
 module DeploYML
+  #
+  # The {Configuration} class loads in the settings from a `deploy.yml`
+  # file.
+  #
   class Configuration
 
     # Default SCM to use
@@ -12,17 +15,6 @@ module DeploYML
 
     # Directory name to store the local copy in
     LOCAL_COPY = '.deploy'
-
-    # Mapping of possible :scm values to their SCM handler classes.
-    SCMS = {
-      :sub_version => SCM::SubVersion,
-      :subversion => SCM::SubVersion,
-      :svn => SCM::SubVersion,
-      :hg => SCM::Mercurial,
-      :mercurial => SCM::Mercurial,
-      :git => SCM::Git,
-      :rsync => SCM::Rsync
-    }
 
     # Source Code Manager to interact with
     attr_accessor :scm
@@ -73,10 +65,6 @@ module DeploYML
 
       @scm = (config[:scm] || DEFAULT_SCM).to_sym
 
-      unless SCMS.has_key?(@scm)
-        raise(InvalidConfig,"Unknown SCM #{@scm} given for the :scm option",caller)
-      end
-
       unless (@source = normalize_uri(config[:source]))
         raise(InvalidConfig,":source option must contain either a Hash or a String",caller)
       end
@@ -96,71 +84,6 @@ module DeploYML
 
       @debug = config[:debug]
       @local_copy = File.join(Dir.pwd,LOCAL_COPY)
-
-      extend SCMS[@scm]
-
-      super(config)
-    end
-
-    #
-    # Creates a new {Configuration} from a YAML configuration file.
-    #
-    # @param [String] path
-    #   The path to the YAML configuration file.
-    #
-    # @return [Configuration]
-    #   The new project.
-    #
-    # @raise [InvalidConfig]
-    #   The YAML configuration file did not contain a Hash.
-    #
-    def self.from_yaml(path)
-      path = path.to_s
-      config = YAML.load_file(path)
-
-      unless config.kind_of?(Hash)
-        raise(InvalidConfig,"The YAML Deployr configuration file #{path.dump} must contain a Hash",caller)
-      end
-
-      return self.new(config)
-    end
-
-    #
-    # Place-holder download method.
-    #
-    def download!
-    end
-
-    #
-    # Place-holder update method.
-    #
-    def update!
-    end
-
-    #
-    # Uploads the local copy of the project to the destination URI.
-    #
-    def upload!
-      options = rsync_options('-a', '--delete-before')
-      target = rsync_uri(@dest)
-
-      # add --exclude options
-      @exclude.each { |pattern| options << "--exclude=#{pattern}" }
-
-      sh('rsync',*options,local_copy,target)
-    end
-
-    #
-    # Deploys the project.
-    #
-    def deploy!
-      unless File.directory?(local_copy)
-        download!
-      else
-        update!
-      end
-
-      upload!
     end
 
     protected
@@ -199,146 +122,6 @@ module DeploYML
       else
         nil
       end
-    end
-
-    #
-    # Converts a given URI to one compatible with `ssh`.
-    #
-    # @param [Addressable::URI] uri
-    #   The URI to convert.
-    #
-    # @return [String]
-    #   The `ssh` compatible URI.
-    #
-    def ssh_uri(uri)
-      new_uri = uri.host
-
-      new_uri = "#{uri.user}@#{new_uri}" if uri.user
-      new_uri = "#{new_uri}:#{uri.port}" if uri.port
-
-      return new_uri
-    end
-
-    #
-    # Converts a given URI to one compatible with `rsync`.
-    #
-    # @param [Addressable::URI] uri
-    #   The URI to convert.
-    #
-    # @return [String]
-    #   The `rsync` compatible URI.
-    #
-    def rsync_uri(uri)
-      new_uri = uri.host
-
-      new_uri = "#{uri.user}@#{new_uri}" if uri.user
-      new_uri = "#{new_uri}:#{uri.path}" unless uri.path.empty?
-
-      return new_uri
-    end
-
-    #
-    # Generates options for `ssh`.
-    #
-    # @param [Array] opts
-    #   Specific options to pass to `ssh`.
-    #
-    # @return [Array]
-    #   Options to pass to `ssh`.
-    #
-    def ssh_options(*opts)
-      options = []
-
-      options << '-v' if @debug
-
-      return options + opts
-    end
-
-    #
-    # Generates options for `rsync`.
-    #
-    # @param [Array] opts
-    #   Specific options to pass to `rsync`.
-    #
-    # @return [Array]
-    #   Options to pass to `rsync`.
-    #
-    def rsync_options(*opts)
-      options = []
-
-      options << '-vv' if @debug
-
-      return options + opts
-    end
-
-    #
-    # Changes directories.
-    #
-    # @param [String] path
-    #   Path to the new directory.
-    #
-    # @yield []
-    #   If a block is given, then the directory will only be changed
-    #   temporarily, then changed back after the block has finished.
-    #
-    def cd(path,&block)
-      if block
-        pwd = Dir.pwd
-        Dir.chdir(path)
-
-        block.call()
-
-        Dir.chdir(pwd)
-      else
-        Dir.chdir(path)
-      end
-    end
-
-    #
-    # Runs a program locally.
-    #
-    # @param [String] program
-    #   The name or path of the program to run.
-    #
-    # @param [Array] args
-    #   The additional arguments to run with the program.
-    #
-    def sh(program,*args)
-      debug "#{program} #{args.join(' ')}"
-
-      return system(program,*args)
-    end
-
-    #
-    # Runs a program remotely on the destination server.
-    #
-    # @param [String] program
-    #   The name or path of the program to run.
-    #
-    # @param [Array] args
-    #   The additional arguments to run with the program.
-    #
-    def remote_sh(program,*args)
-      if @dest.host
-        options = ssh_options()
-        target = ssh_uri(@dest)
-        command = [program,*args].join(' ')
-
-        debug "[#{@dest.host}] #{command}"
-        return system('ssh',*options,target,command.dump)
-      else
-        return sh(program,*args)
-      end
-    end
-
-    #
-    # Prints a debugging message, only if {#debug} is enabled.
-    #
-    # @param [String] message
-    #   The message to print.
-    #
-    def debug(message)
-      STDERR.puts ">>> #{message}" if @debug
     end
 
   end

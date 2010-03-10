@@ -64,11 +64,11 @@ module DeploYML
 
       @config = Configuration.new(config)
 
-      unless SCMS.has_key?(config.scm)
-        raise(InvalidConfig,"Unknown SCM #{config.scm} given for the :scm option",caller)
+      unless SCMS.has_key?(@config.scm)
+        raise(InvalidConfig,"Unknown SCM #{@config.scm} given for the :scm option",caller)
       end
 
-      extend SCMS[config.scm]
+      extend SCMS[@config.scm]
 
       initialize_scm() if self.respond_to?(:initialize_scm)
     end

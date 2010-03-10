@@ -63,6 +63,28 @@ module DeploYML
     end
 
     #
+    # Searches for the configuration file within various common directories.
+    #
+    # @return [Project]
+    #   The project described by the configuration file.
+    #
+    # @raise [InvalidConfig]
+    #   The configuration file could not be found in any of the common
+    #   directories.
+    #
+    def Project.find
+      path = SEARCH_DIRS.find do |dir|
+        File.directory?(File.join(dir,CONFIG_FILE))
+      end
+
+      unless path
+        raise(InvalidConfig,"could not find #{CONFIG_FILE}",caller)
+      end
+
+      return Project.new(path)
+    end
+
+    #
     # Place-holder download method.
     #
     def download!

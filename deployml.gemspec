@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "deployml.gemspec",
+    "lib/deployml.rb",
     "lib/deployml/config_hash.rb",
     "lib/deployml/configuration.rb",
     "lib/deployml/exceptions/invalid_config.rb",

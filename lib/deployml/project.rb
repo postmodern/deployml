@@ -94,7 +94,10 @@ module DeploYML
       # add --exclude options
       config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
 
-      sh('rsync',*options,config.@staging_dir,target)
+      # append the source and destination arguments
+      options += [@staging_dir, target]
+
+      sh('rsync',*options)
     end
 
     #

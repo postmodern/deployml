@@ -13,6 +13,7 @@ begin
     gem.homepage = 'http://github.com/postmodern/deployr'
     gem.authors = ['Postmodern']
     gem.add_dependency 'addressable', '>= 2.1.0'
+    gem.add_dependency 'rprogram', '>= 0.1.8'
     gem.add_development_dependency 'rspec', '>= 1.3.0'
     gem.add_development_dependency 'yard', '>= 0.5.3'
     gem.has_rdoc = 'yard'

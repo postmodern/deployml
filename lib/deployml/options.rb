@@ -1,0 +1,1 @@
+require 'deployml/options/thin'

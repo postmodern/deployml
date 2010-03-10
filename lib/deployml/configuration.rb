@@ -1,6 +1,6 @@
 require 'deployml/exceptions/invalid_config'
-require 'deployml/config_hash'
 
+require 'hashie'
 require 'addressable/uri'
 require 'set'
 
@@ -9,10 +9,16 @@ module DeploYML
   # The {Configuration} class loads in the settings from a `deploy.yml`
   # file.
   #
-  class Configuration < ConfigHash
+  class Configuration < Hashie::Dash
 
     # Default SCM to use
     DEFAULT_SCM = :rsync
+
+    property :scm, :default => DEFAULT_SCM
+    property :source
+    property :dest
+    property :exclude, :default => Set[]
+    property :debug, :default => false
 
     #
     # Creates a new {Configuration} using the given configuration.
@@ -43,19 +49,17 @@ module DeploYML
     def initialize(config={})
       super(config)
 
-      self[:scm] = (self[:scm] || DEFAULT_SCM).to_sym
+      self.scm = self.scm.to_sym
 
-      unless (self[:source] = normalize_uri(self[:source]))
+      unless (self.source = normalize_uri(self.source))
         raise(InvalidConfig,":source option must contain either a Hash or a String",caller)
       end
 
-      unless (self[:dest] = normalize_uri(self[:dest]))
+      unless (self.dest = normalize_uri(self.dest))
         raise(InvalidConfig,":dest option must contain either a Hash or a String",caller)
       end
 
-      self[:exclude] = Set[*self[:exclude]]
-
-      self[:debug] ||= false
+      self.exclude = self.exclude.to_set
     end
 
     protected

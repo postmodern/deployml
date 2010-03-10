@@ -14,6 +14,7 @@ module DeploYML
     # Directories to search within for the deploy.yml file.
     SEARCH_DIRS = ['config','.']
 
+    # The name of the directory to stage deployments in.
     STAGING_DIR = '.deploy'
 
     # Mapping of possible :scm values to their SCM handler classes.
@@ -33,6 +34,12 @@ module DeploYML
     # The project configuration
     attr_reader :config
 
+    #
+    # Creates a new project using the given configuration file.
+    #
+    # @param [String] path
+    #   The path to the deployment configuration file for the project.
+    #
     def initialize(path)
       unless File.file?(path)
         raise(InvalidConfig,"Could not find the DeploYML configuration file #{path.dump}",caller)
@@ -52,6 +59,9 @@ module DeploYML
       initialize_scm
     end
 
+    #
+    # Initializes the SCM used for the project.
+    #
     def initialize_scm
       unless SCMS.has_key?(config.scm)
         raise(InvalidConfig,"Unknown SCM #{config.scm} given for the :scm option",caller)

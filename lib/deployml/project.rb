@@ -55,14 +55,6 @@ module DeploYML
         raise(InvalidConfig,"could not find #{CONFIG_FILE.dump} in #{root.dump}",caller)
       end
 
-      initialize_config
-      initialize_scm
-    end
-
-    #
-    # Initializes the configuration information for the project.
-    #
-    def initialize_config
       config = YAML.load_file(@path)
 
       unless config.kind_of?(Hash)
@@ -70,19 +62,14 @@ module DeploYML
       end
 
       @config = Configuration.new(config)
-    end
 
-    #
-    # Initializes the SCM used for the project.
-    #
-    def initialize_scm
       unless SCMS.has_key?(config.scm)
         raise(InvalidConfig,"Unknown SCM #{config.scm} given for the :scm option",caller)
       end
 
       extend SCMS[config.scm]
 
-      super()
+      initialize_scm() if self.respond_to?(:initialize_scm)
     end
 
     #

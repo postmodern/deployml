@@ -2,7 +2,7 @@ require 'deployml/project'
 
 namespace :deploy do
   task :project do
-    @project = DeploYML::Project.find
+    @project = DeploYML::Project.new(Dir.pwd)
   end
 
   task :download => :project do

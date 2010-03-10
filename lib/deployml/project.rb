@@ -2,6 +2,7 @@ require 'deployml/exceptions/invalid_config'
 require 'deployml/exceptions/unknown_scm'
 require 'deployml/configuration'
 require 'deployml/utils'
+require 'deployml/scm'
 
 module DeploYML
   class Project

@@ -52,7 +52,7 @@ module DeploYML
     #
     # Provides transparent access to the configuration values.
     #
-    # @param [Symbol] name
+    # @param [Symbol] method_name
     #   The name of a possible key within the config hash.
     #
     # @param [Array] arguments
@@ -75,18 +75,18 @@ module DeploYML
     #   config.options.enable
     #   # => true
     #
-    def method_missing(name,*arguments,&block)
+    def method_missing(method_name,*arguments,&block)
       unless block
-        name = name.to_s
+        name = method_name.to_s
 
         if (arguments.length == 1) && (name[-1..-1] == '=')
           return self[name[0..-2].to_sym] = arguments[0]
-        elsif arguments.empty? && has_key?(name.to_sym)
-          return self[name.to_sym]
+        elsif arguments.empty? && has_key?(method_name)
+          return self[method_name]
         end
       end
 
-      super(name,*arguments,&block)
+      super(method_name,*arguments,&block)
     end
 
   end

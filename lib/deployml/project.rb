@@ -28,6 +28,9 @@ module DeploYML
       :rsync => SCM::Rsync
     }
 
+    # The root directory of the project
+    attr_reader :root
+
     # The staging directory for deploying the project
     attr_reader :staging_dir
 
@@ -37,17 +40,29 @@ module DeploYML
     #
     # Creates a new project using the given configuration file.
     #
-    # @param [String] path
-    #   The path to the deployment configuration file for the project.
+    # @param [String] root
+    #   The root directory of the project.
     #
-    def initialize(path)
-      unless File.file?(path)
-        raise(InvalidConfig,"Could not find the DeploYML configuration file #{path.dump}",caller)
+    def initialize(root)
+      @root = File.expand_path(root)
+      @staging_dir = File.join(@root,STAGING_DIR)
+
+      @path = SEARCH_DIRS.map { |dir|
+        File.expand_path(File.join(root,dir,CONFIG_FILE))
+      }.find { |path| File.directory?(path) }
+
+      unless @path
+        raise(InvalidConfig,"could not find #{CONFIG_FILE.dump} in #{root.dump}",caller)
       end
 
-      @path = File.expand_path(path)
-      @staging_dir = File.join(File.dirname(@path),STAGING_DIR)
+      initialize_config
+      initialize_scm
+    end
 
+    #
+    # Initializes the configuration information for the project.
+    #
+    def initialize_config
       config = YAML.load_file(@path)
 
       unless config.kind_of?(Hash)
@@ -55,8 +70,6 @@ module DeploYML
       end
 
       @config = Configuration.new(config)
-
-      initialize_scm
     end
 
     #
@@ -70,31 +83,6 @@ module DeploYML
       extend SCMS[config.scm]
 
       super()
-    end
-
-    #
-    # Searches for the configuration file within various common directories.
-    #
-    # @param [String] root
-    #   The project root directory to search within.
-    #
-    # @return [Project]
-    #   The project described by the configuration file.
-    #
-    # @raise [InvalidConfig]
-    #   The configuration file could not be found in any of the common
-    #   directories.
-    #
-    def Project.find(root=Dir.pwd)
-      path = SEARCH_DIRS.find do |dir|
-        File.directory?(File.join(root,dir,CONFIG_FILE))
-      end
-
-      unless path
-        raise(InvalidConfig,"could not find #{CONFIG_FILE}",caller)
-      end
-
-      return Project.new(path)
     end
 
     #

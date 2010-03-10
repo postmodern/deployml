@@ -65,6 +65,9 @@ module DeploYML
     #
     # Searches for the configuration file within various common directories.
     #
+    # @param [String] root
+    #   The project root directory to search within.
+    #
     # @return [Project]
     #   The project described by the configuration file.
     #
@@ -72,9 +75,9 @@ module DeploYML
     #   The configuration file could not be found in any of the common
     #   directories.
     #
-    def Project.find
+    def Project.find(root=Dir.pwd)
       path = SEARCH_DIRS.find do |dir|
-        File.directory?(File.join(dir,CONFIG_FILE))
+        File.directory?(File.join(root,dir,CONFIG_FILE))
       end
 
       unless path

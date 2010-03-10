@@ -68,4 +68,10 @@ describe ConfigHash do
     @config[:z].a = 2
     @config[:z].a.should == 2
   end
+
+  it "should raise a NoMethodError exception when calling missing keys" do
+    lambda {
+      @config.xyz
+    }.should raise_error(NoMethodError)
+  end
 end

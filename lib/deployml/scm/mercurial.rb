@@ -7,8 +7,8 @@ module DeploYML
       # @param [Hash] config
       #   Configuration information for the project.
       #
-      def initialize(config={})
-        self.exclude += ['.hg']
+      def initialize_scm
+        self.config.exclude += ['.hg']
       end
 
       #

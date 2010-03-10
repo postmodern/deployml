@@ -8,7 +8,7 @@ module DeploYML
       #   Configuration information for the project.
       #
       def initialize_scm
-        self.config.exclude += ['.svn']
+        config.exclude += ['.svn']
       end
 
       #
@@ -16,7 +16,7 @@ module DeploYML
       # of the project.
       #
       def download!
-        sh 'svn', 'checkout', source, staging_dir
+        sh 'svn', 'checkout', config.source, staging_dir
       end
 
       #

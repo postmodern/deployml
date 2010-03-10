@@ -8,7 +8,7 @@ module DeploYML
       #   Configuration information for the project.
       #
       def initialize_scm
-        self.config.exclude += ['.git', '.gitignore']
+        config.exclude += ['.git', '.gitignore']
       end
 
       #
@@ -16,7 +16,7 @@ module DeploYML
       # of the project.
       #
       def download!
-        sh 'git', 'clone', source, staging_dir
+        sh 'git', 'clone', config.source, staging_dir
       end
 
       #

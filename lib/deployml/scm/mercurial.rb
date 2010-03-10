@@ -8,7 +8,7 @@ module DeploYML
       #   Configuration information for the project.
       #
       def initialize_scm
-        self.config.exclude += ['.hg']
+        config.exclude += ['.hg']
       end
 
       #
@@ -16,7 +16,7 @@ module DeploYML
       # local copy of the project.
       #
       def download!
-        sh 'hg', 'clone', source, staging_dir
+        sh 'hg', 'clone', config.source, staging_dir
       end
 
       #

@@ -8,6 +8,8 @@ module DeploYML
 
     include Utils
 
+    STAGIN_DIR = '.deploy'
+
     # Mapping of possible :scm values to their SCM handler classes.
     SCMS = {
       :sub_version => SCM::SubVersion,
@@ -19,6 +21,9 @@ module DeploYML
       :rsync => SCM::Rsync
     }
 
+    # The staging directory for deploying the project
+    attr_reader :staging_dir
+
     # The project configuration
     attr_reader :config
 
@@ -28,6 +33,7 @@ module DeploYML
       end
 
       @path = File.expand_path(path)
+      @staging_dir = File.join(File.dirname(@path),STAGIN_DIR)
 
       config = YAML.load_file(@path)
 
@@ -72,14 +78,14 @@ module DeploYML
       # add --exclude options
       config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
 
-      sh('rsync',*options,config.local_copy,target)
+      sh('rsync',*options,config.@staging_dir,target)
     end
 
     #
     # Deploys the project.
     #
     def deploy!
-      unless File.directory?(config.local_copy)
+      unless File.directory?(@staging_dir)
         download!
       else
         update!

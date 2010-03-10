@@ -25,9 +25,6 @@ module DeploYML
     # Destination to deploy to
     attr_accessor :dest
 
-    # Path to the local copy
-    attr_reader :local_copy
-
     # Debugging
     attr_accessor :debug
 
@@ -83,7 +80,6 @@ module DeploYML
       end
 
       @debug = config[:debug]
-      @local_copy = File.join(Dir.pwd,LOCAL_COPY)
     end
 
     protected

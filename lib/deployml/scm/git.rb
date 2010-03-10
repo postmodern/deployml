@@ -16,14 +16,14 @@ module DeploYML
       # of the project.
       #
       def download!
-        sh 'git', 'clone', source, local_copy
+        sh 'git', 'clone', source, staging_dir
       end
 
       #
       # Updates the local copy of the project.
       #
       def update!
-        cd(local_copy) do
+        cd(staging_dir) do
           sh 'git', 'reset', '--hard', 'HEAD'
           sh 'git', 'pull'
         end

@@ -16,14 +16,14 @@ module DeploYML
       # of the project.
       #
       def download!
-        sh 'svn', 'checkout', source, local_copy
+        sh 'svn', 'checkout', source, staging_dir
       end
 
       #
       # Updates the local copy of the project.
       #
       def update!
-        cd(local_copy) do
+        cd(staging_dir) do
           sh 'svn', 'update'
         end
       end

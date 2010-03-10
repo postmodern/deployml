@@ -16,14 +16,14 @@ module DeploYML
       # local copy of the project.
       #
       def download!
-        sh 'hg', 'clone', source, local_copy
+        sh 'hg', 'clone', source, staging_dir
       end
 
       #
       # Updates the local copy of the project.
       #
       def update!
-        cd(local_copy) do
+        cd(staging_dir) do
           sh 'hg', 'pull'
           sh 'hg', 'update', '-C'
         end

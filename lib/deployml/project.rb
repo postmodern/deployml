@@ -8,6 +8,12 @@ module DeploYML
 
     include Utils
 
+    # The configuration file name.
+    CONFIG_FILE = 'deploy.yml'
+
+    # Directories to search within for the deploy.yml file.
+    SEARCH_DIRS = ['config','.']
+
     STAGING_DIR = '.deploy'
 
     # Mapping of possible :scm values to their SCM handler classes.

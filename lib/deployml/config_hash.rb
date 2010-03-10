@@ -12,7 +12,7 @@ module DeploYML
 
       hash.each do |key,value|
         value = if value.kind_of?(Hash)
-                  self.class.new(value)
+                  ConfigHash.new(value)
                 else
                   value
                 end
@@ -31,7 +31,7 @@ module DeploYML
     #   The newly merged configuration hash.
     #
     def merge!(other_hash)
-      super(self.class.new(other_hash))
+      super(ConfigHash.new(other_hash))
     end
 
     #
@@ -44,7 +44,7 @@ module DeploYML
     #   The new configuration hash.
     #
     def merge(other_hash)
-      super(self.class.new(other_hash))
+      super(ConfigHash.new(other_hash))
     end
 
     protected

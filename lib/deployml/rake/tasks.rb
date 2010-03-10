@@ -15,10 +15,10 @@ namespace :deploy do
     @project.upload!
   end
 
-  desc 'Deploys the project'
   task :deploy => :project do
     @project.deploy!
   end
 end
 
+desc 'Deploys the project'
 task :deploy => 'deploy:deploy'

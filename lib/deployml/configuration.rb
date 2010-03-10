@@ -5,7 +5,7 @@ require 'addressable/uri'
 require 'set'
 
 module DeploYML
-  class Project
+  class Configuration
 
     # Default SCM to use
     DEFAULT_SCM = :rsync
@@ -43,7 +43,7 @@ module DeploYML
     attr_reader :exclude
 
     #
-    # Creates a new {Project} using the given configuration.
+    # Creates a new {Configuration} using the given configuration.
     #
     # @param [Hash] config
     #   The configuration for the project.
@@ -103,12 +103,12 @@ module DeploYML
     end
 
     #
-    # Creates a new {Project} from a YAML configuration file.
+    # Creates a new {Configuration} from a YAML configuration file.
     #
     # @param [String] path
     #   The path to the YAML configuration file.
     #
-    # @return [Project]
+    # @return [Configuration]
     #   The new project.
     #
     # @raise [InvalidConfig]

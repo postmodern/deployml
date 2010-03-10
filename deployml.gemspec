@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "deployml.gemspec",
     "lib/deployml/exceptions/invalid_config.rb",
-    "lib/deployml/project.rb",
+    "lib/deployml/configuration.rb",
     "lib/deployml/scm.rb",
     "lib/deployml/scm/git.rb",
     "lib/deployml/scm/mercurial.rb",

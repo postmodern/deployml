@@ -54,6 +54,8 @@ module DeploYML
       end
 
       self[:exclude] = Set[*self[:exclude]]
+
+      self[:debug] ||= false
     end
 
     protected

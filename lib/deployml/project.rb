@@ -50,7 +50,7 @@ module DeploYML
 
       @path = SEARCH_DIRS.map { |dir|
         File.expand_path(File.join(root,dir,CONFIG_FILE))
-      }.find { |path| File.directory?(path) }
+      }.find { |path| File.file?(path) }
 
       unless @path
         raise(InvalidConfig,"could not find #{CONFIG_FILE.dump} in #{root.dump}",caller)

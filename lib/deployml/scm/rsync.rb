@@ -7,7 +7,7 @@ module DeploYML
       # @param [Hash] config
       #   Configuration information for the project.
       #
-      def initialize(config={})
+      def initialize_scm
       end
 
       #

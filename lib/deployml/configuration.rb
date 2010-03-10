@@ -1,4 +1,5 @@
 require 'deployml/exceptions/invalid_config'
+require 'deployml/config_hash'
 
 require 'addressable/uri'
 require 'set'
@@ -8,28 +9,10 @@ module DeploYML
   # The {Configuration} class loads in the settings from a `deploy.yml`
   # file.
   #
-  class Configuration
+  class Configuration < ConfigHash
 
     # Default SCM to use
     DEFAULT_SCM = :rsync
-
-    # Directory name to store the local copy in
-    LOCAL_COPY = '.deploy'
-
-    # Source Code Manager to interact with
-    attr_accessor :scm
-
-    # Source of the repository
-    attr_accessor :source
-
-    # Destination to deploy to
-    attr_accessor :dest
-
-    # Debugging
-    attr_accessor :debug
-
-    # The file-path patterns to exclude from deployment
-    attr_reader :exclude
 
     #
     # Creates a new {Configuration} using the given configuration.
@@ -58,47 +41,22 @@ module DeploYML
     #   String or Hash.
     #
     def initialize(config={})
-      config = normalize_hash(config)
+      super(config)
 
-      @scm = (config[:scm] || DEFAULT_SCM).to_sym
+      self[:scm] = (self[:scm] || DEFAULT_SCM).to_sym
 
-      unless (@source = normalize_uri(config[:source]))
+      unless (self[:source] = normalize_uri(self[:source]))
         raise(InvalidConfig,":source option must contain either a Hash or a String",caller)
       end
 
-      unless (@dest = normalize_uri(config[:dest]))
+      unless (self[:dest] = normalize_uri(self[:dest]))
         raise(InvalidConfig,":dest option must contain either a Hash or a String",caller)
       end
 
-      @exclude = Set[]
-
-      case options[:exclude]
-      when Array
-        @exclude += options[:exclude]
-      when String
-        @exclude << options[:exclude]
-      end
-
-      @debug = config[:debug]
+      self[:exclude] = Set[*self[:exclude]]
     end
 
     protected
-
-    #
-    # Normalizes the keys of a Hash.
-    #
-    # @param [Hash] hash
-    #   The un-normalized hash.
-    #
-    # @return [Hash{Symbol => Object}]
-    #   The normalized hash.
-    #
-    def normalize_hash(hash)
-      normalized = {}
-      hash.each { |name,value| normalized[name.to_sym] = value }
-
-      return normalized
-    end
 
     #
     # Normalizes a given URI.
@@ -112,7 +70,7 @@ module DeploYML
     def normalize_uri(uri)
       case uri
       when Hash
-        Addressable::URI.new(normalize_hash(uri))
+        Addressable::URI.new(uri)
       when String
         Addressable::URI.parse(uri)
       else

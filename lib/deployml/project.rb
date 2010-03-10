@@ -8,7 +8,7 @@ module DeploYML
 
     include Utils
 
-    STAGIN_DIR = '.deploy'
+    STAGING_DIR = '.deploy'
 
     # Mapping of possible :scm values to their SCM handler classes.
     SCMS = {
@@ -33,7 +33,7 @@ module DeploYML
       end
 
       @path = File.expand_path(path)
-      @staging_dir = File.join(File.dirname(@path),STAGIN_DIR)
+      @staging_dir = File.join(File.dirname(@path),STAGING_DIR)
 
       config = YAML.load_file(@path)
 

@@ -89,7 +89,7 @@ module DeploYML
     # Uploads the local copy of the project to the destination URI.
     #
     def upload!
-      options = rsync_options('-a', '--delete-before')
+      options = rsync_options('-v', '-a', '--delete-before')
       target = rsync_uri(config.dest)
 
       # add --exclude options

@@ -67,7 +67,7 @@ module DeploYML
     def rsync_options(*opts)
       options = []
 
-      options << '-vv' if config.debug
+      options << '-v' if config.debug
 
       return options + opts
     end

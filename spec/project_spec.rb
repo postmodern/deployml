@@ -47,4 +47,10 @@ describe Project do
       Project.new(project_dir(:missing_dest))
     }.should raise_error(InvalidConfig)
   end
+
+  it "should raise InvalidConfig if :server is unknown" do
+    lambda {
+      Project.new(project_dir(:invalid_server))
+    }.should raise_error(InvalidConfig)
+  end
 end

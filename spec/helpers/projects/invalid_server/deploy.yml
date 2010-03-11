@@ -1,0 +1,4 @@
+scm: git
+source: git@example.com
+dest: deploy@example.com
+server: yet_another_async_web_server

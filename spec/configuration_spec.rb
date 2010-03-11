@@ -38,6 +38,12 @@ describe Configuration do
     config.source.host.should == 'bla.com'
   end
 
+  it "should raise InvalidConfig for bad 'source' values" do
+    lambda {
+      Configuration.new(:source => 1)
+    }.should raise_error(InvalidConfig)
+  end
+
   it "should accept a String for the 'dest' option" do
     config = Configuration.new(:dest => 'ssh://bla.com')
 
@@ -53,6 +59,12 @@ describe Configuration do
 
     config.dest.scheme.should == 'ssh'
     config.dest.host.should == 'bla.com'
+  end
+
+  it "should raise InvalidConfig for bad 'dest' values" do
+    lambda {
+      Configuration.new(:dest => 1)
+    }.should raise_error(InvalidConfig)
   end
 
   it "should convert the 'exclude' option to a Set" do

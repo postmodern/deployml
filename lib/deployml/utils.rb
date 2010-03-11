@@ -140,7 +140,7 @@ module DeploYML
     #   The message to print.
     #
     def debug(message)
-      STDERR.puts "[DEBUG] #{message}" if config.debug
+      STDERR.puts "[debug] #{message}" if config.debug
     end
   end
 end

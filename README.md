@@ -11,12 +11,7 @@ doesn not require Ruby to be installed on the server.
 
 ## Features
 
-* Requires only *one* YAML file with only *three* things:
-
-        scm: git
-        source: git@dev.example.com/var/git/project.git
-        dest: deploy@www.example.com/var/www/site
-
+* Requires only **one** YAML file with a minimum of **three** things.
 * Does not require anything else to be installed on the servers.
 * Maintains separation between the production and development servers,
   for security reasons.
@@ -25,8 +20,16 @@ doesn not require Ruby to be installed on the server.
   * Mercurial (Hg)
   * Git
   * Rsync
+* Supports the Thin web-server.
+* Supports any Operating System that supports Ruby and SSH.
 
 ## Examples
+
+Specifying `source` and `dest` URIs as Strings:
+
+    scm: git
+    source: git@dev.example.com/var/git/project.git
+    dest: deploy@www.example.com/var/www/site
 
 Specifying `source` and `dest` URIs as Hashes:
       

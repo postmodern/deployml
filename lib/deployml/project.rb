@@ -147,11 +147,11 @@ module DeploYML
 
       @config = Configuration.new(config)
 
-      unless config.source
+      unless @config.source
         raise(InvalidConfig,":source option was not given in #{@path.dump}",caller)
       end
 
-      unless config.dest
+      unless @config.dest
         raise(InvalidConfig,":dest option was not given in #{@path.dump}",caller)
       end
     end

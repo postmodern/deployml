@@ -59,13 +59,21 @@ module DeploYML
       config = YAML.load_file(@path)
 
       unless config.kind_of?(Hash)
-        raise(InvalidConfig,"The DeploYML configuration file #{path.dump} must contain a Hash",caller)
+        raise(InvalidConfig,"The DeploYML configuration file #{@path.dump} must contain a Hash",caller)
       end
 
       @config = Configuration.new(config)
 
+      unless @config.source
+        raise(InvalidConfig,"The :source option was not specified in #{@path.dump}",caller)
+      end
+
+      unless @config.dest
+        raise(InvalidConfig,"The :dest option was not specified in #{@path.dump}",caller)
+      end
+
       unless SCMS.has_key?(@config.scm)
-        raise(InvalidConfig,"Unknown SCM #{@config.scm} given for the :scm option",caller)
+        raise(InvalidConfig,"Unknown SCM #{@config.scm} given for the :scm option in #{@path.dump}",caller)
       end
 
       extend SCMS[@config.scm]

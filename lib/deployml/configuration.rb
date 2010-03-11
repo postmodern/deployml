@@ -83,6 +83,8 @@ module DeploYML
     #   String or Hash.
     #
     def initialize(config={})
+      config = normalize_hash(config)
+
       @hash = config
 
       initialize_params(config)
@@ -106,6 +108,31 @@ module DeploYML
     #
     def server_options
       self.server.values.first
+    end
+
+    protected
+
+    #
+    # Converts all the keys of a Hash to Symbols.
+    #
+    # @param [Hash{Object => Object}] hash
+    #   The hash to be converted.
+    #
+    # @return [Hash{Symbol => Object}]
+    #   The normalized Hash.
+    #
+    def normalize_hash(hash)
+      new_hash = {}
+
+      hash.each do |key,value|
+        new_hash[key.to_sym] = if value.kind_of?(Hash)
+                                 normalize_hash(value)
+                               else
+                                 value
+                               end
+      end
+
+      return new_hash
     end
 
   end

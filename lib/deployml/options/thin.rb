@@ -4,6 +4,14 @@ module DeploYML
   module Options
     class Thin < RProgram::Task
 
+      # Default options for Thin
+      DEFAULTS = {
+        :address => '127.0.0.1',
+        :environment => :production,
+        :socket => '/tmp/thin.sock',
+        :servers => 2
+      }
+
       # Server options:
       long_option :flag => '--address'
       long_option :flag => '--port'
@@ -49,6 +57,16 @@ module DeploYML
       long_option :flag => '--trace'
       long_option :flag => '--help'
       long_option :flag => '--version'
+
+      #
+      # Initialize the thin options.
+      #
+      # @param [Hash] options
+      #   The given options.
+      #
+      def initialize(options={})
+        super(DEFAULTS.merge(options))
+      end
 
     end
   end

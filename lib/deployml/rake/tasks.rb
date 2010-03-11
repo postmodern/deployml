@@ -7,6 +7,10 @@ namespace :deploy do
     puts "Successfully loaded #{DeploYML::Project::CONFIG_FILE}"
   end
 
+  task :invoke, [:command] => :project do |t,args|
+    @project.remote_sh args.command
+  end
+
   desc 'Downloads the project'
   task :download => :project do
     puts "Downloading project from #{@project.config.source} ..."

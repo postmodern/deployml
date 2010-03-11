@@ -13,7 +13,6 @@ module DeploYML
       new_uri = uri.host
 
       new_uri = "#{uri.user}@#{new_uri}" if uri.user
-      new_uri = "#{new_uri}:#{uri.port}" if uri.port
 
       return new_uri
     end
@@ -120,6 +119,10 @@ module DeploYML
     def remote_sh(program,*args)
       if config.dest.host
         options = ssh_options()
+
+        # Add the -p option if an alternate destination port is given
+        options += ['-p', config.dest.port.to_s] if config.dest.port
+
         target = ssh_uri(config.dest)
         command = [program,*args].join(' ')
 

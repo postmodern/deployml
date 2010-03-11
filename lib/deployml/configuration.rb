@@ -23,7 +23,8 @@ module DeploYML
     parameter :scm, :default => DEFAULT_SCM, :type => Symbol
 
     # The server run the deployed project under
-    parameter :server, :type => Hash[Symbol => Hash[Symbol => Object]]
+    parameter :server, :default => {},
+                       :type => Hash[Symbol => Hash[Symbol => Object]]
 
     # The source URI of the project SCM.
     parameter :source, :type => lambda { |source|

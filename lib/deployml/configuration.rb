@@ -32,10 +32,10 @@ module DeploYML
     attr_reader :dest
 
     # File-path pattern or list of patterns to exclude from deployment.
-    attr_reader :exclude
+    attr_accessor :exclude
 
     # Specifies whether to enable debugging.
-    attr_reader :debug
+    attr_accessor :debug
 
     #
     # Creates a new {Configuration} using the given configuration.

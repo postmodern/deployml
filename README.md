@@ -43,6 +43,12 @@ Specifying `source` and `dest` URIs as Hashes:
       host: www.example.com
       path: /var/www/site
 
+Execute a command on the deploy server:
+
+    $ rake deploy:invoke['whoami']
+    Successfully loaded deploy.yml
+    deploy
+
 ## Install
 
     $ sudo gem install deployml

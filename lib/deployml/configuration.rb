@@ -1,6 +1,5 @@
 require 'deployml/exceptions/invalid_config'
 
-require 'parameters'
 require 'addressable/uri'
 require 'set'
 
@@ -11,8 +10,6 @@ module DeploYML
   #
   class Configuration
 
-    include Parameters
-
     # Default SCM to use
     DEFAULT_SCM = :rsync
 
@@ -20,41 +17,25 @@ module DeploYML
     attr_reader :hash
 
     # The SCM that the project is stored within.
-    parameter :scm, :default => DEFAULT_SCM, :type => Symbol
+    attr_reader :scm
 
     # The server run the deployed project under
-    parameter :server, :default => {},
-                       :type => Hash[Symbol => Hash[Symbol => Object]]
+    attr_reader :server_name
+
+    # Options for the server
+    attr_reader :server_options
 
     # The source URI of the project SCM.
-    parameter :source, :type => lambda { |source|
-      case source
-      when Hash
-        Addressable::URI.new(source)
-      when String
-        Addressable::URI.parse(source)
-      else
-        raise(InvalidConfig,":source option must contain either a Hash or a String",caller)
-      end
-    }
+    attr_reader :source
 
     # The destination URI to upload the project to.
-    parameter :dest, :type => lambda { |dest|
-      case dest
-      when Hash
-        Addressable::URI.new(dest)
-      when String
-        Addressable::URI.parse(dest)
-      else
-        raise(InvalidConfig,":dest option must contain either a Hash or a String",caller)
-      end
-    }
+    attr_reader :dest
 
     # File-path pattern or list of patterns to exclude from deployment.
-    parameter :exclude, :default => Set[], :type => Set
+    attr_reader :exclude
 
     # Specifies whether to enable debugging.
-    parameter :debug, :default => false, :type => true
+    attr_reader :debug
 
     #
     # Creates a new {Configuration} using the given configuration.
@@ -85,29 +66,41 @@ module DeploYML
     def initialize(config={})
       config = normalize_hash(config)
 
+      @scm = (config[:scm] || DEFAULT_SCM).to_sym
+
+      @server_name = nil
+      @server_options = {}
+
+      case config[:server]
+      when Symbol, String
+        @server_name = config[:server].to_sym
+      when Hash
+        unless config[:server].has_key?(:name)
+          raise(InvalidConfig,"the :server option must contain a :name option for which server to use",caller)
+        end
+
+        @server_name = config[:server][:name]
+
+        if config[:server].has_key?(:options)
+          @server_options.merge!(config[:server][:options])
+        end
+      end
+
+      @source = normalize_uri(config[:source])
+      @dest = normalize_uri(config[:dest])
+
+      @exclude = Set[]
+
+      case config[:exclude]
+      when Array, Set
+        @exclude += config[:exclude]
+      when String
+        @exclude << config[:exclude]
+      end
+
+      @debug = (config[:debug] || false)
+
       @hash = config
-
-      initialize_params(config)
-    end
-
-    #
-    # The server name.
-    #
-    # @return [Symbol]
-    #   The name of the server to use.
-    #
-    def server_name
-      self.server.keys.first
-    end
-
-    #
-    # The server options.
-    #
-    # @return [Hash{Symbol => Object}]
-    #   The options to configure the server with.
-    #
-    def server_options
-      self.server.values.first
     end
 
     protected
@@ -133,6 +126,28 @@ module DeploYML
       end
 
       return new_hash
+    end
+
+    #
+    # Normalizes a given URI.
+    #
+    # @param [Hash, String] uri
+    #   The URI to normalize.
+    #
+    # @return [Addressable::URI]
+    #   The normalized URI.
+    #
+    def normalize_uri(uri)
+      case uri
+      when Hash
+        Addressable::URI.new(uri)
+      when String
+        Addressable::URI.parse(uri)
+      when NilClass
+        nil
+      else
+        raise(InvalidConfig,"invalid URI #{uri.inspect}",caller)
+      end
     end
 
   end

@@ -12,7 +12,6 @@ begin
     gem.email = 'postmodern.mod3@gmail.com'
     gem.homepage = 'http://github.com/postmodern/deployr'
     gem.authors = ['Postmodern']
-    gem.add_dependency 'parameters', '>= 0.2.1'
     gem.add_dependency 'addressable', '>= 2.1.0'
     gem.add_dependency 'rprogram', '>= 0.1.8'
     gem.add_development_dependency 'rspec', '>= 1.3.0'

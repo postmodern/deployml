@@ -88,10 +88,4 @@ describe Configuration do
 
     config.debug.should == false
   end
-
-  it "should convert the 'debug' option to a Boolean value" do
-    config = Configuration.new(:debug => 'true')
-
-    config.debug.should == true
-  end
 end

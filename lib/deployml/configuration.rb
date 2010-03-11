@@ -13,9 +13,6 @@ module DeploYML
     # Default SCM to use
     DEFAULT_SCM = :rsync
 
-    # The original configuration Hash
-    attr_reader :hash
-
     # The SCM that the project is stored within.
     attr_reader :scm
 
@@ -99,8 +96,6 @@ module DeploYML
       end
 
       @debug = (config[:debug] || false)
-
-      @hash = config
     end
 
     protected

@@ -15,16 +15,6 @@ describe Configuration do
     config.scm.should == :git
   end
 
-  it "should store the original configuration hash" do
-    hash = {:scm => 'git', :debug => true}
-    config = Configuration.new(hash)
-
-    config.scm.should == :git
-    config.debug.should == true
-
-    config.hash.should == hash
-  end
-
   it "should convert the 'scm' option to a Symbol" do
     config = Configuration.new(:scm => 'git')
 

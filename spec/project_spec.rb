@@ -6,13 +6,13 @@ require 'helpers/projects'
 describe Project do
   include Helpers::Projects
 
-  it "should find deploy.yml at the top-level" do
+  it "should find deploy.yml in the 'config/' directory" do
     lambda {
       Project.new(project_dir(:one))
     }.should_not raise_error(InvalidConfig)
   end
 
-  it "should find deploy.yml in the 'config/' directory" do
+  it "should find deploy.yml in the 'settings/' directory" do
     lambda {
       Project.new(project_dir(:two))
     }.should_not raise_error(InvalidConfig)

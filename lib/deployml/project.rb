@@ -14,7 +14,7 @@ module DeploYML
     CONFIG_FILE = 'deploy.yml'
 
     # Directories to search within for the deploy.yml file.
-    SEARCH_DIRS = ['config','.']
+    SEARCH_DIRS = ['config','settings']
 
     # The name of the directory to stage deployments in.
     STAGING_DIR = '.deploy'

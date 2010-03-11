@@ -17,7 +17,7 @@ module DeploYML
     DEFAULT_SCM = :rsync
 
     # The SCM that the project is stored within.
-    parameter :scm, :default => DEFAULT_SCM
+    parameter :scm, :default => DEFAULT_SCM, :type => Symbol
 
     # The source URI of the project SCM.
     parameter :source, :type => lambda { |source|
@@ -47,7 +47,7 @@ module DeploYML
     parameter :exclude, :type => Set
 
     # Specifies whether to enable debugging.
-    parameter :debug, :type => true
+    parameter :debug, :default => false, :type => true
 
     #
     # Creates a new {Configuration} using the given configuration.

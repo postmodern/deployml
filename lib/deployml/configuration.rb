@@ -50,7 +50,7 @@ module DeploYML
     }
 
     # File-path pattern or list of patterns to exclude from deployment.
-    parameter :exclude, :type => Set
+    parameter :exclude, :default => Set[], :type => Set
 
     # Specifies whether to enable debugging.
     parameter :debug, :default => false, :type => true

@@ -3,6 +3,7 @@ require 'deployml/exceptions/unknown_scm'
 require 'deployml/configuration'
 require 'deployml/utils'
 require 'deployml/scm'
+require 'deployml/servers'
 
 module DeploYML
   class Project
@@ -27,6 +28,11 @@ module DeploYML
       :mercurial => SCM::Mercurial,
       :git => SCM::Git,
       :rsync => SCM::Rsync
+    }
+
+    # Mapping of possible :server names to their Server handler classes.
+    SERVERS = {
+      :thin => Servers::Thin
     }
 
     # The root directory of the project
@@ -56,13 +62,7 @@ module DeploYML
         raise(InvalidConfig,"could not find #{CONFIG_FILE.dump} in #{root.dump}",caller)
       end
 
-      config = YAML.load_file(@path)
-
-      unless config.kind_of?(Hash)
-        raise(InvalidConfig,"The DeploYML configuration file #{@path.dump} must contain a Hash",caller)
-      end
-
-      @config = Configuration.new(config)
+      load_config!
 
       unless @config.source
         raise(InvalidConfig,"The :source option was not specified in #{@path.dump}",caller)
@@ -72,23 +72,19 @@ module DeploYML
         raise(InvalidConfig,"The :dest option was not specified in #{@path.dump}",caller)
       end
 
-      unless SCMS.has_key?(@config.scm)
-        raise(InvalidConfig,"Unknown SCM #{@config.scm} given for the :scm option in #{@path.dump}",caller)
-      end
+      load_scm!
 
-      extend SCMS[@config.scm]
-
-      initialize_scm() if self.respond_to?(:initialize_scm)
+      load_server!
     end
 
     #
-    # Place-holder download method.
+    # Place-holder method for {#download!}.
     #
     def download!
     end
 
     #
-    # Place-holder update method.
+    # Place-holder method for {#update!}.
     #
     def update!
     end
@@ -110,6 +106,24 @@ module DeploYML
     end
 
     #
+    # Place-holder method for {#config!}.
+    #
+    def config!
+    end
+
+    #
+    # Place-holder method for {#start!}.
+    #
+    def start!
+    end
+
+    #
+    # Place-holder method for {#stop!}.
+    #
+    def stop!
+    end
+
+    #
     # Deploys the project.
     #
     def deploy!
@@ -120,6 +134,38 @@ module DeploYML
       end
 
       upload!
+    end
+
+    protected
+
+    def load_config!
+      config = YAML.load_file(@path)
+
+      unless config.kind_of?(Hash)
+        raise(InvalidConfig,"The DeploYML configuration file #{@path.dump} must contain a Hash",caller)
+      end
+
+      @config = Configuration.new(config)
+    end
+
+    def load_scm!
+      unless SCMS.has_key?(@config.scm)
+        raise(InvalidConfig,"Unknown SCM #{@config.scm} given for the :scm option in #{@path.dump}",caller)
+      end
+
+      extend SCMS[@config.scm]
+
+      initialize_scm() if self.respond_to?(:initialize_scm)
+    end
+
+    def load_server!
+      unless Servers.has_key?(@config.server_name)
+        raise(InvalidConfig,"Unknown Server #{@config.server_name} given under the :server option",caller)
+      end
+
+      extend SERVERS[@config.server_name]
+
+      initialize_server() if self.respond_to?(:initialize_server)
     end
 
   end

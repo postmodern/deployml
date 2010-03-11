@@ -1,0 +1,1 @@
+require 'deployml/servers/thin'

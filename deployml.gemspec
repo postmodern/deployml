@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-03-10}
+  s.date = %q{2010-03-11}
   s.description = %q{DeploYML is a simple deployment solution that uses a single YAML file and does not require Ruby to be installed on the server.}
   s.email = %q{postmodern.mod3@gmail.com}
   s.extra_rdoc_files = [
@@ -46,6 +46,15 @@ Gem::Specification.new do |s|
     "lib/deployml/version.rb",
     "spec/configuration_spec.rb",
     "spec/deployml_spec.rb",
+    "spec/helpers/projects.rb",
+    "spec/helpers/projects/bad_config/deploy.yml",
+    "spec/helpers/projects/invalid_scm/deploy.yml",
+    "spec/helpers/projects/missing_config/.gitkeep",
+    "spec/helpers/projects/missing_dest/deploy.yml",
+    "spec/helpers/projects/missing_source/deploy.yml",
+    "spec/helpers/projects/one/deploy.yml",
+    "spec/helpers/projects/two/config/deploy.yml",
+    "spec/project_spec.rb",
     "spec/spec_helper.rb"
   ]
   s.has_rdoc = %q{yard}
@@ -57,7 +66,9 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/spec_helper.rb",
     "spec/deployml_spec.rb",
-    "spec/configuration_spec.rb"
+    "spec/helpers/projects.rb",
+    "spec/configuration_spec.rb",
+    "spec/project_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

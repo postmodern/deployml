@@ -1,0 +1,2 @@
+scm: future_scm
+dest: deploy@example.com

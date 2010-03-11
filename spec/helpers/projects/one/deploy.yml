@@ -1,0 +1,3 @@
+scm: git
+source: git@dev.example.com/var/git/project1.git
+dest: deploy@dev.example.com/var/www/project1

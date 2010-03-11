@@ -159,13 +159,15 @@ module DeploYML
     end
 
     def load_server!
-      unless Servers.has_key?(@config.server_name)
-        raise(InvalidConfig,"Unknown Server #{@config.server_name} given under the :server option",caller)
+      if @config.server_name
+        unless Servers.has_key?(@config.server_name)
+          raise(InvalidConfig,"Unknown Server #{@config.server_name} given under the :server option",caller)
+        end
+
+        extend SERVERS[@config.server_name]
+
+        initialize_server() if self.respond_to?(:initialize_server)
       end
-
-      extend SERVERS[@config.server_name]
-
-      initialize_server() if self.respond_to?(:initialize_server)
     end
 
   end

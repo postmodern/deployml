@@ -146,6 +146,14 @@ module DeploYML
       end
 
       @config = Configuration.new(config)
+
+      unless config.source
+        raise(InvalidConfig,":source option was not given in #{@path.dump}",caller)
+      end
+
+      unless config.dest
+        raise(InvalidConfig,":dest option was not given in #{@path.dump}",caller)
+      end
     end
 
     def load_scm!

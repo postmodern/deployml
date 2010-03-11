@@ -32,6 +32,7 @@ module DeploYML
 
     # Mapping of possible :server names to their Server handler classes.
     SERVERS = {
+      :apache => Servers::Apache,
       :thin => Servers::Thin
     }
 

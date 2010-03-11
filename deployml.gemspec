@@ -40,6 +40,8 @@ Gem::Specification.new do |s|
     "lib/deployml/scm/mercurial.rb",
     "lib/deployml/scm/rsync.rb",
     "lib/deployml/scm/sub_version.rb",
+    "lib/deployml/servers.rb",
+    "lib/deployml/servers/thin.rb",
     "lib/deployml/utils.rb",
     "lib/deployml/version.rb",
     "spec/configuration_spec.rb",

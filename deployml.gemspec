@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
     "lib/deployml/scm/sub_version.rb",
     "lib/deployml/utils.rb",
     "lib/deployml/version.rb",
+    "spec/configuration_spec.rb",
     "spec/deployml_spec.rb",
     "spec/spec_helper.rb"
   ]
@@ -53,7 +54,8 @@ Gem::Specification.new do |s|
   s.summary = %q{A deployment solution that works.}
   s.test_files = [
     "spec/spec_helper.rb",
-    "spec/deployml_spec.rb"
+    "spec/deployml_spec.rb",
+    "spec/configuration_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

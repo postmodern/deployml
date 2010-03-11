@@ -1,7 +1,5 @@
 module DeploYML
   module Utils
-    protected
-
     #
     # Converts a given URI to one compatible with `ssh`.
     #

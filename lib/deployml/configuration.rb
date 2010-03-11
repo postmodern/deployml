@@ -16,6 +16,9 @@ module DeploYML
     # Default SCM to use
     DEFAULT_SCM = :rsync
 
+    # The original configuration Hash
+    attr_reader :hash
+
     # The SCM that the project is stored within.
     parameter :scm, :default => DEFAULT_SCM, :type => Symbol
 
@@ -67,7 +70,7 @@ module DeploYML
     # @option config [String, Array<String>] :exclude
     #   File-path pattern or list of patterns to exclude from deployment.
     #
-    # @option config [Boolean] :debug
+    # @option config [Boolean] :debug (false)
     #   Specifies whether to enable debugging.
     #
     # @raise [InvalidConfig]
@@ -76,6 +79,8 @@ module DeploYML
     #   String or Hash.
     #
     def initialize(config={})
+      @hash = config
+
       initialize_params(config)
     end
 

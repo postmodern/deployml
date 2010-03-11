@@ -43,6 +43,26 @@ Specifying `source` and `dest` URIs as Hashes:
       host: www.example.com
       path: /var/www/site
 
+Specifying a `server` option:
+
+    scm: git
+    source: git@dev.example.com/var/git/project.git
+    dest: deploy@www.example.com/var/www/site
+    server: apache
+
+Specifying a `server` with options:
+
+    scm: git
+    source: git@dev.example.com/var/git/project.git
+    dest: deploy@www.example.com/var/www/site
+    server:
+      name: thin
+      options:
+        servers: 4
+	deamonize: true
+	socket: /var/run/thin.sock
+	rackup: true
+
 Execute a command on the deploy server:
 
     $ rake deploy:invoke['whoami']

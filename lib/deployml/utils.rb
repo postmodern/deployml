@@ -124,10 +124,10 @@ module DeploYML
         options += ['-p', config.dest.port.to_s] if config.dest.port
 
         target = ssh_uri(config.dest)
-        command = [program,*args].join(' ')
+        command = [program, *args].join(' ')
 
         # append the target host and the command arguments
-        options += [target, command.dump]
+        options += [target, command]
 
         debug "[#{config.dest.host}] #{command}"
         return system('ssh',*options)

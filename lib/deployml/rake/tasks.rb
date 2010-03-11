@@ -30,7 +30,8 @@ namespace :deploy do
     puts "Project uploaded."
   end
 
-  task :deploy => :project do
+  desc 'Deploys the project'
+  task :push => :project do
     puts "Deploying project to #{@project.config.dest} ..."
 
     @project.deploy!
@@ -39,5 +40,4 @@ namespace :deploy do
   end
 end
 
-desc 'Deploys the project'
-task :deploy => 'deploy:deploy'
+task :deploy => 'deploy:push'

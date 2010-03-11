@@ -7,6 +7,7 @@ namespace :deploy do
     puts "Successfully loaded #{DeploYML::Project::CONFIG_FILE}"
   end
 
+  desc 'Invokes a command on the deploy server'
   task :invoke, [:command] => :project do |t,args|
     @project.remote_sh args.command
   end

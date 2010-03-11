@@ -22,6 +22,9 @@ module DeploYML
     # The SCM that the project is stored within.
     parameter :scm, :default => DEFAULT_SCM, :type => Symbol
 
+    # The server run the deployed project under
+    parameter :server, :type => Hash[Symbol => Hash[Symbol => Object]]
+
     # The source URI of the project SCM.
     parameter :source, :type => lambda { |source|
       case source
@@ -82,6 +85,26 @@ module DeploYML
       @hash = config
 
       initialize_params(config)
+    end
+
+    #
+    # The server name.
+    #
+    # @return [Symbol]
+    #   The name of the server to use.
+    #
+    def server_name
+      self.server.keys.first
+    end
+
+    #
+    # The server options.
+    #
+    # @return [Hash{Symbol => Object}]
+    #   The options to configure the server with.
+    #
+    def server_options
+      self.server.values.first
     end
 
   end

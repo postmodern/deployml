@@ -78,4 +78,23 @@ describe Configuration do
 
     config.debug.should == false
   end
+
+  it "should accept a Symbol for the 'server' option" do
+    config = Configuration.new(:server => :thin)
+
+    config.server_name.should == :thin
+    config.server_options.should be_empty
+  end
+
+  it "should accept a Hash for the 'server' option" do
+    config = Configuration.new(
+      :server => {
+        :name => :thin,
+        :options => {:address => '127.0.0.1'}
+      }
+    )
+
+    config.server_name.should == :thin
+    config.server_options.should == {:address => '127.0.0.1'}
+  end
 end

@@ -168,7 +168,7 @@ module DeploYML
 
     def load_server!
       if @config.server_name
-        unless Servers.has_key?(@config.server_name)
+        unless SERVERS.has_key?(@config.server_name)
           raise(InvalidConfig,"Unknown Server #{@config.server_name} given under the :server option",caller)
         end
 

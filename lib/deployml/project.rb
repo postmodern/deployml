@@ -80,6 +80,26 @@ module DeploYML
     end
 
     #
+    # The URI of the source repository.
+    #
+    # @return [Addressable::URI]
+    #   The source repository URI.
+    #
+    def source_uri
+      @source_repository.uri
+    end
+
+    #
+    # The URI of the destination repository.
+    #
+    # @return [Addressable::URI]
+    #   The destination repository URI.
+    #
+    def dest_uri
+      @dest_repository.uri
+    end
+
+    #
     # Downloads the projects into the staging directory.
     #
     def download!

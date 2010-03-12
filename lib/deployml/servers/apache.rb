@@ -4,6 +4,10 @@ module DeploYML
   module Servers
     module Apache
       def start!
+        remote_sh 'apachectl', 'start'
+      end
+
+      def restart!
         remote_sh 'apachectl', 'restart'
       end
 

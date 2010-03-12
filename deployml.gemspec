@@ -54,8 +54,8 @@ Gem::Specification.new do |s|
     "spec/helpers/projects/missing_config/.gitkeep",
     "spec/helpers/projects/missing_dest/deploy.yml",
     "spec/helpers/projects/missing_source/deploy.yml",
-    "spec/helpers/projects/one/deploy.yml",
-    "spec/helpers/projects/two/config/deploy.yml",
+    "spec/helpers/projects/one/config/deploy.yml",
+    "spec/helpers/projects/two/settings/deploy.yml",
     "spec/project_spec.rb",
     "spec/spec_helper.rb"
   ]
@@ -80,17 +80,20 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<addressable>, [">= 2.1.0"])
       s.add_runtime_dependency(%q<rprogram>, [">= 0.1.8"])
+      s.add_runtime_dependency(%q<pullr>, [">= 0.1.0"])
       s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_development_dependency(%q<yard>, [">= 0.5.3"])
     else
       s.add_dependency(%q<addressable>, [">= 2.1.0"])
       s.add_dependency(%q<rprogram>, [">= 0.1.8"])
+      s.add_dependency(%q<pullr>, [">= 0.1.0"])
       s.add_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_dependency(%q<yard>, [">= 0.5.3"])
     end
   else
     s.add_dependency(%q<addressable>, [">= 2.1.0"])
     s.add_dependency(%q<rprogram>, [">= 0.1.8"])
+    s.add_dependency(%q<pullr>, [">= 0.1.0"])
     s.add_dependency(%q<rspec>, [">= 1.3.0"])
     s.add_dependency(%q<yard>, [">= 0.5.3"])
   end

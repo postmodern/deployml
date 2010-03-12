@@ -39,7 +39,7 @@ namespace :deploy do
     puts "Project configured."
   end
 
-  task 'Starts the server for the project'
+  desc 'Starts the server for the project'
   task :start => :project do
     puts "Starting server for #{@project.dest_uri} ..."
 
@@ -48,7 +48,7 @@ namespace :deploy do
     puts "Server started."
   end
 
-  task 'Stops the server for the project'
+  desc 'Stops the server for the project'
   task :stop => :project do
     puts "Stopping the server for #{@project.dest_uri} ..."
 

@@ -91,6 +91,17 @@ module DeploYML
     end
 
     #
+    # Downloads or updates the staging directory.
+    #
+    def sync!
+      unless File.directory?(@staging_dir)
+        download!
+      else
+        update!
+      end
+    end
+
+    #
     # Uploads the local copy of the project to the destination URI.
     #
     def upload!
@@ -128,11 +139,7 @@ module DeploYML
     # Deploys the project.
     #
     def deploy!
-      unless File.directory?(@staging_dir)
-        download!
-      else
-        update!
-      end
+      sync!
 
       upload!
     end

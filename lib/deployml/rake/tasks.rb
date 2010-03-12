@@ -12,13 +12,13 @@ namespace :deploy do
     @project.remote_sh args.command
   end
 
-  desc 'Downloads the project'
-  task :download => :project do
-    puts "Downloading project from #{@project.config.source} ..."
+  desc 'Synches the project'
+  task :sync => :project do
+    puts "Syncing project from #{@project.config.source} ..."
 
-    @project.download!
+    @project.sync!
 
-    puts "Project downloaded."
+    puts "Project synched."
   end
 
   desc 'Uploads the project'

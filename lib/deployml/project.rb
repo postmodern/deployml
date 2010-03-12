@@ -165,6 +165,8 @@ module DeploYML
       sync!
 
       upload!
+
+      start!
     end
 
     protected

@@ -57,6 +57,15 @@ namespace :deploy do
     puts "Server stopped."
   end
 
+  desc 'Restarts the server for the project'
+  task :restart => :project do
+    puts "Restarting server for #{@project.dest_uri} ..."
+
+    @project.restart!
+
+    puts "Server restarted."
+  end
+
   desc 'Deploys the project'
   task :push => :project do
     puts "Deploying project to #{@project.dest_uri} ..."

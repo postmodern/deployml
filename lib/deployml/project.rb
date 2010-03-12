@@ -159,6 +159,12 @@ module DeploYML
     end
 
     #
+    # Place-holder method for {#restart!}.
+    #
+    def restart!
+    end
+
+    #
     # Deploys the project.
     #
     def deploy!
@@ -166,7 +172,7 @@ module DeploYML
 
       upload!
 
-      start!
+      restart!
     end
 
     protected

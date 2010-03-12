@@ -22,7 +22,7 @@ module DeploYML
       long_option :flag => '--stats'
 
       # Adapter options:
-      long_option :flag => '--environment', :name => :env
+      long_option :flag => '--environment'
       long_option :flag => '--prefix', :name => :mount_under
 
       # Daemon options:

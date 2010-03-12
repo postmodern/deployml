@@ -7,7 +7,7 @@ module DeploYML
       # Default options for Thin
       DEFAULTS = {
         :environment => :production,
-        :socket => '/tmp/thin.sock',
+        :socket => '/var/run/thin.sock',
         :servers => 2
       }
 

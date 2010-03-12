@@ -131,6 +131,12 @@ module DeploYML
       options = rsync_options('-v', '-a', '--delete-before')
       target = rsync_uri(@dest_repository.uri)
 
+      # add an --exclude option for the SCM directory within
+      # the staging repository
+      if @staging_repository.scm_dir
+        options << "--exclude=#{@staging_repository.scm_dir}"
+      end
+
       # add --exclude options
       config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
 

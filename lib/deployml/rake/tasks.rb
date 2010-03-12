@@ -14,7 +14,7 @@ namespace :deploy do
 
   desc 'Synches the project'
   task :sync => :project do
-    puts "Syncing project from #{@project.config.source} ..."
+    puts "Syncing project from #{@project.source_repository.uri} ..."
 
     @project.sync!
 
@@ -23,7 +23,7 @@ namespace :deploy do
 
   desc 'Uploads the project'
   task :upload => :project do
-    puts "Uploading project to #{@project.config.dest} ..."
+    puts "Uploading project to #{@project.dest_repository.uri} ..."
 
     @project.upload!
 
@@ -32,7 +32,7 @@ namespace :deploy do
 
   desc 'Deploys the project'
   task :push => :project do
-    puts "Deploying project to #{@project.config.dest} ..."
+    puts "Deploying project to #{@project.dest_repository.uri} ..."
 
     @project.deploy!
 

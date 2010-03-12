@@ -13,7 +13,7 @@ module DeploYML
           raise(InvalidConfig,"No :config option specified under :thin",caller)
         end
 
-        options = ['-c', config.dest.path, *(@thin.arguments)]
+        options = ['-c', dest_repository.uri.path, *(@thin.arguments)]
 
         remote_sh 'thin', 'config', *options
       end

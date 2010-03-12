@@ -117,19 +117,21 @@ module DeploYML
     #   The additional arguments to run with the program.
     #
     def remote_sh(program,*args)
-      if config.dest.host
+      if dest_repository.uri
         options = ssh_options()
 
         # Add the -p option if an alternate destination port is given
-        options += ['-p', config.dest.port.to_s] if config.dest.port
+        if dest_repository.uri.port
+          options += ['-p', dest_repository.uri.port.to_s]
+        end
 
-        target = ssh_uri(config.dest)
+        target = ssh_uri(dest_repository.uri)
         command = [program, *args].join(' ')
 
         # append the target host and the command arguments
         options += [target, command]
 
-        debug "[#{config.dest.host}] #{command}"
+        debug "[#{dest_repository.uri.host}] #{command}"
         return system('ssh',*options)
       else
         return sh(program,*args)

@@ -30,6 +30,15 @@ namespace :deploy do
     puts "Project uploaded."
   end
 
+  desc 'Configures the server for the project'
+  task :config => :project do
+    puts "Configuring project at #{@project.dest_uri} ..."
+
+    @project.config!
+
+    puts "Project configured."
+  end
+
   desc 'Deploys the project'
   task :push => :project do
     puts "Deploying project to #{@project.dest_uri} ..."

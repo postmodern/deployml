@@ -75,5 +75,3 @@ namespace :deploy do
     puts "Project deployed."
   end
 end
-
-task :deploy => 'deploy:push'

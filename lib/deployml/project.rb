@@ -38,6 +38,9 @@ module DeploYML
     # The staging repository for the project
     attr_reader :staging_repository
 
+    # The deployment repository for the project
+    attr_reader :dest_repository
+
     #
     # Creates a new project using the given configuration file.
     #
@@ -66,6 +69,11 @@ module DeploYML
         :uri => @config.source,
         :scm => @config.scm,
         :path => File.join(@root,STAGING_DIR)
+      )
+
+      @dest_repository = Pullr::RemoteRepository.new(
+        :uri => @config.dest,
+        :scm => @rsync
       )
 
       load_server!
@@ -101,7 +109,7 @@ module DeploYML
     #
     def upload!
       options = rsync_options('-v', '-a', '--delete-before')
-      target = rsync_uri(config.dest)
+      target = rsync_uri(@dest_repository.uri)
 
       # add --exclude options
       config.exclude.each { |pattern| options << "--exclude=#{pattern}" }

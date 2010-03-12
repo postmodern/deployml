@@ -8,7 +8,6 @@ module DeploYML
       DEFAULTS = {
         :environment => :production,
         :address => '127.0.0.1',
-        :socket => '/tmp/thin.sock',
         :servers => 2
       }
 

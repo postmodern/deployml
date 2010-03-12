@@ -90,7 +90,7 @@ module DeploYML
     # Updates the project staging directory.
     #
     def update!
-      @source_repository.update(@config.source)
+      @staging_repository.update(@config.source)
     end
 
     #

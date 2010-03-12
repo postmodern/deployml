@@ -75,7 +75,7 @@ module DeploYML
           raise(InvalidConfig,"the :server option must contain a :name option for which server to use",caller)
         end
 
-        @server_name = config[:server][:name]
+        @server_name = config[:server][:name].to_sym
 
         if config[:server].has_key?(:options)
           @server_options.merge!(config[:server][:options])

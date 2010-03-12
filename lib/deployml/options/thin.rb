@@ -23,7 +23,7 @@ module DeploYML
 
       # Adapter options:
       long_option :flag => '--environment'
-      long_option :flag => '--prefix', :name => :mount_under
+      long_option :flag => '--prefix'
 
       # Daemon options:
       long_option :flag => '--daemonize'

@@ -62,7 +62,7 @@ module DeploYML
         :scm => @config.scm
       )
 
-      @repository = Pullr::LocalRepository.new(
+      @staging_repository = Pullr::LocalRepository.new(
         :uri => @config.source,
         :scm => @config.scm,
         :path => File.join(@root,STAGING_DIR)
@@ -75,14 +75,14 @@ module DeploYML
     # Downloads the projects into the staging directory.
     #
     def download!
-      @repository.pull(@staging_repository.path)
+      @remote_repository.pull(@staging_repository.path)
     end
 
     #
     # Updates the project staging directory.
     #
     def update!
-      @repository.update(@config.source)
+      @remote_repository.update(@config.source)
     end
 
     #

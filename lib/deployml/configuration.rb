@@ -1,6 +1,5 @@
 require 'deployml/exceptions/invalid_config'
 
-require 'addressable/uri'
 require 'set'
 
 module DeploYML
@@ -83,8 +82,8 @@ module DeploYML
         end
       end
 
-      @source = normalize_uri(config[:source])
-      @dest = normalize_uri(config[:dest])
+      @source = config[:source]
+      @dest = config[:dest]
 
       @exclude = Set[]
 
@@ -121,28 +120,6 @@ module DeploYML
       end
 
       return new_hash
-    end
-
-    #
-    # Normalizes a given URI.
-    #
-    # @param [Hash, String] uri
-    #   The URI to normalize.
-    #
-    # @return [Addressable::URI]
-    #   The normalized URI.
-    #
-    def normalize_uri(uri)
-      case uri
-      when Hash
-        Addressable::URI.new(uri)
-      when String
-        Addressable::URI.parse(uri)
-      when NilClass
-        nil
-      else
-        raise(InvalidConfig,"invalid URI #{uri.inspect}",caller)
-      end
     end
 
   end

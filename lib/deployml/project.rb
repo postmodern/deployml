@@ -2,8 +2,9 @@ require 'deployml/exceptions/invalid_config'
 require 'deployml/exceptions/unknown_scm'
 require 'deployml/configuration'
 require 'deployml/utils'
-require 'deployml/scm'
 require 'deployml/servers'
+
+require 'pullr'
 
 module DeploYML
   class Project
@@ -19,17 +20,6 @@ module DeploYML
     # The name of the directory to stage deployments in.
     STAGING_DIR = '.deploy'
 
-    # Mapping of possible :scm values to their SCM handler classes.
-    SCMS = {
-      :sub_version => SCM::SubVersion,
-      :subversion => SCM::SubVersion,
-      :svn => SCM::SubVersion,
-      :hg => SCM::Mercurial,
-      :mercurial => SCM::Mercurial,
-      :git => SCM::Git,
-      :rsync => SCM::Rsync
-    }
-
     # Mapping of possible :server names to their Server handler classes.
     SERVERS = {
       :apache => Servers::Apache,
@@ -39,11 +29,14 @@ module DeploYML
     # The root directory of the project
     attr_reader :root
 
-    # The staging directory for deploying the project
-    attr_reader :staging_dir
-
     # The project configuration
     attr_reader :config
+
+    # The remote repository for the project
+    attr_reader :remote_repository
+
+    # The staging repository for the project
+    attr_reader :staging_repository
 
     #
     # Creates a new project using the given configuration file.
@@ -53,7 +46,6 @@ module DeploYML
     #
     def initialize(root)
       @root = File.expand_path(root)
-      @staging_dir = File.join(@root,STAGING_DIR)
 
       @path = SEARCH_DIRS.map { |dir|
         File.expand_path(File.join(root,dir,CONFIG_FILE))
@@ -65,36 +57,39 @@ module DeploYML
 
       load_config!
 
-      unless @config.source
-        raise(InvalidConfig,"The :source option was not specified in #{@path.dump}",caller)
-      end
+      @remote_repository = Pullr::RemoteRepository.new(
+        :uri => @config.source,
+        :scm => @config.scm
+      )
 
-      unless @config.dest
-        raise(InvalidConfig,"The :dest option was not specified in #{@path.dump}",caller)
-      end
-
-      load_scm!
+      @repository = Pullr::LocalRepository.new(
+        :uri => @config.source,
+        :scm => @config.scm,
+        :path => File.join(@root,STAGING_DIR)
+      )
 
       load_server!
     end
 
     #
-    # Place-holder method for {#download!}.
+    # Downloads the projects into the staging directory.
     #
     def download!
+      @repository.pull(@staging_repository.path)
     end
 
     #
-    # Place-holder method for {#update!}.
+    # Updates the project staging directory.
     #
     def update!
+      @repository.update(@config.source)
     end
 
     #
     # Downloads or updates the staging directory.
     #
     def sync!
-      unless File.directory?(@staging_dir)
+      unless File.directory?(@staging_repository.path)
         download!
       else
         update!
@@ -112,7 +107,7 @@ module DeploYML
       config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
 
       # append the source and destination arguments
-      options += [File.join(@staging_dir,''), target]
+      options += [File.join(@staging_repository.path,''), target]
 
       sh('rsync',*options)
     end
@@ -162,16 +157,6 @@ module DeploYML
       unless @config.dest
         raise(InvalidConfig,":dest option was not given in #{@path.dump}",caller)
       end
-    end
-
-    def load_scm!
-      unless SCMS.has_key?(@config.scm)
-        raise(InvalidConfig,"Unknown SCM #{@config.scm} given for the :scm option in #{@path.dump}",caller)
-      end
-
-      extend SCMS[@config.scm]
-
-      initialize_scm() if self.respond_to?(:initialize_scm)
     end
 
     def load_server!

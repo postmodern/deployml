@@ -6,7 +6,6 @@ module DeploYML
 
       # Default options for Thin
       DEFAULTS = {
-        :address => '127.0.0.1',
         :environment => :production,
         :socket => '/tmp/thin.sock',
         :servers => 2

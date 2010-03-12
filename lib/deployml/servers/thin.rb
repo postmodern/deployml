@@ -19,15 +19,23 @@ module DeploYML
       end
 
       def start!
-        remote_sh 'thin', 'start', '-C', @thin.config, '-s', @thin.servers
+        remote_thin 'start'
       end
 
       def stop!
-        remote_sh 'thin', 'stop', '-C', @thin.config, '-s', @thin.servers
+        remote_thin 'stop'
       end
 
       def restart!
-        remote_sh 'thin', 'restart', '-C', @thin.config, '-s', @thin.servers
+        remote_thin 'restart'
+      end
+
+      protected
+
+      def remote_thin(*args)
+        options = args + ['-C', @thin.config, '-s', @thin.servers]
+
+        remote_sh 'thin', *options
       end
     end
   end

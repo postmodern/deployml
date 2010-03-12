@@ -32,8 +32,8 @@ module DeploYML
     # The project configuration
     attr_reader :config
 
-    # The remote repository for the project
-    attr_reader :remote_repository
+    # The source repository for the project
+    attr_reader :source_repository
 
     # The staging repository for the project
     attr_reader :staging_repository
@@ -57,7 +57,7 @@ module DeploYML
 
       load_config!
 
-      @remote_repository = Pullr::RemoteRepository.new(
+      @source_repository = Pullr::RemoteRepository.new(
         :uri => @config.source,
         :scm => @config.scm
       )
@@ -75,14 +75,14 @@ module DeploYML
     # Downloads the projects into the staging directory.
     #
     def download!
-      @remote_repository.pull(@staging_repository.path)
+      @source_repository.pull(@staging_repository.path)
     end
 
     #
     # Updates the project staging directory.
     #
     def update!
-      @remote_repository.update(@config.source)
+      @source_repository.update(@config.source)
     end
 
     #

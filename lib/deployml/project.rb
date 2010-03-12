@@ -73,7 +73,7 @@ module DeploYML
 
       @dest_repository = Pullr::RemoteRepository.new(
         :uri => @config.dest,
-        :scm => @rsync
+        :scm => :rsync
       )
 
       load_server!

@@ -141,7 +141,7 @@ module DeploYML
     #   The additional arguments to run with the program.
     #
     def remote_sh(program,*args)
-      if dest_uri
+      if dest_uri.host
         command = [program, *args].join(' ')
 
         debug "[#{dest_uri.host}] #{command}"

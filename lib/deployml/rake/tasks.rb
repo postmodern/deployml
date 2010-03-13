@@ -77,6 +77,8 @@ namespace :deploy do
 
   desc 'Starts a SSH session with the deploy server'
   task :ssh => :project do
+    puts "Starting an SSH session with #{@project.dest_uri.host} ..."
+
     @project.ssh
   end
 end

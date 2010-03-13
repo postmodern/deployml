@@ -74,4 +74,9 @@ namespace :deploy do
 
     puts "Project deployed."
   end
+
+  desc 'Starts a SSH session with the deploy server'
+  task :ssh => :project do
+    @project.ssh
+  end
 end

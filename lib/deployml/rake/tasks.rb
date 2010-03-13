@@ -12,6 +12,18 @@ namespace :deploy do
     @project.remote_sh args.command
   end
 
+  desc 'Executes a rake task on the deploy server'
+  task :task, [:name] => :project do |t,args|
+    @project.remote_task args.name
+  end
+
+  desc 'Starts a SSH session with the deploy server'
+  task :ssh => :project do
+    puts "Starting an SSH session with #{@project.dest_uri.host} ..."
+
+    @project.ssh
+  end
+
   desc 'Synches the project'
   task :sync => :project do
     puts "Syncing project from #{@project.source_uri} ..."
@@ -82,12 +94,5 @@ namespace :deploy do
     @project.deploy!
 
     puts "Project deployed."
-  end
-
-  desc 'Starts a SSH session with the deploy server'
-  task :ssh => :project do
-    puts "Starting an SSH session with #{@project.dest_uri.host} ..."
-
-    @project.ssh
   end
 end

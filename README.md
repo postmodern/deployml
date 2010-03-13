@@ -15,12 +15,19 @@ doesn not require Ruby to be installed on the server.
 * Does not require anything else to be installed on the servers.
 * Maintains separation between the production and development servers,
   for security reasons.
+* Provides convenient Rake tasks for your project.
+* Can deploy Ruby web applications or static sites.
 * Supports many common SCMs:
   * SubVersion (SVN)
   * Mercurial (Hg)
   * Git
   * Rsync
-* Supports the Thin web-server.
+* Supports a few common Web Servers:
+  * Apache
+  * Thin
+* Supports a few Ruby ORMs:
+  * ActiveRecord
+  * DataMapper
 * Supports any Operating System that supports Ruby and SSH.
 
 ## Examples

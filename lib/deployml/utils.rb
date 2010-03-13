@@ -139,6 +139,28 @@ module DeploYML
     end
 
     #
+    # Executes a Rake task on the deployment server.
+    #
+    # @param [String, Symbol] name
+    #   The rake task to run.
+    #
+    # @param [Array] args
+    #   Additional arguments to pass to the rake task.
+    #
+    def remote_task(name,*args)
+      name = name.to_s
+
+      unless args.empty?
+        name << ('[' + args.join(',') + ']')
+      end
+
+      options = [name]
+      options << '--trace' if config.debug
+
+      remote_ssh('rake',*options)
+    end
+
+    #
     # Prints a debugging message, only if {#debug} is enabled.
     #
     # @param [String] message

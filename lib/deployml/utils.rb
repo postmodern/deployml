@@ -114,7 +114,7 @@ module DeploYML
     #   Commands to run within the SSH session.
     #
     def ssh(*commands)
-      if dest_uri.path
+      if (dest_uri.path && !(commands.empty?))
         commands = ["cd #{dest_uri.path}"] + commands
       end
 

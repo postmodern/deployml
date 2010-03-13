@@ -121,9 +121,10 @@ module DeploYML
     #
     def remote_sh(*args,&block)
       if dest_uri.host
-        session = ShellSession.new(args) do |shell|
+        session = ShellSession.new() do |shell|
           shell.cd(dest_uri.path) if dest_uri.path
 
+          shell.run(*args) unless args.empty?
           block.call(shell) if block
         end
 

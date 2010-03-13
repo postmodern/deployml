@@ -30,6 +30,12 @@ module DeploYML
     # File-path pattern or list of patterns to exclude from deployment.
     attr_accessor :exclude
 
+    # The framework used by the project
+    attr_reader :framework
+
+    # The ORM used by the project
+    attr_reader :orm
+
     # Specifies whether to enable debugging.
     attr_accessor :debug
 
@@ -50,6 +56,12 @@ module DeploYML
     #
     # @option config [String, Array<String>] :exclude
     #   File-path pattern or list of patterns to exclude from deployment.
+    #
+    # @option config [Symbol] :framework
+    #   The framework used by the project.
+    #
+    # @option config [Symbol] :orm
+    #   The ORM used by the project.
     #
     # @option config [Boolean] :debug (false)
     #   Specifies whether to enable debugging.
@@ -92,6 +104,17 @@ module DeploYML
         @exclude += config[:exclude]
       when String
         @exclude << config[:exclude]
+      end
+
+      @framework = nil
+      @orm = nil
+
+      if config[:framework]
+        @framework = config[:framework].to_sym
+      end
+
+      if config[:orm]
+        @orm = config[:orm].to_sym
       end
 
       @debug = (config[:debug] || false)

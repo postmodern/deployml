@@ -9,19 +9,19 @@ describe Project do
   it "should find deploy.yml in the 'config/' directory" do
     lambda {
       Project.new(project_dir(:one))
-    }.should_not raise_error(InvalidConfig)
+    }.should_not raise_error
   end
 
   it "should find deploy.yml in the 'settings/' directory" do
     lambda {
       Project.new(project_dir(:two))
-    }.should_not raise_error(InvalidConfig)
+    }.should_not raise_error
   end
 
-  it "should raise InvalidConfig when deploy.yml cannot be found" do
+  it "should raise ConfigNotFound when deploy.yml cannot be found" do
     lambda {
       Project.new(project_dir(:missing_config))
-    }.should raise_error(InvalidConfig)
+    }.should raise_error(ConfigNotFound)
   end
 
   it "should raise InvalidConfig when deploy.yml does not contain a Hash" do
@@ -30,10 +30,10 @@ describe Project do
     }.should raise_error(InvalidConfig)
   end
 
-  it "should raise InvalidConfig if :scm is not a known SCM" do
+  it "should raise Pullr::UnknownSCM if :scm is not a known SCM" do
     lambda {
       Project.new(project_dir(:invalid_scm))
-    }.should raise_error(InvalidConfig)
+    }.should raise_error(Pullr::UnknownSCM)
   end
 
   it "should raise InvalidConfig if :source is missing" do

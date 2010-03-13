@@ -3,8 +3,9 @@ require 'deployml/exceptions/invalid_config'
 require 'deployml/exceptions/missing_option'
 require 'deployml/exceptions/unknown_server'
 require 'deployml/configuration'
-require 'deployml/utils'
 require 'deployml/servers'
+require 'deployml/orms'
+require 'deployml/utils'
 
 require 'pullr'
 
@@ -22,10 +23,16 @@ module DeploYML
     # The name of the directory to stage deployments in.
     STAGING_DIR = '.deploy'
 
-    # Mapping of possible :server names to their Server handler classes.
+    # Mapping of possible 'server' names to their mixins.
     SERVERS = {
       :apache => Servers::Apache,
       :thin => Servers::Thin
+    }
+
+    # Mapping of possible 'orm' names to their mixins.
+    ORMS = {
+      :active_record => ORMS::ActiveRecord,
+      :data_mapper => ORMS::DataMapper
     }
 
     # The root directory of the project
@@ -81,6 +88,8 @@ module DeploYML
         :uri => @config.dest,
         :scm => :rsync
       )
+
+      load_orm!
 
       load_server!
     end
@@ -153,6 +162,12 @@ module DeploYML
     end
 
     #
+    # Place-holder method for {#migrate!}.
+    #
+    def migrate!
+    end
+
+    #
     # Place-holder method for {#config!}.
     #
     def config!
@@ -184,6 +199,8 @@ module DeploYML
 
       upload!
 
+      migrate!
+
       restart!
     end
 
@@ -213,6 +230,21 @@ module DeploYML
 
       unless @config.dest
         raise(MissingOption,":dest option was not given in #{@path.dump}",caller)
+      end
+    end
+
+    #
+    # Loads the ORM configuration.
+    #
+    def load_orm!
+      if @config.orm
+        unless ORMS.has_key?(@config.orm)
+          raise(UnknownORM,"Unknown ORM #{@config.orm}",caller)
+        end
+
+        extend ORMS[@config.orm]
+
+        initialize_orm() if self.respond_to?(:initialize_orm)
       end
     end
 

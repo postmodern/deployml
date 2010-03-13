@@ -108,12 +108,16 @@ module DeploYML
     end
 
     #
-    # Runs an `ssh` command against the destination server.
+    # Starts a SSH session with the destination server.
     #
-    # @param [Array] args
-    #   Additional arguments for `ssh`.
+    # @param [Array] commands
+    #   Commands to run within the SSH session.
     #
-    def ssh(*args)
+    def ssh(*commands)
+      if dest_uri.path
+        commands = ["cd #{dest_uri.path}"] + commands
+      end
+
       options = ssh_options()
 
       # Add the -p option if an alternate destination port is given
@@ -121,10 +125,8 @@ module DeploYML
         options += ['-p', dest_uri.port.to_s]
       end
 
-      target = ssh_uri(dest_uri)
-
-      options << target
-      options += args
+      options << ssh_uri(dest_uri)
+      options << commands.join(' && ')
 
       return system('ssh',*options)
     end

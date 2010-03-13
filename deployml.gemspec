@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-03-12}
+  s.date = %q{2010-03-13}
   s.description = %q{DeploYML is a simple deployment solution that uses a single YAML file and does not require Ruby to be installed on the server.}
   s.email = %q{postmodern.mod3@gmail.com}
   s.extra_rdoc_files = [
@@ -28,10 +28,15 @@ Gem::Specification.new do |s|
     "deployml.gemspec",
     "lib/deployml.rb",
     "lib/deployml/configuration.rb",
+    "lib/deployml/exceptions/config_not_found.rb",
     "lib/deployml/exceptions/invalid_config.rb",
-    "lib/deployml/exceptions/unknown_scm.rb",
+    "lib/deployml/exceptions/missing_option.rb",
+    "lib/deployml/exceptions/unknown_server.rb",
     "lib/deployml/options.rb",
     "lib/deployml/options/thin.rb",
+    "lib/deployml/orms.rb",
+    "lib/deployml/orms/active_record.rb",
+    "lib/deployml/orms/data_mapper.rb",
     "lib/deployml/project.rb",
     "lib/deployml/rake.rb",
     "lib/deployml/rake/tasks.rb",
@@ -43,12 +48,12 @@ Gem::Specification.new do |s|
     "spec/configuration_spec.rb",
     "spec/deployml_spec.rb",
     "spec/helpers/projects.rb",
-    "spec/helpers/projects/bad_config/deploy.yml",
-    "spec/helpers/projects/invalid_scm/deploy.yml",
-    "spec/helpers/projects/invalid_server/deploy.yml",
+    "spec/helpers/projects/bad_config/config/deploy.yml",
+    "spec/helpers/projects/invalid_scm/config/deploy.yml",
+    "spec/helpers/projects/invalid_server/config/deploy.yml",
     "spec/helpers/projects/missing_config/.gitkeep",
-    "spec/helpers/projects/missing_dest/deploy.yml",
-    "spec/helpers/projects/missing_source/deploy.yml",
+    "spec/helpers/projects/missing_dest/config/deploy.yml",
+    "spec/helpers/projects/missing_source/config/deploy.yml",
     "spec/helpers/projects/one/config/deploy.yml",
     "spec/helpers/projects/two/settings/deploy.yml",
     "spec/project_spec.rb",

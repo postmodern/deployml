@@ -125,7 +125,7 @@ module DeploYML
     # Updates the project staging directory.
     #
     def update!
-      @staging_repository.update(@config.source)
+      @staging_repository.update(@source_repository.uri)
     end
 
     #

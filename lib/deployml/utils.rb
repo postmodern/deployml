@@ -148,16 +148,7 @@ module DeploYML
     #   Additional arguments to pass to the rake task.
     #
     def remote_task(name,*args)
-      name = name.to_s
-
-      unless args.empty?
-        name << ('[' + args.join(',') + ']')
-      end
-
-      options = [name]
-      options << '--trace' if config.debug
-
-      remote_ssh('rake',*options)
+      remote_sh { |shell| shell.rake(name,*args) }
     end
 
     #

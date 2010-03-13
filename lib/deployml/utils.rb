@@ -108,6 +108,28 @@ module DeploYML
     end
 
     #
+    # Runs an `ssh` command against the destination server.
+    #
+    # @param [Array] args
+    #   Additional arguments for `ssh`.
+    #
+    def ssh(*args)
+      options = ssh_options()
+
+      # Add the -p option if an alternate destination port is given
+      if dest_uri.port
+        options += ['-p', dest_uri.port.to_s]
+      end
+
+      target = ssh_uri(dest_uri)
+
+      options << target
+      options += args
+
+      return system('ssh',*options)
+    end
+
+    #
     # Runs a program remotely on the destination server.
     #
     # @param [String] program
@@ -118,21 +140,10 @@ module DeploYML
     #
     def remote_sh(program,*args)
       if dest_uri
-        options = ssh_options()
-
-        # Add the -p option if an alternate destination port is given
-        if dest_uri.port
-          options += ['-p', dest_uri.port.to_s]
-        end
-
-        target = ssh_uri(dest_uri)
         command = [program, *args].join(' ')
 
-        # append the target host and the command arguments
-        options += [target, command]
-
         debug "[#{dest_uri.host}] #{command}"
-        return system('ssh',*options)
+        return ssh(command)
       else
         return sh(program,*args)
       end

@@ -1,3 +1,5 @@
+require 'deployml/shell_session'
+
 module DeploYML
   module Utils
     #
@@ -73,15 +75,15 @@ module DeploYML
     # Runs a program locally.
     #
     # @param [String] program
-    #   The name or path of the program to run.
+    #   The name of path of the program to run.
     #
     # @param [Array] args
-    #   The additional arguments to run with the program.
+    #   Additional arguments to run the program with.
     #
     def sh(program,*args)
       debug "#{program} #{args.join(' ')}"
 
-      return system(program,*args)
+      system(program,*args)
     end
 
     #
@@ -105,27 +107,34 @@ module DeploYML
     end
 
     #
-    # Runs a program remotely on the destination server.
-    #
-    # @param [String] program
-    #   The name or path of the program to run.
+    # Runs a command remotely on the destination server.
     #
     # @param [Array] args
-    #   The additional arguments to run with the program.
+    #   The arguments of the remote command.
     #
-    def remote_sh(program,*args)
+    # @yield [session]
+    #   If a block is given, it will be passed a shell, which is used to
+    #   build up a session.
+    #
+    # @yieldparam [ShellSession] session
+    #   The shell session.
+    #
+    def remote_sh(*args,&block)
       if dest_uri.host
-        command = [program, *args].join(' ')
+        session = ShellSession.new(args) do |shell|
+          shell.cd(dest_uri.path) if dest_uri.path
 
-        debug "[#{dest_uri.host}] #{command}"
-
-        if dest_uri.path
-          command = "cd #{dest_uri.path} && #{command}"
+          block.call(shell) if block
         end
 
+        command = session.commands.map { |*args|
+          args.join(' ')
+        }.join(' && ')
+
+        debug "[#{dest_uri.host}] #{command}"
         return ssh(command)
       else
-        return sh(program,*args)
+        return sh(*args)
       end
     end
 

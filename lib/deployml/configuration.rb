@@ -1,4 +1,4 @@
-require 'deployml/exceptions/invalid_config'
+require 'deployml/exceptions/missing_option'
 
 require 'set'
 
@@ -66,10 +66,8 @@ module DeploYML
     # @option config [Boolean] :debug (false)
     #   Specifies whether to enable debugging.
     #
-    # @raise [InvalidConfig]
-    #   Either the given `:scm` option was not unrecognized, the `:source`
-    #   option was not a String or Hash or the `:dest` option was not a
-    #   String or Hash.
+    # @raise [MissingOption]
+    #   The `server` option Hash did not contain a `name` option.
     #
     def initialize(config={})
       config = normalize_hash(config)
@@ -84,10 +82,12 @@ module DeploYML
         @server_name = config[:server].to_sym
       when Hash
         unless config[:server].has_key?(:name)
-          raise(InvalidConfig,"the :server option must contain a :name option for which server to use",caller)
+          raise(MissingOption,"the 'server' option must contain a 'name' option for which server to use",caller)
         end
 
-        @server_name = config[:server][:name].to_sym
+        if config[:server].has_key?(:name)
+          @server_name = config[:server][:name].to_sym
+        end
 
         if config[:server].has_key?(:options)
           @server_options.merge!(config[:server][:options])

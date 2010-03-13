@@ -30,6 +30,15 @@ namespace :deploy do
     puts "Project uploaded."
   end
 
+  desc 'Migrates the database for the project'
+  task :migrate => :project do
+    puts "Migrating database for #{@project.dest_uri} ..."
+
+    @project.migrate!
+
+    puts "Database migrated."
+  end
+
   desc 'Configures the server for the project'
   task :config => :project do
     puts "Configuring project at #{@project.dest_uri} ..."

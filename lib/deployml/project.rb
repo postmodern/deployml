@@ -1,5 +1,7 @@
+require 'deployml/exceptions/config_not_found'
 require 'deployml/exceptions/invalid_config'
-require 'deployml/exceptions/unknown_scm'
+require 'deployml/exceptions/missing_option'
+require 'deployml/exceptions/unknown_server'
 require 'deployml/configuration'
 require 'deployml/utils'
 require 'deployml/servers'
@@ -47,6 +49,10 @@ module DeploYML
     # @param [String] root
     #   The root directory of the project.
     #
+    # @raise [ConfigNotFound]
+    #   The configuration file for the project could not be found
+    #   in any of the common directories.
+    #
     def initialize(root)
       @root = File.expand_path(root)
 
@@ -55,7 +61,7 @@ module DeploYML
       }.find { |path| File.file?(path) }
 
       unless @path
-        raise(InvalidConfig,"could not find #{CONFIG_FILE.dump} in #{root.dump}",caller)
+        raise(ConfigNotFound,"could not find #{CONFIG_FILE.dump} in #{root.dump}",caller)
       end
 
       load_config!
@@ -183,6 +189,15 @@ module DeploYML
 
     protected
 
+    #
+    # Loads the project configuration.
+    #
+    # @raise [InvalidConfig]
+    #   The YAML configuration file did not contain a Hash.
+    #
+    # @raise [MissingOption]
+    #   The `source` or `dest` options were not specified.
+    #
     def load_config!
       config = YAML.load_file(@path)
 
@@ -193,18 +208,23 @@ module DeploYML
       @config = Configuration.new(config)
 
       unless @config.source
-        raise(InvalidConfig,":source option was not given in #{@path.dump}",caller)
+        raise(MissingOption,":source option was not given in #{@path.dump}",caller)
       end
 
       unless @config.dest
-        raise(InvalidConfig,":dest option was not given in #{@path.dump}",caller)
+        raise(MissingOption,":dest option was not given in #{@path.dump}",caller)
       end
     end
 
+    #
+    # Loads the server configuration.
+    #
+    # @raise [UnknownServer]
+    #
     def load_server!
       if @config.server_name
         unless SERVERS.has_key?(@config.server_name)
-          raise(InvalidConfig,"Unknown server #{@config.server_name} given under the :server option",caller)
+          raise(UnknownServer,"Unknown server name #{@config.server_name}",caller)
         end
 
         extend SERVERS[@config.server_name]

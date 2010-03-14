@@ -10,7 +10,7 @@ module DeploYML
       def migrate(shell)
         case config.orm
         when :datamapper
-          shell.rake 'db:autoupdate'
+          shell.rake 'db:autoupgrade'
         else
           shell.rake 'db:migrate'
         end

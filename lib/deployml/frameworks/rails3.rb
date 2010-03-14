@@ -15,7 +15,7 @@ module DeploYML
                  'db:migrate'
                end
 
-        shell.run 'rake', task, "ENV=#{config.environment}"
+        shell.run 'rake', task, "RAILS_ENV=#{config.environment}"
       end
     end
   end

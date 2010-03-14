@@ -21,7 +21,7 @@ module DeploYML
           raise(MissingOption,"No 'config' option specified under the server options",caller)
         end
 
-        options = ['-c', dest_uri.path, *(@thin.arguments)]
+        options = ['-c', dest_uri.path] + @thin.arguments
 
         shell.run 'thin', 'config', *options
       end

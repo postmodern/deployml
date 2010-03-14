@@ -1,4 +1,4 @@
-require 'deployml/exceptions/invalid_config'
+require 'deployml/exceptions/missing_option'
 require 'deployml/options/thin'
 
 module DeploYML
@@ -18,7 +18,7 @@ module DeploYML
 
       def server_config(shell)
         unless @thin.config
-          raise(InvalidConfig,"No :config option specified under :thin",caller)
+          raise(MissingOption,"No 'config' option specified under the server options",caller)
         end
 
         options = ['-c', dest_uri.path, *(@thin.arguments)]

@@ -186,7 +186,7 @@ module DeploYML
         end
       end
 
-      session = RemoteShell.new do |shell|
+      RemoteShell.new(dest_uri) do |shell|
         # orm tasks
         migrate(shell) if tasks.include?(:migrate)
 
@@ -200,10 +200,6 @@ module DeploYML
         elsif tasks.include?(:restart)
           restart(shell)
         end
-      end
-
-      unless session.history.empty?
-        remote_sh session.join
       end
     end
 

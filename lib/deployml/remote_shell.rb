@@ -5,11 +5,11 @@ module DeploYML
 
     include Shell
 
-    # Command history of the remote shell
-    attr_reader :history
-
     #
-    # Initializes a new shell session.
+    # Initializes a remote shell session.
+    #
+    # @param [Addressable::URI, String] uri
+    #   The URI of the host to connect to.
     #
     # @yield [session]
     #   If a block is given, it will be passed the new shell session.
@@ -17,10 +17,19 @@ module DeploYML
     # @yieldparam [ShellSession] session
     #   The shell session.
     #
-    def initialize(&block)
+    def initialize(uri,&block)
+      case uri
+      when Addressable::URI
+        @uri = uri
+      else
+        @uri = Addressable::URI.parse(uri.to_s)
+      end
+
       @history = []
 
       super(&block)
+
+      ssh(self.join) unless @history.empty?
     end
 
     #
@@ -74,6 +83,39 @@ module DeploYML
     #
     def join
       @history.map { |command| command.join(' ') }.join(' && ')
+    end
+
+    #
+    # Starts a SSH session with the destination server.
+    #
+    # @param [Array] args
+    #   Additional arguments to pass to SSH.
+    #
+    def ssh(*args)
+      options = []
+
+      # Add the -p option if an alternate destination port is given
+      if @uri.port
+        options += ['-p', @uri.port.to_s]
+      end
+
+      options << ssh_uri
+      options += args
+
+      return system('ssh',*options)
+    end
+
+    #
+    # Converts the URI to one compatible with SSH.
+    #
+    # @return [String]
+    #   The SSH compatible URI.
+    #
+    def ssh_uri
+      new_uri = @uri.host
+      new_uri = "#{@uri.user}@#{new_uri}" if @uri.user
+
+      return new_uri
     end
 
   end

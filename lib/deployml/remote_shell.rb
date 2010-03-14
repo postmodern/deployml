@@ -42,7 +42,7 @@ module DeploYML
     #   Additional arguments for the program.
     #
     def run(program,*args)
-      @history << [progra, *args]
+      @history << [program, *args]
     end
 
     #

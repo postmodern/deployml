@@ -177,7 +177,13 @@ module DeploYML
       LocalShell.new do |shell|
         sync(shell) if tasks.include?(:sync)
 
-        upload(shell) if tasks.include?(:upload)
+        if tasks.include?(:upload)
+          before_upload(shell)
+
+          upload(shell)
+
+          after_upload(shell)
+        end
       end
 
       session = RemoteShell.new do |shell|
@@ -274,6 +280,12 @@ module DeploYML
     end
 
     #
+    # Place-holder method.
+    #
+    def before_upload(shell)
+    end
+
+    #
     # Uploads the staged project to the destination server.
     #
     def upload(shell)
@@ -293,6 +305,12 @@ module DeploYML
       options += [File.join(@staging_repository.path,''), target]
 
       shell.run 'rsync', *options
+    end
+
+    #
+    # Place-holder method.
+    #
+    def after_upload(shell)
     end
 
     #

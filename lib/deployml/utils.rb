@@ -107,15 +107,11 @@ module DeploYML
     #
     # Runs a command remotely on the destination server.
     #
+    # @param [String] program
+    #   The name or path to the program to run.
+    #
     # @param [Array] args
     #   The arguments of the remote command.
-    #
-    # @yield [session]
-    #   If a block is given, it will be passed a shell, which is used to
-    #   build up a session.
-    #
-    # @yieldparam [ShellSession] session
-    #   The shell session.
     #
     def remote_sh(program,*args,&block)
       if dest_uri.host

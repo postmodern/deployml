@@ -99,11 +99,8 @@ module DeploYML
 
       @exclude = Set[]
 
-      case config[:exclude]
-      when Array, Set
-        @exclude += config[:exclude]
-      when String
-        @exclude << config[:exclude]
+      if config[:exclude]
+        @exclude += [*config[:exclude]]
       end
 
       @framework = nil

@@ -36,6 +36,9 @@ module DeploYML
     # The ORM used by the project
     attr_reader :orm
 
+    # The environment to run the project in
+    attr_reader :environment
+
     # Specifies whether to enable debugging.
     attr_accessor :debug
 
@@ -63,6 +66,9 @@ module DeploYML
     # @option config [Symbol] :orm
     #   The ORM used by the project.
     #
+    # @option config [Symbol] :environment
+    #   The environment to run the project in.
+    #
     # @option config [Boolean] :debug (false)
     #   Specifies whether to enable debugging.
     #
@@ -70,12 +76,35 @@ module DeploYML
     #   The `server` option Hash did not contain a `name` option.
     #
     def initialize(config={})
-      config = normalize_hash(config)
+      @scm = DEFAULT_SCM
 
-      @scm = (config[:scm] || DEFAULT_SCM).to_sym
+      @source = nil
+      @dest = nil
+      @exclude = Set[]
 
       @server_name = nil
       @server_options = {}
+
+      @framework = nil
+      @orm = nil
+
+      @environment = nil
+      @debug = false
+
+      config = normalize_hash(config)
+
+      if config[:framework]
+        @framework = config[:framework].to_sym
+
+        case @framework
+        when :rails2, :rails3
+          @environment = :production
+        end
+      end
+
+      if config[:orm]
+        @orm = config[:orm].to_sym
+      end
 
       case config[:server]
       when Symbol, String
@@ -94,27 +123,24 @@ module DeploYML
         end
       end
 
+      if config[:scm]
+        @scm = config[:scm].to_sym
+      end
+
       @source = config[:source]
       @dest = config[:dest]
-
-      @exclude = Set[]
 
       if config[:exclude]
         @exclude += [*config[:exclude]]
       end
 
-      @framework = nil
-      @orm = nil
-
-      if config[:framework]
-        @framework = config[:framework].to_sym
+      if config[:environment]
+        @environment = config[:environment].to_sym
       end
 
-      if config[:orm]
-        @orm = config[:orm].to_sym
+      if config[:debug]
+        @debug = config[:debug]
       end
-
-      @debug = (config[:debug] || false)
     end
 
     protected

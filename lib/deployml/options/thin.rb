@@ -58,7 +58,7 @@ module DeploYML
       long_option :flag => '--version'
 
       #
-      # Initialize the thin options.
+      # Initialize the Thin options.
       #
       # @param [Hash] options
       #   The given options.

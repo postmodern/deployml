@@ -28,7 +28,7 @@ module DeploYML
     attr_reader :dest
 
     # File-path pattern or list of patterns to exclude from deployment.
-    attr_accessor :exclude
+    attr_reader :exclude
 
     # The framework used by the project
     attr_reader :framework

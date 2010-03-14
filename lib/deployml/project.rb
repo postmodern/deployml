@@ -234,9 +234,7 @@ module DeploYML
       LocalShell.new do |shell|
         sync(shell) if tasks.include?(:sync)
 
-        if tasks.include?(:upload)
-          upload(shell)
-        end
+        upload(shell) if tasks.include?(:upload)
       end
 
       RemoteShell.new(dest_uri) do |shell|

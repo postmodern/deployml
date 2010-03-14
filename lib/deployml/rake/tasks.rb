@@ -9,12 +9,12 @@ namespace :deploy do
 
   desc 'Invokes a command on the deploy server'
   task :invoke, [:command] => :project do |t,args|
-    @project.remote_sh args.command
+    @project.invoke args.command
   end
 
   desc 'Executes a rake task on the deploy server'
   task :task, [:name] => :project do |t,args|
-    @project.remote_task args.name
+    @project.rake args.name
   end
 
   desc 'Starts a SSH session with the deploy server'

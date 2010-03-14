@@ -31,6 +31,21 @@ doesn not require Ruby to be installed on the server.
   * Rails3 (Bundler / ActiveRecord / DataMapper)
 * Supports any Operating System that supports Ruby and SSH.
 
+## Rake Tasks
+
+* deploy:config
+* deploy:install
+* deploy:invoke[command]
+* deploy:migrate
+* deploy:push
+* deploy:restart
+* deploy:ssh
+* deploy:start
+* deploy:stop
+* deploy:sync
+* deploy:task[name]
+* deploy:upload
+
 ## Examples
 
 Specifying `source` and `dest` URIs as Strings:

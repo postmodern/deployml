@@ -1,11 +1,15 @@
+require 'deployml/shell'
+
 module DeploYML
-  class ShellSession
+  class RemoteShell
+
+    include Shell
+
+    # Command history of the remote shell
+    attr_reader :history
 
     #
     # Initializes a new shell session.
-    #
-    # @param [Array] commands
-    #   Initial commands for the session.
     #
     # @yield [session]
     #   If a block is given, it will be passed the new shell session.
@@ -13,10 +17,10 @@ module DeploYML
     # @yieldparam [ShellSession] session
     #   The shell session.
     #
-    def initialize(*commands,&block)
-      @commands = [*commands]
+    def initialize(&block)
+      @history = []
 
-      block.call(self) if block
+      super(&block)
     end
 
     #
@@ -29,7 +33,7 @@ module DeploYML
     #   Additional arguments for the program.
     #
     def run(program,*args)
-      @commands << [progra, *args]
+      @history << [progra, *args]
     end
 
     #
@@ -39,26 +43,7 @@ module DeploYML
     #   The message to echo.
     #
     def each(message)
-      run('echo',message)
-    end
-
-    #
-    # Enqueues a Rake task to be ran in the session.
-    #
-    # @param [Symbol, String] task
-    #   Name of the Rake task to run.
-    #
-    # @param [Array<String>] args
-    #   Additional arguments for the Rake task.
-    #
-    def rake(task,*args)
-      name = task.to_s
-
-      unless args.empty?
-        name << ('[' + args.join(',') + ']')
-      end
-
-      run('rake',name)
+      run 'echo', message
     end
 
     #
@@ -72,13 +57,23 @@ module DeploYML
     #   the block has returned.
     #
     def cd(path,&block)
-      @commands << ['cd', path]
+      @history << ['cd', path]
 
       if block
         block.call() if block
 
-        @commands << ['cd', '-']
+        @history << ['cd', '-']
       end
+    end
+
+    #
+    # Joins the command history together with ` && `, to form a single command.
+    #
+    # @return [String]
+    #   A single command string.
+    #
+    def join
+      @history.map { |command| command.join(' ') }.join(' && ')
     end
 
   end

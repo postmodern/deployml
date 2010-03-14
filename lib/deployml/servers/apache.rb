@@ -3,16 +3,18 @@ require 'deployml/exceptions/invalid_config'
 module DeploYML
   module Servers
     module Apache
-      def start!
-        remote_sh 'apachectl', 'start'
+      protected
+
+      def start(shell)
+        shell.run 'apachectl', 'start'
       end
 
-      def restart!
-        remote_sh 'apachectl', 'restart'
+      def restart(shell)
+        shell.run 'apachectl', 'restart'
       end
 
-      def stop!
-        remote_sh 'apachectl', 'stop'
+      def stop(shell)
+        shell.run 'apachectl', 'stop'
       end
     end
   end

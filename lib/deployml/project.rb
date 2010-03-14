@@ -3,6 +3,8 @@ require 'deployml/exceptions/invalid_config'
 require 'deployml/exceptions/missing_option'
 require 'deployml/exceptions/unknown_server'
 require 'deployml/configuration'
+require 'deployml/local_shell'
+require 'deployml/remote_shell'
 require 'deployml/servers'
 require 'deployml/orms'
 require 'deployml/utils'
@@ -115,93 +117,87 @@ module DeploYML
     end
 
     #
-    # Downloads the projects into the staging directory.
-    #
-    def download!
-      @source_repository.pull(@staging_repository.path)
-    end
-
-    #
-    # Updates the project staging directory.
-    #
-    def update!
-      @staging_repository.update(@source_repository.uri)
-    end
-
-    #
     # Downloads or updates the staging directory.
     #
     def sync!
-      unless File.directory?(@staging_repository.path)
-        download!
-      else
-        update!
-      end
+      deploy! [:sync]
     end
 
     #
     # Uploads the local copy of the project to the destination URI.
     #
     def upload!
-      options = rsync_options('-v', '-a', '--delete-before')
-      target = rsync_uri(@dest_repository.uri)
-
-      # add an --exclude option for the SCM directory within
-      # the staging repository
-      if @staging_repository.scm_dir
-        options << "--exclude=#{@staging_repository.scm_dir}"
-      end
-
-      # add --exclude options
-      config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
-
-      # append the source and destination arguments
-      options += [File.join(@staging_repository.path,''), target]
-
-      sh('rsync',*options)
+      deploy! [:upload]
     end
 
     #
-    # Place-holder method for {#migrate!}.
+    # Migrates the database used by the project.
     #
     def migrate!
+      deploy! [:migrate]
     end
 
     #
-    # Place-holder method for {#config!}.
+    # Configures the Web server to be ran on the destination server.
     #
     def config!
+      deploy! [:config]
     end
 
     #
-    # Place-holder method for {#start!}.
+    # Starts the Web server for the project.
     #
     def start!
+      deploy! [:start]
     end
 
     #
-    # Place-holder method for {#stop!}.
+    # Stops the Web server for the project.
     #
     def stop!
+      deploy! [:stop]
     end
 
     #
-    # Place-holder method for {#restart!}.
+    # Restarts the Web server for the project.
     #
     def restart!
+      deploy! [:restart]
     end
+
 
     #
     # Deploys the project.
     #
-    def deploy!
-      sync!
+    # @param [Array<Symbol>] tasks
+    #   The tasks to run during the deployment.
+    #
+    def deploy!(tasks=[:sync, :upload, :migrate, :restart])
+      LocalShell.new do |shell|
+        sync(shell) if tasks.include?(:sync)
 
-      upload!
+        upload(shell) if tasks.include?(:upload)
+      end
 
-      migrate!
+      session = RemoteShell.new do |shell|
+        # orm tasks
+        migrate(shell) if tasks.include?(:migrate)
 
-      restart!
+        # server tasks
+        if tasks.include?(:config)
+          config(shell)
+        elsif tasks.include?(:start)
+          start(shell)
+        elsif tasks.include?(:stop)
+          stop(shell)
+        elsif tasks.include?(:restart)
+          restart(shell)
+        end
+      end
+
+      unless session.history.empty?
+        remote_sh session.join
+      end
     end
 
     protected
@@ -263,6 +259,69 @@ module DeploYML
 
         initialize_server() if self.respond_to?(:initialize_server)
       end
+    end
+
+    #
+    # Synces the project from the source server into the staging directory.
+    #
+    def sync(shell)
+      unless File.directory?(@staging_repository.path)
+        @source_repository.pull(@staging_repository.path)
+      else
+        @staging_repository.update(@source_repository.uri)
+      end
+    end
+
+    #
+    # Uploads the staged project to the destination server.
+    #
+    def upload(shell)
+      options = rsync_options('-v', '-a', '--delete-before')
+      target = rsync_uri(@dest_repository.uri)
+
+      # add an --exclude option for the SCM directory within
+      # the staging repository
+      if @staging_repository.scm_dir
+        options << "--exclude=#{@staging_repository.scm_dir}"
+      end
+
+      # add --exclude options
+      config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
+
+      # append the source and destination arguments
+      options += [File.join(@staging_repository.path,''), target]
+
+      shell.run 'rsync', *options
+    end
+
+    #
+    # Place-holder method.
+    #
+    def migrate(shell)
+    end
+
+    #
+    # Place-holder method.
+    #
+    def config(shell)
+    end
+
+    #
+    # Place-holder method.
+    #
+    def start(shell)
+    end
+
+    #
+    # Place-holder method.
+    #
+    def stop(shell)
+    end
+
+    #
+    # Place-holder method.
+    #
+    def restart(shell)
     end
 
   end

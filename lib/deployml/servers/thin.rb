@@ -4,38 +4,38 @@ require 'deployml/options/thin'
 module DeploYML
   module Servers
     module Thin
+      protected
+
       def initialize_server
         @thin = Options::Thin.new(config.server_options)
       end
 
-      def config!
+      def config(shell)
         unless @thin.config
           raise(InvalidConfig,"No :config option specified under :thin",caller)
         end
 
         options = ['-c', dest_uri.path, *(@thin.arguments)]
 
-        remote_sh 'thin', 'config', *options
+        shell.run 'thin', 'config', *options
       end
 
-      def start!
-        remote_thin 'start'
+      def start(shell)
+        thin shell, 'start'
       end
 
-      def stop!
-        remote_thin 'stop'
+      def stop(shell)
+        thin shell, 'stop'
       end
 
-      def restart!
-        remote_thin 'restart'
+      def restart(shell)
+        thin shell, 'restart'
       end
 
-      protected
-
-      def remote_thin(*args)
+      def thin(shell,*args)
         options = args + ['-C', @thin.config, '-s', @thin.servers]
 
-        remote_sh 'thin', *options
+        shell.run 'thin', *options
       end
     end
   end

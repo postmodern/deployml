@@ -29,9 +29,7 @@ module DeploYML
 
       super(&block)
 
-      unless @history.empty?
-        ssh("cd #{@uri.path} && #{self.join}")
-      end
+      replay if block
     end
 
     #
@@ -78,13 +76,27 @@ module DeploYML
     end
 
     #
-    # Joins the command history together with ` && `, to form a single command.
+    # Joins the command history together with ` && `, to form a
+    # single command.
     #
     # @return [String]
     #   A single command string.
     #
     def join
       @history.map { |command| command.join(' ') }.join(' && ')
+    end
+
+    #
+    # Converts the URI to one compatible with SSH.
+    #
+    # @return [String]
+    #   The SSH compatible URI.
+    #
+    def ssh_uri
+      new_uri = @uri.host
+      new_uri = "#{@uri.user}@#{new_uri}" if @uri.user
+
+      return new_uri
     end
 
     #
@@ -108,16 +120,12 @@ module DeploYML
     end
 
     #
-    # Converts the URI to one compatible with SSH.
+    # Replays the command history on the remote server.
     #
-    # @return [String]
-    #   The SSH compatible URI.
-    #
-    def ssh_uri
-      new_uri = @uri.host
-      new_uri = "#{@uri.user}@#{new_uri}" if @uri.user
-
-      return new_uri
+    def replay
+      unless @history.empty?
+        ssh("cd #{@uri.path} && #{self.join}")
+      end
     end
 
   end

@@ -26,6 +26,7 @@ module DeploYML
     # Mapping of possible 'server' names to their mixins.
     SERVERS = {
       :apache => Servers::Apache,
+      :mongrel => Servers::Mongrel,
       :thin => Servers::Thin
     }
 

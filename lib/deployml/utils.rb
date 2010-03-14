@@ -1,5 +1,3 @@
-require 'deployml/shell_session'
-
 module DeploYML
   module Utils
     #
@@ -119,37 +117,16 @@ module DeploYML
     # @yieldparam [ShellSession] session
     #   The shell session.
     #
-    def remote_sh(*args,&block)
+    def remote_sh(program,*args,&block)
       if dest_uri.host
-        session = ShellSession.new() do |shell|
-          shell.cd(dest_uri.path) if dest_uri.path
-
-          shell.run(*args) unless args.empty?
-          block.call(shell) if block
-        end
-
-        command = session.commands.map { |*args|
-          args.join(' ')
-        }.join(' && ')
+        command = [program, *args].join(' ')
+        command = "cd #{dest_uri.path} && #{command}" if dest_uri.path
 
         debug "[#{dest_uri.host}] #{command}"
         return ssh(command)
       else
-        return sh(*args)
+        return sh(program,*args)
       end
-    end
-
-    #
-    # Executes a Rake task on the deployment server.
-    #
-    # @param [String, Symbol] name
-    #   The rake task to run.
-    #
-    # @param [Array] args
-    #   Additional arguments to pass to the rake task.
-    #
-    def remote_task(name,*args)
-      remote_sh { |shell| shell.rake(name,*args) }
     end
 
     #

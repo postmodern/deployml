@@ -8,14 +8,11 @@ require 'deployml/local_shell'
 require 'deployml/remote_shell'
 require 'deployml/servers'
 require 'deployml/frameworks'
-require 'deployml/utils'
 
 require 'pullr'
 
 module DeploYML
   class Project
-
-    include Utils
 
     # The configuration file name.
     CONFIG_FILE = 'deploy.yml'
@@ -261,6 +258,38 @@ module DeploYML
     protected
 
     #
+    # Converts a given URI to one compatible with `rsync`.
+    #
+    # @return [String]
+    #   The `rsync` compatible URI.
+    #
+    def rsync_uri
+      new_uri = dest_uri.host
+
+      new_uri = "#{dest_uri.user}@#{new_uri}" if dest_uri.user
+      new_uri = "#{new_uri}:#{dest_uri.path}" unless dest_uri.path.empty?
+
+      return new_uri
+    end
+
+    #
+    # Generates options for `rsync`.
+    #
+    # @param [Array] opts
+    #   Specific options to pass to `rsync`.
+    #
+    # @return [Array]
+    #   Options to pass to `rsync`.
+    #
+    def rsync_options(*opts)
+      options = []
+
+      options << '-v' if config.debug
+
+      return options + opts
+    end
+
+    #
     # Loads the project configuration.
     #
     # @raise [InvalidConfig]
@@ -341,7 +370,6 @@ module DeploYML
     #
     def upload(shell)
       options = rsync_options('-v', '-a', '--delete-before')
-      target = rsync_uri(@dest_repository.uri)
 
       # add an --exclude option for the SCM directory within
       # the staging repository
@@ -352,8 +380,11 @@ module DeploYML
       # add --exclude options
       config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
 
+      src = File.join(@staging_repository.path,'')
+      dest = rsync_uri
+
       # append the source and destination arguments
-      options += [File.join(@staging_repository.path,''), target]
+      options += [src, dest]
 
       shell.run 'rsync', *options
     end

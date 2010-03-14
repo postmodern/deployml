@@ -8,6 +8,7 @@ module DeploYML
 
       def initialize_server
         @thin = Options::Thin.new(config.server_options)
+        @thin.environment ||= config.environment
       end
 
       def thin(shell,*args)

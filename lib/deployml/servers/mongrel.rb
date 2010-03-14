@@ -8,6 +8,7 @@ module DeploYML
 
       def initialize_server
         @mongrel = Options::Mongrel.new(config.server_options)
+        @mongrel.environment ||= config.environment
       end
 
       def mongrel_cluster(shell,*args)

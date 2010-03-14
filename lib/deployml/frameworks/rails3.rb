@@ -3,7 +3,7 @@ module DeploYML
     module Rails3
       protected
 
-      def after_upload(shell)
+      def install(shell)
         shell.run 'bundle', 'install'
       end
 

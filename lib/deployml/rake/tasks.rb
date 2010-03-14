@@ -42,6 +42,15 @@ namespace :deploy do
     puts "Project uploaded."
   end
 
+  desc 'Installs the project on the deploy server'
+  task :install => :project do
+    puts "Install project at #{@project.dest_uri} ..."
+
+    @project.install!
+
+    puts "Project installed."
+  end
+
   desc 'Migrates the database for the project'
   task :migrate => :project do
     puts "Migrating database for #{@project.dest_uri} ..."

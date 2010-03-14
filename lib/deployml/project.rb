@@ -180,6 +180,13 @@ module DeploYML
     end
 
     #
+    # Installs the project on the destination server.
+    #
+    def install!
+      deploy! [:install]
+    end
+
+    #
     # Migrates the database used by the project.
     #
     def migrate!
@@ -223,21 +230,19 @@ module DeploYML
     #
     # @return [true]
     #
-    def deploy!(tasks=[:sync, :upload, :migrate, :restart])
+    def deploy!(tasks=[:sync, :upload, :install, :migrate, :restart])
       LocalShell.new do |shell|
         sync(shell) if tasks.include?(:sync)
 
         if tasks.include?(:upload)
-          before_upload(shell)
-
           upload(shell)
-
-          after_upload(shell)
         end
       end
 
       RemoteShell.new(dest_uri) do |shell|
-        # orm tasks
+        # framework tasks
+        install(shell) if tasks.include?(:install)
+
         migrate(shell) if tasks.include?(:migrate)
 
         # server tasks
@@ -360,12 +365,6 @@ module DeploYML
     end
 
     #
-    # Place-holder method.
-    #
-    def before_upload(shell)
-    end
-
-    #
     # Uploads the staged project to the destination server.
     #
     def upload(shell)
@@ -392,7 +391,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    def after_upload(shell)
+    def install(shell)
     end
 
     #

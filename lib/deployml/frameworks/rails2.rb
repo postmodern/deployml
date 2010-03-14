@@ -4,7 +4,7 @@ module DeploYML
       protected
 
       def migrate(shell)
-        shell.rake 'db:migrate'
+        shell.run 'rake', 'db:migrate', "ENV=#{config.environment}"
       end
     end
   end

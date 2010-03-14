@@ -8,12 +8,14 @@ module DeploYML
       end
 
       def migrate(shell)
-        case config.orm
-        when :datamapper
-          shell.rake 'db:autoupgrade'
-        else
-          shell.rake 'db:migrate'
-        end
+        task = case config.orm
+               when :datamapper
+                 'db:autoupgrade'
+               else
+                 'db:migrate'
+               end
+
+        shell.run 'rake', task, "ENV=#{config.environment}"
       end
     end
   end

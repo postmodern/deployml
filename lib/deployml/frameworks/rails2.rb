@@ -1,11 +1,8 @@
 module DeploYML
-  module ORMS
-    module ActiveRecord
+  module Frameworks
+    module Rails2
       protected
 
-      #
-      # Migrates the database on the deploy server.
-      #
       def migrate(shell)
         shell.rake 'db:migrate'
       end

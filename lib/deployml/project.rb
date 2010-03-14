@@ -2,11 +2,12 @@ require 'deployml/exceptions/config_not_found'
 require 'deployml/exceptions/invalid_config'
 require 'deployml/exceptions/missing_option'
 require 'deployml/exceptions/unknown_server'
+require 'deployml/exceptions/unknown_framework'
 require 'deployml/configuration'
 require 'deployml/local_shell'
 require 'deployml/remote_shell'
 require 'deployml/servers'
-require 'deployml/orms'
+require 'deployml/frameworks'
 require 'deployml/utils'
 
 require 'pullr'
@@ -31,10 +32,10 @@ module DeploYML
       :thin => Servers::Thin
     }
 
-    # Mapping of possible 'orm' names to their mixins.
-    ORMS = {
-      :active_record => ORMS::ActiveRecord,
-      :data_mapper => ORMS::DataMapper
+    # Mapping of possible 'framework' names to their mixins.
+    FRAMEWORKS = {
+      :rails2 => Frameworks::Rails2,
+      :rails3 => Frameworks::Rails3
     }
 
     # The root directory of the project
@@ -91,7 +92,7 @@ module DeploYML
         :scm => :rsync
       )
 
-      load_orm!
+      load_framework!
 
       load_server!
     end
@@ -230,17 +231,17 @@ module DeploYML
     end
 
     #
-    # Loads the ORM configuration.
+    # Loads the framework configuration.
     #
-    def load_orm!
+    def load_framework!
       if @config.orm
-        unless ORMS.has_key?(@config.orm)
-          raise(UnknownORM,"Unknown ORM #{@config.orm}",caller)
+        unless FRAMEWORKS.has_key?(@config.framework)
+          raise(UnknownFramework,"Unknown framework #{@config.framework}",caller)
         end
 
-        extend ORMS[@config.orm]
+        extend FRAMEWORKS[@config.framework]
 
-        initialize_orm() if self.respond_to?(:initialize_orm)
+        initialize_framework() if self.respond_to?(:initialize_framework)
       end
     end
 

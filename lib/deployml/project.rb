@@ -118,6 +118,57 @@ module DeploYML
     end
 
     #
+    # Creates a remote shell with the destination server.
+    #
+    # @yield [session]
+    #   If a block is given, it will be passed the new remote shell session.
+    #
+    # @yieldparam [ShellSession] session
+    #   The remote shell session.
+    #
+    # @return [RemoteShell]
+    #   The remote shell session.
+    #
+    def remote_shell(&block)
+      RemoteShell.new(dest_uri,&block)
+    end
+
+    #
+    # Invokes a command on the destination server, in the destination
+    # directory.
+    #
+    # @return [true]
+    #
+    def invoke(command)
+      remote_shell { |shell| shell.run command }
+      return true
+    end
+
+    #
+    # Executes a Rake task on the destination server, in the destination
+    # directory.
+    #
+    # @return [true]
+    #
+    def rake(task,*args)
+      remote_shell { |shell| shell.rake task, *args }
+      return true
+    end
+
+    #
+    # Starts an SSH session with the destination server.
+    #
+    # @param [Array] args
+    #   Additional arguments to pass to SSH.
+    #
+    # @return [true]
+    #
+    def ssh(*args)
+      RemoteShell.new(dest_uri).ssh(*args)
+      return true
+    end
+
+    #
     # Downloads or updates the staging directory.
     #
     def sync!
@@ -173,6 +224,8 @@ module DeploYML
     # @param [Array<Symbol>] tasks
     #   The tasks to run during the deployment.
     #
+    # @return [true]
+    #
     def deploy!(tasks=[:sync, :upload, :migrate, :restart])
       LocalShell.new do |shell|
         sync(shell) if tasks.include?(:sync)
@@ -201,6 +254,8 @@ module DeploYML
           restart(shell)
         end
       end
+
+      return true
     end
 
     protected

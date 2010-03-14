@@ -12,10 +12,10 @@ module DeploYML
     #   The URI of the host to connect to.
     #
     # @yield [session]
-    #   If a block is given, it will be passed the new shell session.
+    #   If a block is given, it will be passed the new remote shell session.
     #
     # @yieldparam [ShellSession] session
-    #   The shell session.
+    #   The remote shell session.
     #
     def initialize(uri,&block)
       case uri
@@ -29,7 +29,9 @@ module DeploYML
 
       super(&block)
 
-      ssh(self.join) unless @history.empty?
+      unless @history.empty?
+        ssh("cd #{@uri.path} && #{self.join}")
+      end
     end
 
     #

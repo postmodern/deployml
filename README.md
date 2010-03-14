@@ -24,10 +24,11 @@ doesn not require Ruby to be installed on the server.
   * Rsync
 * Supports a few common Web Servers:
   * Apache
+  * Mongrel
   * Thin
-* Supports a few Ruby ORMs:
-  * ActiveRecord
-  * DataMapper
+* Supports a few Web Application frameworks:
+  * Rails2 (ActiveRecord)
+  * Rails3 (Bundler / ActiveRecord / DataMapper)
 * Supports any Operating System that supports Ruby and SSH.
 
 ## Examples

@@ -242,13 +242,13 @@ module DeploYML
 
         # server tasks
         if tasks.include?(:config)
-          config(shell)
+          server_config(shell)
         elsif tasks.include?(:start)
-          start(shell)
+          server_start(shell)
         elsif tasks.include?(:stop)
-          stop(shell)
+          server_stop(shell)
         elsif tasks.include?(:restart)
-          restart(shell)
+          server_restart(shell)
         end
       end
 
@@ -404,25 +404,25 @@ module DeploYML
     #
     # Place-holder method.
     #
-    def config(shell)
+    def server_config(shell)
     end
 
     #
     # Place-holder method.
     #
-    def start(shell)
+    def server_start(shell)
     end
 
     #
     # Place-holder method.
     #
-    def stop(shell)
+    def server_stop(shell)
     end
 
     #
     # Place-holder method.
     #
-    def restart(shell)
+    def server_restart(shell)
     end
 
   end

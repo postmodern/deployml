@@ -5,15 +5,15 @@ module DeploYML
     module Apache
       protected
 
-      def start(shell)
+      def server_start(shell)
         shell.run 'apachectl', 'start'
       end
 
-      def restart(shell)
+      def server_restart(shell)
         shell.run 'apachectl', 'restart'
       end
 
-      def stop(shell)
+      def server_stop(shell)
         shell.run 'apachectl', 'stop'
       end
     end

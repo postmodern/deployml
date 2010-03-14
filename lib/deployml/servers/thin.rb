@@ -10,7 +10,13 @@ module DeploYML
         @thin = Options::Thin.new(config.server_options)
       end
 
-      def config(shell)
+      def thin(shell,*args)
+        options = args + ['-C', @thin.config, '-s', @thin.servers]
+
+        shell.run 'thin', *options
+      end
+
+      def server_config(shell)
         unless @thin.config
           raise(InvalidConfig,"No :config option specified under :thin",caller)
         end
@@ -20,22 +26,16 @@ module DeploYML
         shell.run 'thin', 'config', *options
       end
 
-      def start(shell)
+      def server_start(shell)
         thin shell, 'start'
       end
 
-      def stop(shell)
+      def server_stop(shell)
         thin shell, 'stop'
       end
 
-      def restart(shell)
+      def server_restart(shell)
         thin shell, 'restart'
-      end
-
-      def thin(shell,*args)
-        options = args + ['-C', @thin.config, '-s', @thin.servers]
-
-        shell.run 'thin', *options
       end
     end
   end

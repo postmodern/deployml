@@ -99,6 +99,10 @@ module DeploYML
         case @framework
         when :rails2, :rails3
           @environment = :production
+          @exclude += [
+            File.join('log','*.log'),
+            File.join('tmp','pids','*.pid')
+          ]
         end
       end
 

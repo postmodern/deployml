@@ -103,6 +103,10 @@ module DeploYML
             File.join('log','*.log'),
             File.join('tmp','pids','*.pid')
           ]
+
+          if @framework == :rails3
+            @exclude << '.bundle'
+          end
         end
       end
 

@@ -7,6 +7,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = 'deployml'
     gem.version = DeploYML::VERSION
+    gem.license = 'MIT'
     gem.summary = %Q{A deployment solution that works.}
     gem.description = %Q{DeploYML is a simple deployment solution that uses a single YAML file and does not require Ruby to be installed on the server.}
     gem.email = 'postmodern.mod3@gmail.com'

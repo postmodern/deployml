@@ -15,7 +15,8 @@ doesn not require Ruby to be installed on the server.
 * Does not require anything else to be installed on the servers.
 * Maintains separation between the production and development servers,
   for security reasons.
-* Provides convenient Rake tasks for your project.
+* Provides convenient Rake and Thor tasks for your project.
+* Provides a simple command-line util using Thor.
 * Can deploy Ruby web applications or static sites.
 * Supports many common SCMs:
   * SubVersion (SVN)
@@ -35,16 +36,34 @@ doesn not require Ruby to be installed on the server.
 
 * deploy:config
 * deploy:install
-* deploy:invoke[command]
+* deploy:deploy
+* deploy:exec[command]
 * deploy:migrate
 * deploy:push
+* deploy:redeploy
 * deploy:restart
 * deploy:ssh
 * deploy:start
 * deploy:stop
-* deploy:sync
+* deploy:pull
+* deploy:push
 * deploy:task[name]
-* deploy:upload
+
+## Thor Tasks
+
+* deploy:config
+* deploy:deploy
+* deploy:exec
+* deploy:install
+* deploy:migrate
+* deploy:pull
+* deploy:push
+* deploy:rake
+* deploy:redeploy
+* deploy:restart
+* deploy:ssh
+* deploy:start
+* deploy:stop
 
 ## Examples
 
@@ -91,6 +110,10 @@ Execute a command on the deploy server:
     $ rake deploy:invoke['whoami']
     Successfully loaded deploy.yml
     deploy
+
+## Synopsis
+
+    $ deployml help
 
 ## Install
 

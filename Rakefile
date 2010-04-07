@@ -13,10 +13,10 @@ begin
     gem.email = 'postmodern.mod3@gmail.com'
     gem.homepage = 'http://github.com/postmodern/deployr'
     gem.authors = ['Postmodern']
-    gem.add_dependency 'rprogram', '>= 0.1.8'
-    gem.add_dependency 'pullr', '>= 0.1.1'
-    gem.add_development_dependency 'rspec', '>= 1.3.0'
-    gem.add_development_dependency 'yard', '>= 0.5.3'
+    gem.add_dependency 'rprogram', '~> 0.1.8'
+    gem.add_dependency 'pullr', '~> 0.1.1'
+    gem.add_development_dependency 'rspec', '~> 1.3.0'
+    gem.add_development_dependency 'yard', '~> 0.5.3'
     gem.has_rdoc = 'yard'
   end
 rescue LoadError

@@ -170,56 +170,56 @@ module DeploYML
     # Downloads or updates the staging directory.
     #
     def pull!
-      deploy! [:pull]
+      run :pull
     end
 
     #
     # Uploads the local copy of the project to the destination URI.
     #
     def push!
-      deploy! [:push]
+      run :push
     end
 
     #
     # Installs the project on the destination server.
     #
     def install!
-      deploy! [:install]
+      run :install
     end
 
     #
     # Migrates the database used by the project.
     #
     def migrate!
-      deploy! [:migrate]
+      run :migrate
     end
 
     #
     # Configures the Web server to be ran on the destination server.
     #
     def config!
-      deploy! [:config]
+      run :config
     end
 
     #
     # Starts the Web server for the project.
     #
     def start!
-      deploy! [:start]
+      run :start
     end
 
     #
     # Stops the Web server for the project.
     #
     def stop!
-      deploy! [:stop]
+      run :stop
     end
 
     #
     # Restarts the Web server for the project.
     #
     def restart!
-      deploy! [:restart]
+      run :restart
     end
 
 
@@ -231,7 +231,7 @@ module DeploYML
     #
     # @return [true]
     #
-    def deploy!(tasks=[:pull, :push, :install, :migrate, :restart])
+    def invoke(*tasks)
       LocalShell.new do |shell|
         pull(shell) if tasks.include?(:pull)
 
@@ -257,6 +257,20 @@ module DeploYML
       end
 
       return true
+    end
+
+    #
+    # Deploys a new project.
+    #
+    def deploy!
+      invoke :pull, :push, :install, :migrate, :config, :start
+    end
+
+    #
+    # Redeploys a project.
+    #
+    def redeploy!
+      invoke :pull, :push, :install, :migrate, :restart
     end
 
     protected

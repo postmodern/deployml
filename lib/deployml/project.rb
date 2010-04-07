@@ -176,8 +176,8 @@ module DeploYML
     #
     # Uploads the local copy of the project to the destination URI.
     #
-    def upload!
-      deploy! [:upload]
+    def push!
+      deploy! [:push]
     end
 
     #
@@ -231,11 +231,11 @@ module DeploYML
     #
     # @return [true]
     #
-    def deploy!(tasks=[:pull, :upload, :install, :migrate, :restart])
+    def deploy!(tasks=[:pull, :push, :install, :migrate, :restart])
       LocalShell.new do |shell|
         pull(shell) if tasks.include?(:pull)
 
-        upload(shell) if tasks.include?(:upload)
+        push(shell) if tasks.include?(:push)
       end
 
       RemoteShell.new(dest_uri) do |shell|
@@ -366,7 +366,7 @@ module DeploYML
     #
     # Uploads the staged project to the destination server.
     #
-    def upload(shell)
+    def push(shell)
       options = rsync_options('-v', '-a', '--delete-before')
 
       # add an --exclude option for the SCM directory within

@@ -105,13 +105,29 @@ Specifying a `server` with options:
 	socket: /var/run/thin.sock
 	rackup: true
 
+## Synopsis
+
+Deploy a new project:
+
+    $ deployml deploy
+
+Redeploy a project:
+
+    $ deployml redeploy
+
+Run a rake task on the deploy server:
+
+    $ deployml rake 'db:automigrate'
+
 Execute a command on the deploy server:
 
-    $ rake deploy:invoke['whoami']
-    Successfully loaded deploy.yml
-    deploy
+    $ deployml exec 'whoami'
 
-## Synopsis
+SSH into the deploy server:
+
+    $ deployml ssh
+
+List available tasks:
 
     $ deployml help
 

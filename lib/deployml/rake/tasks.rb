@@ -8,8 +8,8 @@ namespace :deploy do
   end
 
   desc 'Invokes a command on the deploy server'
-  task :invoke, [:command] => :project do |t,args|
-    @project.invoke args.command
+  task :exec, [:command] => :project do |t,args|
+    @project.exec args.command
   end
 
   desc 'Executes a rake task on the deploy server'
@@ -24,22 +24,22 @@ namespace :deploy do
     @project.ssh
   end
 
-  desc 'Synches the project'
-  task :sync => :project do
-    puts "Syncing project from #{@project.source_uri} ..."
+  desc 'Pulls the project'
+  task :pull => :project do
+    puts "Pulling project from #{@project.source_uri} ..."
 
-    @project.sync!
+    @project.pull!
 
-    puts "Project synched."
+    puts "Project pulled."
   end
 
-  desc 'Uploads the project'
-  task :upload => :project do
-    puts "Uploading project to #{@project.dest_uri} ..."
+  desc 'Pushes the project'
+  task :push => :project do
+    puts "Pushing project to #{@project.dest_uri} ..."
 
-    @project.upload!
+    @project.push!
 
-    puts "Project uploaded."
+    puts "Project pushed."
   end
 
   desc 'Installs the project on the deploy server'
@@ -96,12 +96,21 @@ namespace :deploy do
     puts "Server restarted."
   end
 
-  desc 'Deploys the project'
-  task :push => :project do
+  desc 'Deploys a new project'
+  task :deploy => :project do
     puts "Deploying project to #{@project.dest_uri} ..."
 
     @project.deploy!
 
     puts "Project deployed."
+  end
+
+  desc 'Deploys a new project'
+  task :redeploy => :project do
+    puts "Redeploying project to #{@project.dest_uri} ..."
+
+    @project.redeploy!
+
+    puts "Project redeployed."
   end
 end

@@ -169,8 +169,8 @@ module DeploYML
     #
     # Downloads or updates the staging directory.
     #
-    def sync!
-      deploy! [:sync]
+    def pull!
+      deploy! [:pull]
     end
 
     #
@@ -231,9 +231,9 @@ module DeploYML
     #
     # @return [true]
     #
-    def deploy!(tasks=[:sync, :upload, :install, :migrate, :restart])
+    def deploy!(tasks=[:pull, :upload, :install, :migrate, :restart])
       LocalShell.new do |shell|
-        sync(shell) if tasks.include?(:sync)
+        pull(shell) if tasks.include?(:pull)
 
         upload(shell) if tasks.include?(:upload)
       end
@@ -355,7 +355,7 @@ module DeploYML
     #
     # Synces the project from the source server into the staging directory.
     #
-    def sync(shell)
+    def pull(shell)
       unless File.directory?(@staging_repository.path)
         @source_repository.pull(@staging_repository.path)
       else

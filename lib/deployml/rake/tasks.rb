@@ -3,8 +3,6 @@ require 'deployml/project'
 namespace :deploy do
   task :project do
     @project = DeploYML::Project.new(Dir.pwd)
-
-    puts "Successfully loaded #{DeploYML::Project::CONFIG_FILE}"
   end
 
   desc 'Invokes a command on the deploy server'
@@ -19,8 +17,6 @@ namespace :deploy do
 
   desc 'Starts a SSH session with the deploy server'
   task :ssh => :project do
-    puts "Starting an SSH session with #{@project.dest_uri.host} ..."
-
     @project.ssh
   end
 

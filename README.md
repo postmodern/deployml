@@ -115,6 +115,12 @@ Execute a command on the deploy server:
 
     $ deployml help
 
+## Requirements
+
+* [rprogram](http://github.com/postmodern/rprogram) ~> 0.1.8
+* [pullr](http://github.com/postmodern/pullr) ~> 0.1.1
+* [thor](http://github.com/wycats/thor) ~> 0.13.3
+
 ## Install
 
     $ sudo gem install deployml

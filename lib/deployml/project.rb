@@ -222,7 +222,6 @@ module DeploYML
       invoke :restart
     end
 
-
     #
     # Deploys the project.
     #
@@ -230,6 +229,8 @@ module DeploYML
     #   The tasks to run during the deployment.
     #
     # @return [true]
+    #
+    # @since 0.2.0
     #
     def invoke(*tasks)
       LocalShell.new do |shell|
@@ -262,12 +263,16 @@ module DeploYML
     #
     # Deploys a new project.
     #
+    # @since 0.2.0
+    #
     def deploy!
       invoke :pull, :push, :install, :migrate, :config, :start
     end
 
     #
     # Redeploys a project.
+    #
+    # @since 0.2.0
     #
     def redeploy!
       invoke :pull, :push, :install, :migrate, :restart

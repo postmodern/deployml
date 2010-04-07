@@ -170,56 +170,56 @@ module DeploYML
     # Downloads or updates the staging directory.
     #
     def pull!
-      run :pull
+      invoke :pull
     end
 
     #
     # Uploads the local copy of the project to the destination URI.
     #
     def push!
-      run :push
+      invoke :push
     end
 
     #
     # Installs the project on the destination server.
     #
     def install!
-      run :install
+      invoke :install
     end
 
     #
     # Migrates the database used by the project.
     #
     def migrate!
-      run :migrate
+      invoke :migrate
     end
 
     #
     # Configures the Web server to be ran on the destination server.
     #
     def config!
-      run :config
+      invoke :config
     end
 
     #
     # Starts the Web server for the project.
     #
     def start!
-      run :start
+      invoke :start
     end
 
     #
     # Stops the Web server for the project.
     #
     def stop!
-      run :stop
+      invoke :stop
     end
 
     #
     # Restarts the Web server for the project.
     #
     def restart!
-      run :restart
+      invoke :restart
     end
 
 

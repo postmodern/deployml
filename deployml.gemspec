@@ -5,13 +5,15 @@
 
 Gem::Specification.new do |s|
   s.name = %q{deployml}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
   s.date = %q{2010-04-07}
+  s.default_executable = %q{deployml}
   s.description = %q{DeploYML is a simple deployment solution that uses a single YAML file and does not require Ruby to be installed on the server.}
   s.email = %q{postmodern.mod3@gmail.com}
+  s.executables = ["deployml"]
   s.extra_rdoc_files = [
     "ChangeLog.md",
     "LICENSE.txt",
@@ -25,6 +27,7 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.md",
     "Rakefile",
+    "bin/deployml",
     "deployml.gemspec",
     "lib/deployml.rb",
     "lib/deployml/configuration.rb",
@@ -49,6 +52,7 @@ Gem::Specification.new do |s|
     "lib/deployml/servers/mongrel.rb",
     "lib/deployml/servers/thin.rb",
     "lib/deployml/shell.rb",
+    "lib/deployml/thor/app.rb",
     "lib/deployml/version.rb",
     "spec/configuration_spec.rb",
     "spec/deployml_spec.rb",
@@ -86,17 +90,20 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rprogram>, ["~> 0.1.8"])
       s.add_runtime_dependency(%q<pullr>, ["~> 0.1.1"])
+      s.add_runtime_dependency(%q<thor>, ["~> 0.13.3"])
       s.add_development_dependency(%q<rspec>, ["~> 1.3.0"])
       s.add_development_dependency(%q<yard>, ["~> 0.5.3"])
     else
       s.add_dependency(%q<rprogram>, ["~> 0.1.8"])
       s.add_dependency(%q<pullr>, ["~> 0.1.1"])
+      s.add_dependency(%q<thor>, ["~> 0.13.3"])
       s.add_dependency(%q<rspec>, ["~> 1.3.0"])
       s.add_dependency(%q<yard>, ["~> 0.5.3"])
     end
   else
     s.add_dependency(%q<rprogram>, ["~> 0.1.8"])
     s.add_dependency(%q<pullr>, ["~> 0.1.1"])
+    s.add_dependency(%q<thor>, ["~> 0.13.3"])
     s.add_dependency(%q<rspec>, ["~> 1.3.0"])
     s.add_dependency(%q<yard>, ["~> 0.5.3"])
   end

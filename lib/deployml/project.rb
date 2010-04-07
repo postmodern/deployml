@@ -132,12 +132,12 @@ module DeploYML
     end
 
     #
-    # Invokes a command on the destination server, in the destination
+    # Runs a command on the destination server, in the destination
     # directory.
     #
     # @return [true]
     #
-    def invoke(command)
+    def exec(command)
       remote_shell { |shell| shell.run command }
       return true
     end

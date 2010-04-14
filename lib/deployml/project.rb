@@ -149,7 +149,7 @@ module DeploYML
     # @return [true]
     #
     def rake(task,*args)
-      remote_shell { |shell| shell.rake task, *args }
+      remote_shell { |shell| shell.rake(task,*args) }
       return true
     end
 

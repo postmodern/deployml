@@ -36,7 +36,7 @@ module DeploYML
       name = name.to_s
 
       unless args.empty?
-        name << ('[' + args.join(',') + ']')
+        name += ('[' + args.join(',') + ']')
       end
 
       return name

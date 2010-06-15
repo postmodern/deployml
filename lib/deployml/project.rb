@@ -9,6 +9,7 @@ require 'deployml/remote_shell'
 require 'deployml/servers'
 require 'deployml/frameworks'
 
+require 'yaml'
 require 'pullr'
 
 module DeploYML

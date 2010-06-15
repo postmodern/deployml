@@ -19,7 +19,7 @@ group(:doc) do
     gem 'rdiscount',	'~> 1.6.3'
   end
 
-  gem 'yard',			'~> 0.5.3'
+  gem 'yard',		'~> 0.5.3'
 end
 
 gem 'rspec',	'~> 1.3.0', :group => [:development, :test]

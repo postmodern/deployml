@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-06-14}
+  s.date = %q{2010-08-05}
   s.default_executable = %q{deployml}
   s.description = %q{DeploYML is a simple deployment solution that uses a single YAML file and does not require Ruby to be installed on the server.}
   s.email = %q{postmodern.mod3@gmail.com}
@@ -90,14 +90,14 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rprogram>, ["~> 0.1.8"])
       s.add_runtime_dependency(%q<pullr>, ["~> 0.1.1"])
-      s.add_runtime_dependency(%q<thor>, ["~> 0.13.3"])
+      s.add_runtime_dependency(%q<thor>, ["~> 0.14.0"])
       s.add_development_dependency(%q<rake>, ["~> 0.8.7"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.4.0"])
       s.add_development_dependency(%q<rspec>, ["~> 1.3.0"])
     else
       s.add_dependency(%q<rprogram>, ["~> 0.1.8"])
       s.add_dependency(%q<pullr>, ["~> 0.1.1"])
-      s.add_dependency(%q<thor>, ["~> 0.13.3"])
+      s.add_dependency(%q<thor>, ["~> 0.14.0"])
       s.add_dependency(%q<rake>, ["~> 0.8.7"])
       s.add_dependency(%q<jeweler>, ["~> 1.4.0"])
       s.add_dependency(%q<rspec>, ["~> 1.3.0"])
@@ -105,7 +105,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<rprogram>, ["~> 0.1.8"])
     s.add_dependency(%q<pullr>, ["~> 0.1.1"])
-    s.add_dependency(%q<thor>, ["~> 0.13.3"])
+    s.add_dependency(%q<thor>, ["~> 0.14.0"])
     s.add_dependency(%q<rake>, ["~> 0.8.7"])
     s.add_dependency(%q<jeweler>, ["~> 1.4.0"])
     s.add_dependency(%q<rspec>, ["~> 1.3.0"])

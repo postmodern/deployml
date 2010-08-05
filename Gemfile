@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 group(:runtime) do
   gem 'rprogram',	'~> 0.1.8'
   gem 'pullr',		'~> 0.1.1'
-  gem 'thor',		'~> 0.13.3'
+  gem 'thor',		'~> 0.14.0'
 end
 
 group(:development) do

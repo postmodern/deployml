@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Postmodern"]
-  s.date = %q{2010-08-05}
+  s.date = %q{2010-08-09}
   s.default_executable = %q{deployml}
   s.description = %q{DeploYML is a simple deployment solution that uses a single YAML file and does not require Ruby to be installed on the server.}
   s.email = %q{postmodern.mod3@gmail.com}
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     ".yardopts",
     "ChangeLog.md",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.md",
     "Rakefile",

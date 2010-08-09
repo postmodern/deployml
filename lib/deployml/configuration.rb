@@ -106,6 +106,7 @@ module DeploYML
 
           if @framework == :rails3
             @exclude << '.bundle'
+            @exclude << File.join('vendor','bundle')
           end
         end
       end

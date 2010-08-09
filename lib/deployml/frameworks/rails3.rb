@@ -4,7 +4,7 @@ module DeploYML
       protected
 
       def install(shell)
-        shell.run 'bundle', 'install'
+        shell.run 'bundle', 'install', '--deployment'
       end
 
       def migrate(shell)

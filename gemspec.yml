@@ -1,0 +1,20 @@
+name: deployml
+summary: A deployment solution that works.
+description:
+  DeploYML is a simple deployment solution that uses a single YAML file and
+  does not require Ruby to be installed on the server.
+
+license: MIT
+authors: Postmodern
+email: postmodern.mod3@gmail.com
+homepage: http://github.com/postmodern/deployml
+has_yard: true
+
+dependencies:
+  rprogram: ~> 0.1.8
+  pullr: ~> 0.1.1
+  thor: ~> 0.14.3
+
+development_dependencies:
+  bundler: ~> 1.0.0
+  yard: ~> 0.6.0

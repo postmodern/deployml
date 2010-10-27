@@ -141,7 +141,9 @@ List available tasks:
 
     $ sudo gem install deployml
 
-## License
+## Copyright
+
+Copyright (c) 2010 Hal Brodigan
 
 See {file:LICENSE.txt} for license information.
 

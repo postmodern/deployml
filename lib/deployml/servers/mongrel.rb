@@ -4,11 +4,9 @@ require 'deployml/options/mongrel'
 module DeploYML
   module Servers
     module Mongrel
-      protected
-
       def initialize_server
-        @mongrel = Options::Mongrel.new(config.server_options)
-        @mongrel.environment ||= config.environment
+        @mongrel = Options::Mongrel.new(@server_options)
+        @mongrel.environment ||= @name
       end
 
       def mongrel_cluster(shell,*args)
@@ -22,7 +20,7 @@ module DeploYML
           raise(MissingOption,"No 'config' option specified under server options",caller)
         end
 
-        options = ['-c', dest_uri.path] + @mongrel.arguments
+        options = ['-c', dest.path] + @mongrel.arguments
 
         shell.run 'mongrel_rails', 'cluster::configure', *options
       end

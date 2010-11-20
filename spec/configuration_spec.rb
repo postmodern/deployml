@@ -4,27 +4,15 @@ require 'spec_helper'
 
 describe Configuration do
   it "should accept String keys" do
-    config = Configuration.new('scm' => :git)
+    config = Configuration.new('orm' => :datamapper)
 
-    config.scm.should == :git
+    config.orm.should == :datamapper
   end
 
   it "should accept Symbol keys" do
-    config = Configuration.new(:scm => :git)
+    config = Configuration.new(:orm => :datamapper)
 
-    config.scm.should == :git
-  end
-
-  it "should convert the 'scm' option to a Symbol" do
-    config = Configuration.new(:scm => 'git')
-
-    config.scm.should == :git
-  end
-
-  it "should convert the 'exclude' option to a Set" do
-    config = Configuration.new(:exclude => ['.git'])
-
-    config.exclude.should == Set['.git']
+    config.orm.should == :datamapper
   end
 
   it "should default the 'debug' option to false" do

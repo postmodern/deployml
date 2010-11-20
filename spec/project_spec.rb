@@ -12,12 +12,6 @@ describe Project do
     }.should_not raise_error
   end
 
-  it "should find deploy.yml in the 'settings/' directory" do
-    lambda {
-      Project.new(project_dir(:two))
-    }.should_not raise_error
-  end
-
   it "should raise ConfigNotFound when deploy.yml cannot be found" do
     lambda {
       Project.new(project_dir(:missing_config))
@@ -28,12 +22,6 @@ describe Project do
     lambda {
       Project.new(project_dir(:bad_config))
     }.should raise_error(InvalidConfig)
-  end
-
-  it "should raise Pullr::UnknownSCM if :scm is not a known SCM" do
-    lambda {
-      Project.new(project_dir(:invalid_scm))
-    }.should raise_error(Pullr::UnknownSCM)
   end
 
   it "should raise InvalidConfig if :source is missing" do

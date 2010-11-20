@@ -3,8 +3,6 @@ require 'deployml/exceptions/invalid_config'
 module DeploYML
   module Servers
     module Apache
-      protected
-
       def server_start(shell)
         shell.run 'apachectl', 'start'
       end

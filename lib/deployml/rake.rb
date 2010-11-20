@@ -1,1 +1,0 @@
-require 'deployml/rake/tasks'

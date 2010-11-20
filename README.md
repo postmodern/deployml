@@ -12,17 +12,12 @@ doesn not require Ruby to be installed on the server.
 ## Features
 
 * Requires only **one** YAML file with a minimum of **three** things.
+* Supports multiple deployment environments.
 * Does not require anything else to be installed on the servers.
 * Maintains separation between the production and development servers,
   for security reasons.
-* Provides convenient Rake and Thor tasks for your project.
 * Provides a simple command-line util using Thor.
 * Can deploy Ruby web applications or static sites.
-* Supports many common SCMs:
-  * SubVersion (SVN)
-  * Mercurial (Hg)
-  * Git
-  * Rsync
 * Supports a few common Web Servers:
   * Apache
   * Mongrel
@@ -32,54 +27,14 @@ doesn not require Ruby to be installed on the server.
   * Rails3 (Bundler / ActiveRecord / DataMapper)
 * Supports any Operating System that supports Ruby and SSH.
 
-## Rake Tasks
-
-* deploy:config
-* deploy:install
-* deploy:deploy
-* deploy:exec[command]
-* deploy:migrate
-* deploy:push
-* deploy:redeploy
-* deploy:restart
-* deploy:ssh
-* deploy:start
-* deploy:stop
-* deploy:pull
-* deploy:push
-* deploy:task[name]
-
-## Thor Tasks
-
-* deploy:config
-* deploy:deploy
-* deploy:exec
-* deploy:install
-* deploy:migrate
-* deploy:pull
-* deploy:push
-* deploy:rake
-* deploy:redeploy
-* deploy:restart
-* deploy:ssh
-* deploy:start
-* deploy:stop
-
 ## Examples
 
-Specifying `source` and `dest` URIs as Strings:
+Specifying `dest` URI as a String:
 
-    scm: git
-    source: git@dev.example.com/var/git/project.git
     dest: deploy@www.example.com/var/www/site
 
-Specifying `source` and `dest` URIs as Hashes:
+Specifying `dest` URI as a Hash:
       
-    scm: git
-    source:
-      user: git
-      host: dev.example.com
-      path: /var/git/project.git
     dest:
       user: deploy
       host: www.example.com
@@ -87,15 +42,11 @@ Specifying `source` and `dest` URIs as Hashes:
 
 Specifying a `server` option:
 
-    scm: git
-    source: git@dev.example.com/var/git/project.git
     dest: deploy@www.example.com/var/www/site
     server: apache
 
 Specifying a `server` with options:
 
-    scm: git
-    source: git@dev.example.com/var/git/project.git
     dest: deploy@www.example.com/var/www/site
     server:
       name: thin
@@ -106,6 +57,10 @@ Specifying a `server` with options:
 	rackup: true
 
 ## Synopsis
+
+Setup a new project:
+
+    $ deployml setup
 
 Deploy a new project:
 
@@ -133,8 +88,8 @@ List available tasks:
 
 ## Requirements
 
+* [addressable](http://addressable.rubyforge.org/) ~> 2.1.1
 * [rprogram](http://github.com/postmodern/rprogram) ~> 0.1.8
-* [pullr](http://github.com/postmodern/pullr) ~> 0.1.1
 * [thor](http://github.com/wycats/thor) ~> 0.13.3
 
 ## Install

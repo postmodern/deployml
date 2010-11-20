@@ -4,11 +4,9 @@ require 'deployml/options/thin'
 module DeploYML
   module Servers
     module Thin
-      protected
-
       def initialize_server
-        @thin = Options::Thin.new(config.server_options)
-        @thin.environment ||= config.environment
+        @thin = Options::Thin.new(@server_options)
+        @thin.environment ||= @name
       end
 
       def thin(shell,*args)
@@ -22,7 +20,7 @@ module DeploYML
           raise(MissingOption,"No 'config' option specified under the server options",caller)
         end
 
-        options = ['-c', dest_uri.path] + @thin.arguments
+        options = ['-c', dest.path] + @thin.arguments
 
         shell.run 'thin', 'config', *options
       end

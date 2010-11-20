@@ -1,6 +1,6 @@
 require 'deployml/exceptions/missing_option'
 
-require 'set'
+require 'addressable/uri'
 
 module DeploYML
   #
@@ -11,9 +11,6 @@ module DeploYML
 
     # Default SCM to use
     DEFAULT_SCM = :rsync
-
-    # The SCM that the project is stored within.
-    attr_reader :scm
 
     # The server run the deployed project under
     attr_reader :server_name
@@ -26,9 +23,6 @@ module DeploYML
 
     # The destination URI to upload the project to.
     attr_reader :dest
-
-    # File-path pattern or list of patterns to exclude from deployment.
-    attr_reader :exclude
 
     # The framework used by the project
     attr_reader :framework
@@ -48,17 +42,11 @@ module DeploYML
     # @param [Hash] config
     #   The configuration for the project.
     #
-    # @option config [Symbol, String] :scm (:rsync)
-    #   The SCM that the project is stored within.
-    #
     # @option config [String, Hash] :source
     #   The source URI of the project SCM.
     #
     # @option config [String, Hash] :dest
     #   The destination URI to upload the project to.
-    #
-    # @option config [String, Array<String>] :exclude
-    #   File-path pattern or list of patterns to exclude from deployment.
     #
     # @option config [Symbol] :framework
     #   The framework used by the project.
@@ -76,11 +64,8 @@ module DeploYML
     #   The `server` option Hash did not contain a `name` option.
     #
     def initialize(config={})
-      @scm = DEFAULT_SCM
-
       @source = nil
       @dest = nil
-      @exclude = Set[]
 
       @server_name = nil
       @server_options = {}
@@ -99,15 +84,6 @@ module DeploYML
         case @framework
         when :rails2, :rails3
           @environment = :production
-          @exclude += [
-            File.join('log','*.log'),
-            File.join('tmp','pids','*.pid')
-          ]
-
-          if @framework == :rails3
-            @exclude << '.bundle'
-            @exclude << File.join('vendor','bundle')
-          end
         end
       end
 
@@ -132,16 +108,17 @@ module DeploYML
         end
       end
 
-      if config[:scm]
-        @scm = config[:scm].to_sym
-      end
+      uri = lambda { |url|
+        case url
+        when Hash
+          Addressable::URI.new(url)
+        when String
+          Addressable::URI.parse(url)
+        end
+      }
 
-      @source = config[:source]
-      @dest = config[:dest]
-
-      if config[:exclude]
-        @exclude += [*config[:exclude]]
-      end
+      @source = uri[config[:source]]
+      @dest = uri[config[:dest]]
 
       if config[:environment]
         @environment = config[:environment].to_sym

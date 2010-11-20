@@ -123,9 +123,7 @@ module DeploYML
     # Replays the command history on the remote server.
     #
     def replay
-      unless @history.empty?
-        ssh("cd #{@uri.path} && #{self.join}")
-      end
+      ssh(self.join) unless @history.empty?
     end
 
   end

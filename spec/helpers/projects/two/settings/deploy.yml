@@ -1,9 +1,0 @@
-scm: git
-source:
-  user: git
-  host: dev.example.com
-  path: /var/git/project1.git
-dest:
-  user: deploy
-  host: dev.example.com
-  path: /var/www/project1

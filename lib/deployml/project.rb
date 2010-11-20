@@ -1,56 +1,32 @@
 require 'deployml/exceptions/config_not_found'
 require 'deployml/exceptions/invalid_config'
-require 'deployml/exceptions/missing_option'
-require 'deployml/exceptions/unknown_server'
-require 'deployml/exceptions/unknown_framework'
-require 'deployml/configuration'
-require 'deployml/local_shell'
+require 'deployml/exceptions/unknown_environment'
+require 'deployml/environment'
 require 'deployml/remote_shell'
-require 'deployml/servers'
-require 'deployml/frameworks'
 
+require 'pathname'
 require 'yaml'
-require 'pullr'
 
 module DeploYML
   class Project
 
+    # The general configuration directory.
+    CONFIG_DIR = 'config'
+
     # The configuration file name.
     CONFIG_FILE = 'deploy.yml'
 
-    # Directories to search within for the deploy.yml file.
-    SEARCH_DIRS = ['config','settings']
+    # The configuration directory.
+    ENVIRONMENTS_DIR = 'deploy'
 
     # The name of the directory to stage deployments in.
     STAGING_DIR = '.deploy'
 
-    # Mapping of possible 'server' names to their mixins.
-    SERVERS = {
-      :apache => Servers::Apache,
-      :mongrel => Servers::Mongrel,
-      :thin => Servers::Thin
-    }
-
-    # Mapping of possible 'framework' names to their mixins.
-    FRAMEWORKS = {
-      :rails2 => Frameworks::Rails2,
-      :rails3 => Frameworks::Rails3
-    }
-
     # The root directory of the project
     attr_reader :root
 
-    # The project configuration
-    attr_reader :config
-
-    # The source repository for the project
-    attr_reader :source_repository
-
-    # The staging repository for the project
-    attr_reader :staging_repository
-
-    # The deployment repository for the project
-    attr_reader :dest_repository
+    # The deployment environments of the project
+    attr_reader :environments
 
     #
     # Creates a new project using the given configuration file.
@@ -63,164 +39,73 @@ module DeploYML
     #   in any of the common directories.
     #
     def initialize(root)
-      @root = File.expand_path(root)
+      @root = Pathname.new(root).expand_path
+      @config_file = @root.join(CONFIG_DIR,CONFIG_FILE)
+      @environments_dir = @root.join(CONFIG_DIR,ENVIRONMENTS_DIR)
 
-      @path = SEARCH_DIRS.map { |dir|
-        File.expand_path(File.join(root,dir,CONFIG_FILE))
-      }.find { |path| File.file?(path) }
-
-      unless @path
-        raise(ConfigNotFound,"could not find #{CONFIG_FILE.dump} in #{root.dump}",caller)
+      unless (@config_file.file? || @environments_dir.directory?)
+        raise(ConfigNotFound,"could not find '#{CONFIG_FILE}' or '#{ENVIRONMENTS_DIR}' in #{root}")
       end
 
-      load_config!
-
-      @source_repository = Pullr::RemoteRepository.new(
-        :uri => @config.source,
-        :scm => @config.scm
-      )
-
-      @staging_repository = Pullr::LocalRepository.new(
-        :uri => @config.source,
-        :scm => @config.scm,
-        :path => File.join(@root,STAGING_DIR)
-      )
-
-      @dest_repository = Pullr::RemoteRepository.new(
-        :uri => @config.dest,
-        :scm => :rsync
-      )
-
-      load_framework!
-
-      load_server!
+      load_environments!
     end
 
     #
-    # The URI of the source repository.
+    # @param [Symbol, String] name
+    #   The name of the environment to use.
     #
-    # @return [Addressable::URI]
-    #   The source repository URI.
+    # @return [Environment]
+    #   The environment with the given name.
     #
-    def source_uri
-      @source_repository.uri
+    # @raise [UnknownEnvironment]
+    #   No environment was configured with the given name.
+    #
+    # @since 0.3.0
+    #
+    def environment(name=:production)
+      name = name.to_sym
+
+      unless @environments[name]
+        raise(UnknownEnvironment,"unknown environment: #{name}")
+      end
+
+      return @environments[name]
     end
 
     #
-    # The URI of the destination repository.
+    # Conveniance method for accessing the development environment.
     #
-    # @return [Addressable::URI]
-    #   The destination repository URI.
+    # @return [Environment]
+    #   The development environment.
     #
-    def dest_uri
-      @dest_repository.uri
+    # @since 0.3.0
+    #
+    def development
+      environment(:development)
     end
 
     #
-    # Creates a remote shell with the destination server.
+    # Conveniance method for accessing the staging environment.
     #
-    # @yield [session]
-    #   If a block is given, it will be passed the new remote shell session.
+    # @return [Environment]
+    #   The staging environment.
     #
-    # @yieldparam [ShellSession] session
-    #   The remote shell session.
+    # @since 0.3.0
     #
-    # @return [RemoteShell]
-    #   The remote shell session.
-    #
-    def remote_shell(&block)
-      RemoteShell.new(dest_uri,&block)
+    def staging
+      environment(:staging)
     end
 
     #
-    # Runs a command on the destination server, in the destination
-    # directory.
+    # Conveniance method for accessing the production environment.
     #
-    # @return [true]
+    # @return [Environment]
+    #   The production environment.
     #
-    def exec(command)
-      remote_shell { |shell| shell.run command }
-      return true
-    end
-
+    # @since 0.3.0
     #
-    # Executes a Rake task on the destination server, in the destination
-    # directory.
-    #
-    # @return [true]
-    #
-    def rake(task,*args)
-      remote_shell { |shell| shell.rake(task,*args) }
-      return true
-    end
-
-    #
-    # Starts an SSH session with the destination server.
-    #
-    # @param [Array] args
-    #   Additional arguments to pass to SSH.
-    #
-    # @return [true]
-    #
-    def ssh(*args)
-      RemoteShell.new(dest_uri).ssh(*args)
-      return true
-    end
-
-    #
-    # Downloads or updates the staging directory.
-    #
-    def pull!
-      invoke :pull
-    end
-
-    #
-    # Uploads the local copy of the project to the destination URI.
-    #
-    def push!
-      invoke :push
-    end
-
-    #
-    # Installs the project on the destination server.
-    #
-    def install!
-      invoke :install
-    end
-
-    #
-    # Migrates the database used by the project.
-    #
-    def migrate!
-      invoke :migrate
-    end
-
-    #
-    # Configures the Web server to be ran on the destination server.
-    #
-    def config!
-      invoke :config
-    end
-
-    #
-    # Starts the Web server for the project.
-    #
-    def start!
-      invoke :start
-    end
-
-    #
-    # Stops the Web server for the project.
-    #
-    def stop!
-      invoke :stop
-    end
-
-    #
-    # Restarts the Web server for the project.
-    #
-    def restart!
-      invoke :restart
+    def production
+      environment(:production)
     end
 
     #
@@ -229,32 +114,39 @@ module DeploYML
     # @param [Array<Symbol>] tasks
     #   The tasks to run during the deployment.
     #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
     # @return [true]
     #
     # @since 0.2.0
     #
-    def invoke(*tasks)
-      LocalShell.new do |shell|
-        pull(shell) if tasks.include?(:pull)
+    def invoke(tasks,env=:production)
+      env = environment(env)
 
-        push(shell) if tasks.include?(:push)
-      end
+      RemoteShell.new(env.dest) do |shell|
+        # setup the deployment repository
+        env.setup(shell) if tasks.include?(:setup)
 
-      RemoteShell.new(dest_uri) do |shell|
+        # cd into the deployment repository
+        shell.cd env.dest.path
+
+        # update the deployment repository
+        env.update(shell) if tasks.include?(:update)
+
         # framework tasks
-        install(shell) if tasks.include?(:install)
-
-        migrate(shell) if tasks.include?(:migrate)
+        env.install(shell) if tasks.include?(:install)
+        env.migrate(shell) if tasks.include?(:migrate)
 
         # server tasks
         if tasks.include?(:config)
-          server_config(shell)
+          env.server_config(shell)
         elsif tasks.include?(:start)
-          server_start(shell)
+          env.server_start(shell)
         elsif tasks.include?(:stop)
-          server_stop(shell)
+          env.server_stop(shell)
         elsif tasks.include?(:restart)
-          server_restart(shell)
+          env.server_restart(shell)
         end
       end
 
@@ -262,56 +154,110 @@ module DeploYML
     end
 
     #
+    # Sets up the deployment repository for the project.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def setup!(env=:production)
+      invoke [:setup], env
+    end
+
+    #
+    # Updates the deployed repository of the project.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def update!(env=:production)
+      invoke [:update], env
+    end
+
+    #
+    # Installs the project on the destination server.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def install!(env=:production)
+      invoke [:install], env
+    end
+
+    #
+    # Migrates the database used by the project.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def migrate!(env=:production)
+      invoke [:migrate], env
+    end
+
+    #
+    # Configures the Web server to be ran on the destination server.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def config!(env=:production)
+      invoke [:config], env
+    end
+
+    #
+    # Starts the Web server for the project.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def start!(env=:production)
+      invoke [:start], env
+    end
+
+    #
+    # Stops the Web server for the project.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def stop!(env=:production)
+      invoke [:stop], env
+    end
+
+    #
+    # Restarts the Web server for the project.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
+    def restart!(env=:production)
+      invoke [:restart], env
+    end
+
+    #
     # Deploys a new project.
+    #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
     #
     # @since 0.2.0
     #
-    def deploy!
-      invoke :pull, :push, :install, :migrate, :config, :start
+    def deploy!(env=:production)
+      invoke [:push, :install, :migrate, :config, :start], env
     end
 
     #
     # Redeploys a project.
     #
+    # @param [Symbol, String] env
+    #   The environment to deploy to.
+    #
     # @since 0.2.0
     #
-    def redeploy!
-      invoke :pull, :push, :install, :migrate, :restart
+    def redeploy!(env=:production)
+      invoke [:push, :install, :migrate, :restart], env
     end
 
     protected
-
-    #
-    # Converts a given URI to one compatible with `rsync`.
-    #
-    # @return [String]
-    #   The `rsync` compatible URI.
-    #
-    def rsync_uri
-      new_uri = dest_uri.host
-
-      new_uri = "#{dest_uri.user}@#{new_uri}" if dest_uri.user
-      new_uri = "#{new_uri}:#{dest_uri.path}" unless dest_uri.path.empty?
-
-      return new_uri
-    end
-
-    #
-    # Generates options for `rsync`.
-    #
-    # @param [Array] opts
-    #   Specific options to pass to `rsync`.
-    #
-    # @return [Array]
-    #   Options to pass to `rsync`.
-    #
-    def rsync_options(*opts)
-      options = []
-
-      options << '-v' if config.debug
-
-      return options + opts
-    end
 
     #
     # Loads the project configuration.
@@ -322,125 +268,39 @@ module DeploYML
     # @raise [MissingOption]
     #   The `source` or `dest` options were not specified.
     #
-    def load_config!
-      config = YAML.load_file(@path)
-
-      unless config.kind_of?(Hash)
-        raise(InvalidConfig,"The DeploYML configuration file #{@path.dump} must contain a Hash",caller)
-      end
-
-      @config = Configuration.new(config)
-
-      unless @config.source
-        raise(MissingOption,":source option was not given in #{@path.dump}",caller)
-      end
-
-      unless @config.dest
-        raise(MissingOption,":dest option was not given in #{@path.dump}",caller)
-      end
-    end
-
+    # @since 0.3.0
     #
-    # Loads the framework configuration.
-    #
-    def load_framework!
-      if @config.orm
-        unless FRAMEWORKS.has_key?(@config.framework)
-          raise(UnknownFramework,"Unknown framework #{@config.framework}",caller)
+    def load_environments!
+      base_config = {}
+
+      load_config_data = lambda { |path|
+        config_data = YAML.load_file(path)
+
+        unless config_data.kind_of?(Hash)
+          raise(InvalidConfig,"DeploYML file '#{path}' does not contain a Hash")
         end
 
-        extend FRAMEWORKS[@config.framework]
+        config_data
+      }
 
-        initialize_framework() if self.respond_to?(:initialize_framework)
+      if @config_file.file?
+        base_config.merge!(load_config_data[@config_file])
       end
-    end
 
-    #
-    # Loads the server configuration.
-    #
-    # @raise [UnknownServer]
-    #
-    def load_server!
-      if @config.server_name
-        unless SERVERS.has_key?(@config.server_name)
-          raise(UnknownServer,"Unknown server name #{@config.server_name}",caller)
+      @environments = {}
+
+      if @environments_dir.directory?
+        @environments_dir.each_child do |path|
+          if (path.file? && path.extname == '.yml')
+            config_data = base_config.merge(load_config_data[path])
+            name = path.basename.to_s.sub(/\.yml$/,'').to_sym
+
+            @environments[name] = Environment.new(name,config_data)
+          end
         end
-
-        extend SERVERS[@config.server_name]
-
-        initialize_server() if self.respond_to?(:initialize_server)
-      end
-    end
-
-    #
-    # Synces the project from the source server into the staging directory.
-    #
-    def pull(shell)
-      unless File.directory?(@staging_repository.path)
-        @source_repository.pull(@staging_repository.path)
       else
-        @staging_repository.update(@source_repository.uri)
+        @environments[:production] = Environment.new(:production,base_config)
       end
-    end
-
-    #
-    # Uploads the staged project to the destination server.
-    #
-    def push(shell)
-      options = rsync_options('-v', '-a', '--delete-before')
-
-      # add an --exclude option for the SCM directory within
-      # the staging repository
-      if @staging_repository.scm_dir
-        options << "--exclude=#{@staging_repository.scm_dir}"
-      end
-
-      # add --exclude options
-      config.exclude.each { |pattern| options << "--exclude=#{pattern}" }
-
-      src = File.join(@staging_repository.path,'')
-      dest = rsync_uri
-
-      # append the source and destination arguments
-      options += [src, dest]
-
-      shell.run 'rsync', *options
-    end
-
-    #
-    # Place-holder method.
-    #
-    def install(shell)
-    end
-
-    #
-    # Place-holder method.
-    #
-    def migrate(shell)
-    end
-
-    #
-    # Place-holder method.
-    #
-    def server_config(shell)
-    end
-
-    #
-    # Place-holder method.
-    #
-    def server_start(shell)
-    end
-
-    #
-    # Place-holder method.
-    #
-    def server_stop(shell)
-    end
-
-    #
-    # Place-holder method.
-    #
-    def server_restart(shell)
     end
 
   end

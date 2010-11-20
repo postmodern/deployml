@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'deployml/thor/app'
+require 'deployml/cli'
 
-DeploYML::Thor::App.start
+DeploYML::CLI.start

@@ -11,30 +11,36 @@ doesn not require Ruby to be installed on the server.
 
 ## Features
 
-* Requires only **one** YAML file with a minimum of **three** things.
-* Supports multiple deployment environments.
+* Requires only **one YAML file** (`config/deploy.yml`) with a minimum of
+  **two** things (`source` and `dest`).
+* Supports multiple deployment environments (`config/deploy/staging.yml`).
 * Does not require anything else to be installed on the servers.
-* Maintains separation between the production and development servers,
-  for security reasons.
 * Provides a simple command-line util using Thor.
 * Can deploy Ruby web applications or static sites.
-* Supports a few common Web Servers:
-  * Apache
-  * Mongrel
-  * Thin
-* Supports a few Web Application frameworks:
-  * Rails2 (ActiveRecord)
-  * Rails3 (Bundler / ActiveRecord / DataMapper)
+* Supports common Web Servers:
+  * [Apache](http://www.apache.org/)
+  * [Mongrel](https://github.com/fauna/mongrel)
+  * [Thin](http://code.macournoyer.com/thin/)
+* Supports common Web Application frameworks:
+  * [Rails](http://rubyonrails.org/):
+    * [Bundler](http://gembundler.com/)
+    * ActiveRecord
+    * [DataMapper](http://datamapper.org/)
 * Supports any Operating System that supports Ruby and SSH.
 
 ## Examples
 
-Specifying `dest` URI as a String:
+Specifying `source` and `dest` URIs as Strings:
 
+    source: git@dev.example.com/var/git/project.git
     dest: deploy@www.example.com/var/www/site
 
-Specifying `dest` URI as a Hash:
+Specifying `source` and `dest` URIs as Hashes:
       
+    source:
+      user: git
+      host: dev.example.com
+      path: /var/git/project.git
     dest:
       user: deploy
       host: www.example.com
@@ -42,11 +48,13 @@ Specifying `dest` URI as a Hash:
 
 Specifying a `server` option:
 
+    source: git@dev.example.com/var/git/project.git
     dest: deploy@www.example.com/var/www/site
     server: apache
 
 Specifying a `server` with options:
 
+    source: git@dev.example.com/var/git/project.git
     dest: deploy@www.example.com/var/www/site
     server:
       name: thin
@@ -90,7 +98,7 @@ List available tasks:
 
 * [addressable](http://addressable.rubyforge.org/) ~> 2.1.1
 * [rprogram](http://github.com/postmodern/rprogram) ~> 0.1.8
-* [thor](http://github.com/wycats/thor) ~> 0.13.3
+* [thor](http://github.com/wycats/thor) ~> 0.14.3
 
 ## Install
 

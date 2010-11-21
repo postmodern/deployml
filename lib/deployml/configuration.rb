@@ -80,11 +80,6 @@ module DeploYML
 
       if config[:framework]
         @framework = config[:framework].to_sym
-
-        case @framework
-        when :rails2, :rails3
-          @environment = :production
-        end
       end
 
       if config[:orm]

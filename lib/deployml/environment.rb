@@ -23,9 +23,6 @@ module DeploYML
       :rails3 => Frameworks::Rails3
     }
 
-    # The environment name
-    attr_reader :name
-
     #
     # Creates a new deployment environment.
     #
@@ -42,8 +39,6 @@ module DeploYML
     # @since 0.3.0
     #
     def initialize(name,config={})
-      @name = name.to_sym
-
       super(config)
 
       unless @source
@@ -53,6 +48,8 @@ module DeploYML
       unless @dest
         raise(MissingOption,":dest option is missing for the #{@name} environment")
       end
+
+      @environment ||= name.to_sym
 
       load_framework!
       load_server!

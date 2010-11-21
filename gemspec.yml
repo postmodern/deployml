@@ -16,5 +16,6 @@ dependencies:
   thor: ~> 0.14.3
 
 development_dependencies:
-  bundler: ~> 1.0.0
+  ore-tasks: ~> 0.3.0
+  rspec: ~> 2.1.0
   yard: ~> 0.6.0

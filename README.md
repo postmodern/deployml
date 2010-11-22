@@ -64,11 +64,7 @@ Specifying a `server` with options:
 
 ## Synopsis
 
-Setup a new project:
-
-    $ deployml setup
-
-Deploy a new project:
+Cold-Deploy a new project:
 
     $ deployml deploy
 

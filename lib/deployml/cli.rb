@@ -110,7 +110,7 @@ module DeploYML
       status 'Restarted'
     end
 
-    desc 'deploy', 'Deploys a new project'
+    desc 'deploy', 'Cold-Deploys a new project'
     method_option :environment, :type => :string, :default => 'production'
 
     def deploy

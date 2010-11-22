@@ -124,7 +124,7 @@ module DeploYML
     def invoke(tasks,env=:production)
       env = environment(env)
 
-      RemoteShell.new(env.dest) do |shell|
+      env.remote_shell do |shell|
         # setup the deployment repository
         env.setup(shell) if tasks.include?(:setup)
 

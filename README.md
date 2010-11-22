@@ -6,8 +6,8 @@
 
 ## Description
 
-DeploYML is a simple deployment solution that uses a single YAML file and
-doesn not require Ruby to be installed on the server.
+DeploYML is a simple deployment solution that uses a single YAML file,
+Git and SSH.
 
 ## Features
 
@@ -25,7 +25,8 @@ doesn not require Ruby to be installed on the server.
     * [Bundler](http://gembundler.com/)
     * ActiveRecord
     * [DataMapper](http://datamapper.org/)
-* Does not require anything else to be installed on the servers.
+* **Does not** require anything else to be installed on the servers.
+* **Does not** use `net-ssh`.
 * Supports any Operating System that supports Ruby and SSH.
 * Provides a simple command-line util using Thor.
 

@@ -1,8 +1,8 @@
 name: deployml
-summary: A deployment solution that works.
+summary: A simple deployment solution that works.
 description:
-  DeploYML is a simple deployment solution that uses a single YAML file and
-  does not require Ruby to be installed on the server.
+  DeploYML is a simple deployment solution that uses a single YAML file,
+  Git and SSH.
 
 license: MIT
 authors: Postmodern

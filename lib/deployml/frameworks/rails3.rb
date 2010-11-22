@@ -1,6 +1,10 @@
+require 'deployml/frameworks/rails'
+
 module DeploYML
   module Frameworks
     module Rails3
+      include Rails
+
       def install(shell)
         shell.run 'bundle', 'install', '--deployment'
       end

@@ -18,7 +18,7 @@ module DeploYML
     # Options for the server
     attr_reader :server_options
 
-    # The source URI of the project SCM.
+    # The source URI of the project Git repository.
     attr_reader :source
 
     # The destination URI to upload the project to.
@@ -43,7 +43,7 @@ module DeploYML
     #   The configuration for the project.
     #
     # @option config [String] :source
-    #   The source URI of the project SCM.
+    #   The source URI of the project Git repository.
     #
     # @option config [String, Hash] :dest
     #   The destination URI to upload the project to.

@@ -14,8 +14,7 @@ doesn not require Ruby to be installed on the server.
 * Requires only **one YAML file** (`config/deploy.yml`) with a minimum of
   **two** things (`source` and `dest`).
 * Supports multiple deployment environments (`config/deploy/staging.yml`).
-* Does not require anything else to be installed on the servers.
-* Provides a simple command-line util using Thor.
+* Supports [Git](http://www.git-scm.com/).
 * Can deploy Ruby web applications or static sites.
 * Supports common Web Servers:
   * [Apache](http://www.apache.org/)
@@ -26,21 +25,20 @@ doesn not require Ruby to be installed on the server.
     * [Bundler](http://gembundler.com/)
     * ActiveRecord
     * [DataMapper](http://datamapper.org/)
+* Does not require anything else to be installed on the servers.
 * Supports any Operating System that supports Ruby and SSH.
+* Provides a simple command-line util using Thor.
 
 ## Examples
 
 Specifying `source` and `dest` URIs as Strings:
 
-    source: git@dev.example.com/var/git/project.git
+    source: git@github.com:user/project.git
     dest: deploy@www.example.com/var/www/site
 
-Specifying `source` and `dest` URIs as Hashes:
+Specifying `dest` URI as a Hash:
       
-    source:
-      user: git
-      host: dev.example.com
-      path: /var/git/project.git
+    source: git@github.com:user/project.git
     dest:
       user: deploy
       host: www.example.com
@@ -48,13 +46,13 @@ Specifying `source` and `dest` URIs as Hashes:
 
 Specifying a `server` option:
 
-    source: git@dev.example.com/var/git/project.git
+    source: git@github.com:user/project.git
     dest: deploy@www.example.com/var/www/site
     server: apache
 
 Specifying a `server` with options:
 
-    source: git@dev.example.com/var/git/project.git
+    source: git@github.com:user/project.git
     dest: deploy@www.example.com/var/www/site
     server:
       name: thin

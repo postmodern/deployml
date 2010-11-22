@@ -63,6 +63,29 @@ Specifying a `server` with options:
 	socket: /var/run/thin.sock
 	rackup: true
 
+Multiple environments:
+
+    # config/deploy.yml
+    source: git@github.com:user/project.git
+    framework: rails3
+    orm: datamapper
+
+    # config/deploy/stagin.yml
+    dest: ssh://deploy@www.example.com/srv/staging
+    server:
+      name: thin
+      options:
+        config: /etc/thin/staging.yml
+        socket: /tmp/thin.staging.sock
+
+    # config/deploy/production.yml
+    dest: ssh://deploy@www.example.com/srv/project
+    server:
+      name: thin
+      options:
+        config: /etc/thin/example.yml
+        socket: /tmp/thin.example.sock
+
 ## Synopsis
 
 Cold-Deploy a new project:

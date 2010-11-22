@@ -100,7 +100,11 @@ module DeploYML
     # @since 0.3.0
     #
     def exec(command)
-      remote_shell { |shell| shell.run command }
+      remote_shell do |shell|
+        shell.cd(@dest.path)
+        shell.run(command)
+      end
+
       return true
     end
 
@@ -113,7 +117,11 @@ module DeploYML
     # @since 0.3.0
     #
     def rake(task,*args)
-      remote_shell { |shell| shell.rake(task,*args) }
+      remote_shell do |shell|
+        shell.cd(@dest.path)
+        shell.rake(task,*args)
+      end
+
       return true
     end
 

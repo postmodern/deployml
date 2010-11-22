@@ -70,7 +70,7 @@ Multiple environments:
     framework: rails3
     orm: datamapper
 
-    # config/deploy/stagin.yml
+    # config/deploy/staging.yml
     dest: ssh://deploy@www.example.com/srv/staging
     server:
       name: thin

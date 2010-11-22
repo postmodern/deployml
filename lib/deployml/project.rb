@@ -242,7 +242,7 @@ module DeploYML
     # @since 0.2.0
     #
     def deploy!(env=:production)
-      invoke [:push, :install, :migrate, :config, :start], env
+      invoke [:setup, :install, :migrate, :config, :start], env
     end
 
     #
@@ -254,7 +254,7 @@ module DeploYML
     # @since 0.2.0
     #
     def redeploy!(env=:production)
-      invoke [:push, :install, :migrate, :restart], env
+      invoke [:update, :install, :migrate, :restart], env
     end
 
     protected

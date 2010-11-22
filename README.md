@@ -28,7 +28,7 @@ Git and SSH.
 * **Does not** require anything else to be installed on the servers.
 * **Does not** use `net-ssh`.
 * Supports any Operating System that supports Ruby and SSH.
-* Provides a simple command-line util using Thor.
+* Provides a simple command-line interface using Thor.
 
 ## Examples
 

@@ -1,7 +1,7 @@
 # DeploYML
 
-* [deployml.rubyforge.org](http://deployml.rubyforge.org/)
-* [github.com/postmodern/deployml](http://github.com/postmodern/deployml/)
+* [Source](http://github.com/postmodern/deployml)
+* [Issues](http://github.com/postmodern/deployml/issues)
 * Postmodern (postmodern.mod3 at gmail.com)
 
 ## Description

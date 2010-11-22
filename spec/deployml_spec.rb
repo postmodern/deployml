@@ -1,6 +1,6 @@
-require 'deployml/version'
-
 require 'spec_helper'
+
+require 'deployml/version'
 
 describe DeploYML do
   it "should have a version" do

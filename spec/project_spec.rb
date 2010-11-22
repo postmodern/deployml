@@ -9,7 +9,7 @@ describe Project do
   describe "new" do
     it "should find deploy.yml in the 'config/' directory" do
       lambda {
-        Project.new(project_dir(:one))
+        Project.new(project_dir(:basic))
       }.should_not raise_error
     end
 
@@ -41,6 +41,26 @@ describe Project do
       lambda {
         Project.new(project_dir(:invalid_server))
       }.should raise_error(InvalidConfig)
+    end
+
+    it "should load the :production environment if thats the only env" do
+      project = Project.new(project_dir(:basic))
+
+      project.environments.keys.should == [:production]
+    end
+
+    it "should load multiple environments" do
+      project = Project.new(project_dir(:rails))
+
+      project.environments.keys.should =~ [:production, :staging]
+    end
+
+    it "should load the base config into multiple environments" do
+      project = Project.new(project_dir(:rails))
+
+      project.environments.all? { |name,env|
+        env.framework == :rails3 && env.orm == :datamapper
+      }.should == true
     end
   end
 end

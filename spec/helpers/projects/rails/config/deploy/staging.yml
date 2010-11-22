@@ -1,0 +1,10 @@
+dest:
+  scheme: ssh
+  user: deploy
+  host: www.example.com
+  path: /srv/staging
+server:
+  name: thin
+  options:
+    config: /etc/thin/staging.yml
+    socket: /tmp/thin.staging.sock

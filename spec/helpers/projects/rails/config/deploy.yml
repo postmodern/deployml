@@ -1,0 +1,3 @@
+source: git@github.com:user/project.git
+framework: rails3
+orm: datamapper

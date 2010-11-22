@@ -42,7 +42,7 @@ module DeploYML
     # @param [Hash] config
     #   The configuration for the project.
     #
-    # @option config [String, Hash] :source
+    # @option config [String] :source
     #   The source URI of the project SCM.
     #
     # @option config [String, Hash] :dest
@@ -103,17 +103,13 @@ module DeploYML
         end
       end
 
-      uri = lambda { |url|
-        case url
-        when Hash
-          Addressable::URI.new(url)
-        when String
-          Addressable::URI.parse(url)
-        end
-      }
-
-      @source = uri[config[:source]]
-      @dest = uri[config[:dest]]
+      @source = config[:source]
+      @dest = case config[:dest]
+              when Hash
+                Addressable::URI.new(url)
+              when String
+                Addressable::URI.parse(url)
+              end
 
       if config[:environment]
         @environment = config[:environment].to_sym

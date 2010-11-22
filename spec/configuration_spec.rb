@@ -15,25 +15,6 @@ describe Configuration do
     config.orm.should == :datamapper
   end
 
-  it "should parse 'source' String URIs" do
-    config = Configuration.new(:source => 'git@github.com:user/project.git')
-
-    config.source.scheme.should == 'git@github.com'
-    config.source.path.should == 'user/project.git'
-  end
-
-  it "should parse 'source' Hash URIs" do
-    config = Configuration.new(:source => {
-      'user' => 'git',
-      'host' => 'github.com',
-      'path' => 'user/project.git'
-    })
-
-    config.source.user.should == 'git'
-    config.source.host.should == 'github.com'
-    config.source.path.should == '/user/project.git'
-  end
-
   it "should parse 'dest' String URIs" do
     config = Configuration.new(
       :dest => 'ssh://user@www.example.com/srv/project'

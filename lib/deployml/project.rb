@@ -4,7 +4,6 @@ require 'deployml/exceptions/unknown_environment'
 require 'deployml/environment'
 require 'deployml/remote_shell'
 
-require 'pathname'
 require 'yaml'
 
 module DeploYML
@@ -39,11 +38,11 @@ module DeploYML
     #   in any of the common directories.
     #
     def initialize(root)
-      @root = Pathname.new(root).expand_path
-      @config_file = @root.join(CONFIG_DIR,CONFIG_FILE)
-      @environments_dir = @root.join(CONFIG_DIR,ENVIRONMENTS_DIR)
+      @root = File.expand_path(root)
+      @config_file = File.join(@root,CONFIG_DIR,CONFIG_FILE)
+      @environments_dir = File.join(@root,CONFIG_DIR,ENVIRONMENTS_DIR)
 
-      unless (@config_file.file? || @environments_dir.directory?)
+      unless (File.file?(@config_file) || File.directory?(@environments_dir))
         raise(ConfigNotFound,"could not find '#{CONFIG_FILE}' or '#{ENVIRONMENTS_DIR}' in #{root}")
       end
 
@@ -283,20 +282,18 @@ module DeploYML
         config_data
       }
 
-      if @config_file.file?
+      if File.file?(@config_file)
         base_config.merge!(load_config_data[@config_file])
       end
 
       @environments = {}
 
-      if @environments_dir.directory?
-        @environments_dir.each_child do |path|
-          if (path.file? && path.extname == '.yml')
-            config_data = base_config.merge(load_config_data[path])
-            name = path.basename.to_s.sub(/\.yml$/,'').to_sym
+      if File.directory?(@environments_dir)
+        Dir.glob(File.join(@environments_dir,'*.yml')) do |path|
+          config_data = base_config.merge(load_config_data[path])
+          name = File.basename(path).sub(/\.yml$/,'').to_sym
 
-            @environments[name] = Environment.new(name,config_data)
-          end
+          @environments[name] = Environment.new(name,config_data)
         end
       else
         @environments[:production] = Environment.new(:production,base_config)

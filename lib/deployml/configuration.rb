@@ -106,9 +106,9 @@ module DeploYML
       @source = config[:source]
       @dest = case config[:dest]
               when Hash
-                Addressable::URI.new(url)
+                Addressable::URI.new(config[:dest])
               when String
-                Addressable::URI.parse(url)
+                Addressable::URI.parse(config[:dest])
               end
 
       if config[:environment]

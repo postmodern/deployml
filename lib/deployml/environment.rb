@@ -82,13 +82,18 @@ module DeploYML
     # @yieldparam [RemoteShell] shell
     #   The remote shell.
     #
-    # @return [RemoteShell]
-    #   The remote shell.
+    # @return [RemoteShell, LocalShell]
+    #   The remote shell. If the destination is a local `file://` URI,
+    #   a local shell will be returned instead.
     #
     # @since 0.3.0
     #
     def remote_shell(&block)
-      RemoteShell.new(@dest,&block)
+      unless @dest.scheme == 'file'
+        RemoteShell.new(@dest,&block)
+      else
+        LocalShell.new(&block)
+      end
     end
 
     #

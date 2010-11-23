@@ -37,7 +37,7 @@ module DeploYML
     #   The configuration file for the project could not be found
     #   in any of the common directories.
     #
-    def initialize(root)
+    def initialize(root=Dir.pwd)
       @root = File.expand_path(root)
       @config_file = File.join(@root,CONFIG_DIR,CONFIG_FILE)
       @environments_dir = File.join(@root,CONFIG_DIR,ENVIRONMENTS_DIR)

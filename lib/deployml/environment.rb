@@ -243,6 +243,7 @@ module DeploYML
     #   The tasks to run during the deployment.
     #
     # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.4.0
     #
@@ -279,6 +280,9 @@ module DeploYML
     #
     # Sets up the deployment repository for the project.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     # @since 0.4.0
     #
     def setup!
@@ -287,6 +291,9 @@ module DeploYML
 
     #
     # Updates the deployed repository of the project.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.4.0
     #
@@ -297,6 +304,9 @@ module DeploYML
     #
     # Installs the project on the destination server.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     # @since 0.4.0
     #
     def install!
@@ -305,6 +315,9 @@ module DeploYML
 
     #
     # Migrates the database used by the project.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.4.0
     #
@@ -315,6 +328,9 @@ module DeploYML
     #
     # Configures the Web server to be ran on the destination server.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     # @since 0.4.0
     #
     def config!
@@ -323,6 +339,9 @@ module DeploYML
 
     #
     # Starts the Web server for the project.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.4.0
     #
@@ -333,6 +352,9 @@ module DeploYML
     #
     # Stops the Web server for the project.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     # @since 0.4.0
     #
     def stop!
@@ -341,6 +363,9 @@ module DeploYML
 
     #
     # Restarts the Web server for the project.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.4.0
     #
@@ -351,6 +376,9 @@ module DeploYML
     #
     # Deploys a new project.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     # @since 0.4.0
     #
     def deploy!
@@ -359,6 +387,9 @@ module DeploYML
 
     #
     # Redeploys a project.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.4.0
     #

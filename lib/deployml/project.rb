@@ -117,6 +117,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.2.0
     #
@@ -130,6 +131,9 @@ module DeploYML
     # @param [Symbol, String] env
     #   The environment to deploy to.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     def setup!(env=:production)
       environment(env).setup!
     end
@@ -139,6 +143,9 @@ module DeploYML
     #
     # @param [Symbol, String] env
     #   The environment to deploy to.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     def update!(env=:production)
       environment(env).update!
@@ -150,6 +157,9 @@ module DeploYML
     # @param [Symbol, String] env
     #   The environment to deploy to.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     def install!(env=:production)
       environment(env).install!
     end
@@ -159,6 +169,9 @@ module DeploYML
     #
     # @param [Symbol, String] env
     #   The environment to deploy to.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     def migrate!(env=:production)
       environment(env).migrate!
@@ -170,6 +183,9 @@ module DeploYML
     # @param [Symbol, String] env
     #   The environment to deploy to.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     def config!(env=:production)
       environment(env).config!
     end
@@ -179,6 +195,9 @@ module DeploYML
     #
     # @param [Symbol, String] env
     #   The environment to deploy to.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     def start!(env=:production)
       environment(env).start!
@@ -190,6 +209,9 @@ module DeploYML
     # @param [Symbol, String] env
     #   The environment to deploy to.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     def stop!(env=:production)
       environment(env).stop!
     end
@@ -200,6 +222,9 @@ module DeploYML
     # @param [Symbol, String] env
     #   The environment to deploy to.
     #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
+    #
     def restart!(env=:production)
       environment(env).restart!
     end
@@ -209,6 +234,9 @@ module DeploYML
     #
     # @param [Symbol, String] env
     #   The environment to deploy to.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.2.0
     #
@@ -221,6 +249,9 @@ module DeploYML
     #
     # @param [Symbol, String] env
     #   The environment to deploy to.
+    #
+    # @return [true]
+    #   Indicates that the tasks were successfully completed.
     #
     # @since 0.2.0
     #

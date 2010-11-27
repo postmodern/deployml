@@ -167,7 +167,7 @@ module DeploYML
     #
     def update(shell)
       shell.run 'git', 'reset', '--hard', 'HEAD'
-      shell.run 'git', 'pull'
+      shell.run 'git', 'pull', '-f'
     end
 
     #

@@ -8,6 +8,10 @@ require 'deployml/servers'
 require 'deployml/frameworks'
 
 module DeploYML
+  #
+  # Contains environment specific configuration loaded by {Project}
+  # from YAML files within `config/deploy/`.
+  #
   class Environment < Configuration
 
     # Mapping of possible 'server' names to their mixins.

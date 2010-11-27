@@ -2,6 +2,7 @@
 
 * [Source](http://github.com/postmodern/deployml)
 * [Issues](http://github.com/postmodern/deployml/issues)
+* [Documentation](http://rubydoc.info/gems/deployml/frames)
 * Postmodern (postmodern.mod3 at gmail.com)
 
 ## Description

@@ -35,6 +35,18 @@ module DeploYML
 
     protected
 
+    #
+    # Builds a `rake` task name.
+    #
+    # @param [String, Symbol] name
+    #   The name of the `rake` task.
+    #
+    # @param [Array] args
+    #   Additional arguments to pass to the `rake` task.
+    #
+    # @param [String]
+    #   The `rake` task name to be called.
+    #
     def rake_task(name,*args)
       name = name.to_s
 

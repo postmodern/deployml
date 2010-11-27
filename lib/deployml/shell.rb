@@ -1,4 +1,7 @@
 module DeploYML
+  #
+  # Provides common methods used by both {LocalShell} and {RemoteShell}.
+  #
   module Shell
 
     def initialize(&block)

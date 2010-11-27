@@ -2,6 +2,9 @@ require 'rprogram/task'
 
 module DeploYML
   module Options
+    #
+    # Maps in command-line options for the `thin` utility.
+    #
     class Thin < RProgram::Task
 
       # Default options for Thin

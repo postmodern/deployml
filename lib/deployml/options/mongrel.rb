@@ -2,8 +2,12 @@ require 'rprogram/task'
 
 module DeploYML
   module Options
+    #
+    # Maps in command-line options for the `mongrel_rails` utility.
+    #
     class Mongrel < RProgram::Task
 
+      # Default options for Mongrel
       DEFAULTS = {
         :environment => :production,
         :address => '127.0.0.1',

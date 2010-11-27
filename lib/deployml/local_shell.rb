@@ -1,6 +1,9 @@
 require 'deployml/shell'
 
 module DeploYML
+  #
+  # Represents a shell running on the local system.
+  #
   class LocalShell
 
     include Shell

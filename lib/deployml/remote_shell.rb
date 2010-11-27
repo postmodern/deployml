@@ -1,6 +1,9 @@
 require 'deployml/shell'
 
 module DeploYML
+  #
+  # Represents a shell running on a remote server.
+  #
   class RemoteShell
 
     include Shell

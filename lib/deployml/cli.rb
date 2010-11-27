@@ -4,6 +4,10 @@ require 'thor'
 require 'pathname'
 
 module DeploYML
+  #
+  # The command-line interface to {DeploYML} using
+  # [Thor](http://github.com/wycats/thor#readme).
+  #
   class CLI < Thor
 
     namespace 'deploy'

@@ -121,35 +121,7 @@ module DeploYML
     # @since 0.2.0
     #
     def invoke(tasks,env=:production)
-      env = environment(env)
-
-      env.remote_shell do |shell|
-        # setup the deployment repository
-        env.setup(shell) if tasks.include?(:setup)
-
-        # cd into the deployment repository
-        shell.cd env.dest.path
-
-        # update the deployment repository
-        env.update(shell) if tasks.include?(:update)
-
-        # framework tasks
-        env.install(shell) if tasks.include?(:install)
-        env.migrate(shell) if tasks.include?(:migrate)
-
-        # server tasks
-        if tasks.include?(:config)
-          env.server_config(shell)
-        elsif tasks.include?(:start)
-          env.server_start(shell)
-        elsif tasks.include?(:stop)
-          env.server_stop(shell)
-        elsif tasks.include?(:restart)
-          env.server_restart(shell)
-        end
-      end
-
-      return true
+      environment(env).invoke(tasks)
     end
 
     #
@@ -159,7 +131,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def setup!(env=:production)
-      invoke [:setup], env
+      environment(env).setup!
     end
 
     #
@@ -169,7 +141,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def update!(env=:production)
-      invoke [:update], env
+      environment(env).update!
     end
 
     #
@@ -179,7 +151,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def install!(env=:production)
-      invoke [:install], env
+      environment(env).install!
     end
 
     #
@@ -189,7 +161,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def migrate!(env=:production)
-      invoke [:migrate], env
+      environment(env).migrate!
     end
 
     #
@@ -199,7 +171,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def config!(env=:production)
-      invoke [:config], env
+      environment(env).config!
     end
 
     #
@@ -209,7 +181,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def start!(env=:production)
-      invoke [:start], env
+      environment(env).start!
     end
 
     #
@@ -219,7 +191,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def stop!(env=:production)
-      invoke [:stop], env
+      environment(env).stop!
     end
 
     #
@@ -229,7 +201,7 @@ module DeploYML
     #   The environment to deploy to.
     #
     def restart!(env=:production)
-      invoke [:restart], env
+      environment(env).restart!
     end
 
     #
@@ -241,7 +213,7 @@ module DeploYML
     # @since 0.2.0
     #
     def deploy!(env=:production)
-      invoke [:setup, :install, :migrate, :config, :start], env
+      environment(env).deploy!
     end
 
     #
@@ -253,7 +225,7 @@ module DeploYML
     # @since 0.2.0
     #
     def redeploy!(env=:production)
-      invoke [:update, :install, :migrate, :restart], env
+      environment(env).redeploy!
     end
 
     protected

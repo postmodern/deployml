@@ -236,6 +236,136 @@ module DeploYML
     def server_restart(shell)
     end
 
+    #
+    # Deploys the project.
+    #
+    # @param [Array<Symbol>] tasks
+    #   The tasks to run during the deployment.
+    #
+    # @return [true]
+    #
+    # @since 0.4.0
+    #
+    def invoke(tasks)
+      remote_shell do |shell|
+        # setup the deployment repository
+        setup(shell) if tasks.include?(:setup)
+
+        # cd into the deployment repository
+        shell.cd @dest.path
+
+        # update the deployment repository
+        update(shell) if tasks.include?(:update)
+
+        # framework tasks
+        install(shell) if tasks.include?(:install)
+        migrate(shell) if tasks.include?(:migrate)
+
+        # server tasks
+        if tasks.include?(:config)
+          server_config(shell)
+        elsif tasks.include?(:start)
+          server_start(shell)
+        elsif tasks.include?(:stop)
+          server_stop(shell)
+        elsif tasks.include?(:restart)
+          server_restart(shell)
+        end
+      end
+
+      return true
+    end
+
+    #
+    # Sets up the deployment repository for the project.
+    #
+    # @since 0.4.0
+    #
+    def setup!
+      invoke [:setup]
+    end
+
+    #
+    # Updates the deployed repository of the project.
+    #
+    # @since 0.4.0
+    #
+    def update!
+      invoke [:update]
+    end
+
+    #
+    # Installs the project on the destination server.
+    #
+    # @since 0.4.0
+    #
+    def install!
+      invoke [:install]
+    end
+
+    #
+    # Migrates the database used by the project.
+    #
+    # @since 0.4.0
+    #
+    def migrate!
+      invoke [:migrate]
+    end
+
+    #
+    # Configures the Web server to be ran on the destination server.
+    #
+    # @since 0.4.0
+    #
+    def config!
+      invoke [:config]
+    end
+
+    #
+    # Starts the Web server for the project.
+    #
+    # @since 0.4.0
+    #
+    def start!
+      invoke [:start]
+    end
+
+    #
+    # Stops the Web server for the project.
+    #
+    # @since 0.4.0
+    #
+    def stop!
+      invoke [:stop]
+    end
+
+    #
+    # Restarts the Web server for the project.
+    #
+    # @since 0.4.0
+    #
+    def restart!
+      invoke [:restart]
+    end
+
+    #
+    # Deploys a new project.
+    #
+    # @since 0.4.0
+    #
+    def deploy!
+      invoke [:setup, :install, :migrate, :config, :start]
+    end
+
+    #
+    # Redeploys a project.
+    #
+    # @since 0.4.0
+    #
+    def redeploy!
+      invoke [:update, :install, :migrate, :restart]
+    end
+
     protected
 
     #

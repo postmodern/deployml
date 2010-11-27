@@ -4,8 +4,8 @@ module DeploYML
   #
   module Shell
 
-    def initialize(&block)
-      block.call(self) if block
+    def initialize
+      yield self if block_given?
     end
 
     #

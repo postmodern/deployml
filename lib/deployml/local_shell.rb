@@ -39,15 +39,7 @@ module DeploYML
     #   the block has returned.
     #
     def cd(path,&block)
-      if block
-        cwd = Dir.pwd
-
-        Dir.chdir(path)
-        block.call()
-        Dir.chdir(cwd)
-      else
-        Dir.chdir(path)
-      end
+      Dir.chdir(path,&block)
     end
 
   end

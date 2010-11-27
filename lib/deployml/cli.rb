@@ -15,6 +15,12 @@ module DeploYML
     desc 'exec', 'Runs a command on the deploy server'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Executes a command in the specified environment.
+    #
+    # @param [String] command
+    #   The full command to execute.
+    #
     def exec(command)
       environment.exec(command)
     end
@@ -23,6 +29,12 @@ module DeploYML
     method_option :environment, :type => :string, :default => 'production'
     method_option :args, :type => :array
 
+    #
+    # Invokes a rake task in the specified environment.
+    #
+    # @param [String] task
+    #   The name of the rake task.
+    #
     def rake(task)
       environment.rake(task,*(options[:args]))
     end
@@ -30,12 +42,19 @@ module DeploYML
     desc 'ssh', 'Starts a SSH session with the deploy server'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Starts an SSH session with the specified environment.
+    #
     def ssh
       environment.ssh
     end
 
     desc 'setup', 'Sets up the deployment repository for the project'
     method_option :environment, :type => :string, :default => 'production'
+
+    #
+    # Sets up the specified environment.
+    #
     def setup
       status 'Setting up ...'
 
@@ -47,6 +66,9 @@ module DeploYML
     desc 'update', 'Updates the deployment repository of the project'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Updates the deployment repository of the specified environment.
+    #
     def update
       status 'Updating'
 
@@ -57,6 +79,10 @@ module DeploYML
 
     desc 'install', 'Installs the project on the deploy server'
     method_option :environment, :type => :string, :default => 'production'
+
+    #
+    # Installs any needed dependencies in the specified environment.
+    #
     def install
       status 'Installing ...'
 
@@ -68,6 +94,9 @@ module DeploYML
     desc 'migrate', 'Migrates the database for the project'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Migrates the database for the specified environment.
+    #
     def migrate
       status 'Migrating ...'
 
@@ -78,6 +107,10 @@ module DeploYML
 
     desc 'config', 'Configures the server for the project'
     method_option :environment, :type => :string, :default => 'production'
+
+    #
+    # Configures the server for the specified environment.
+    #
     def config
       status 'Configuring ...'
 
@@ -89,6 +122,9 @@ module DeploYML
     desc 'start', 'Starts the server for the project'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Starts the server in the specified environment.
+    #
     def start
       status 'Starting ...'
 
@@ -100,6 +136,9 @@ module DeploYML
     desc 'stop', 'Stops the server for the project'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Stops the server in the specified environment.
+    #
     def stop
       status 'Stopping ...'
 
@@ -111,6 +150,9 @@ module DeploYML
     desc 'restart', 'Restarts the server for the project'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Restarts the server in the specified environment.
+    #
     def restart
       status 'Restarting ...'
 
@@ -122,6 +164,9 @@ module DeploYML
     desc 'deploy', 'Cold-Deploys a new project'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Cold-deploys into the specified environment.
+    #
     def deploy
       status 'Deploying ...'
 
@@ -133,6 +178,9 @@ module DeploYML
     desc 'redeploy', 'Redeploys the project'
     method_option :environment, :type => :string, :default => 'production'
 
+    #
+    # Redeploys into the specified environment.
+    #
     def redeploy
       status 'Redeploying ...'
 
@@ -193,6 +241,12 @@ module DeploYML
       project.environment(options[:environment])
     end
 
+    #
+    # Prints a status message.
+    #
+    # @param [String] message
+    #   The message to print.
+    #
     def status(message)
       shell.say_status "[#{options[:environment]}]", message
     end

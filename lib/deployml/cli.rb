@@ -14,6 +14,7 @@ module DeploYML
 
     desc 'exec', 'Runs a command on the deploy server'
     method_option :environment, :type => :string, :default => 'production'
+
     def exec(command)
       environment.exec(command)
     end
@@ -21,12 +22,14 @@ module DeploYML
     desc 'rake', 'Executes a rake task on the deploy server'
     method_option :environment, :type => :string, :default => 'production'
     method_option :args, :type => :array
+
     def rake(task)
       environment.rake(task,*(options[:args]))
     end
 
     desc 'ssh', 'Starts a SSH session with the deploy server'
     method_option :environment, :type => :string, :default => 'production'
+
     def ssh
       environment.ssh
     end
@@ -43,6 +46,7 @@ module DeploYML
 
     desc 'update', 'Updates the deployment repository of the project'
     method_option :environment, :type => :string, :default => 'production'
+
     def update
       status 'Updating'
 
@@ -63,6 +67,7 @@ module DeploYML
 
     desc 'migrate', 'Migrates the database for the project'
     method_option :environment, :type => :string, :default => 'production'
+
     def migrate
       status 'Migrating ...'
 

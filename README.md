@@ -115,7 +115,7 @@ List available tasks:
 
 ## Requirements
 
-* [ruby](http://www.ruby-lang.org/) >= 1.8.7
+* [ruby](http://www.ruby-lang.org/) >= 1.8.6
 * [addressable](http://addressable.rubyforge.org/) ~> 2.2.0
 * [rprogram](http://github.com/postmodern/rprogram) ~> 0.2.0
 * [thor](http://github.com/wycats/thor) ~> 0.14.3

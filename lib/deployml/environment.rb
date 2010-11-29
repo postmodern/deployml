@@ -254,27 +254,52 @@ module DeploYML
     def invoke(tasks)
       remote_shell do |shell|
         # setup the deployment repository
-        setup(shell) if tasks.include?(:setup)
+        if tasks.include?(:setup)
+          shell.status "Cloning #{@source} ..."
+          setup(shell)
+          shell.status "Cloned."
+        end
 
         # cd into the deployment repository
         shell.cd @dest.path
 
         # update the deployment repository
-        update(shell) if tasks.include?(:update)
+        if tasks.include?(:update)
+          shell.status "Updating #{@dest.path} ..."
+          update(shell)
+          shell.status "Updated."
+        end
 
         # framework tasks
-        install(shell) if tasks.include?(:install)
-        migrate(shell) if tasks.include?(:migrate)
+        if tasks.include?(:install)
+          shell.status "Installing additional dependencies ..."
+          install(shell)
+          shell.status "Installed."
+        end
+
+        if tasks.include?(:migrate)
+          shell.status "Migrating database ..."
+          migrate(shell)
+          shell.status "Database migrated."
+        end
 
         # server tasks
         if tasks.include?(:config)
+          shell.status "Configuring server ..."
           server_config(shell)
+          shell.status "Server configured."
         elsif tasks.include?(:start)
+          shell.status "Starting server ..."
           server_start(shell)
+          shell.status "Server started."
         elsif tasks.include?(:stop)
+          shell.status "Stopping server ..."
           server_stop(shell)
+          shell.status "Server stopped."
         elsif tasks.include?(:restart)
+          shell.status "Restarting server ..."
           server_restart(shell)
+          shell.status "Server restarted."
         end
       end
 

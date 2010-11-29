@@ -13,29 +13,6 @@ module DeploYML
     end
 
     #
-    # Place-holder method.
-    #
-    # @param [String] program
-    #   The name or path of the program to run.
-    #
-    # @param [Array<String>] args
-    #   Additional arguments for the program.
-    #
-    def run(program,*args)
-    end
-
-    #
-    # Place-holder method.
-    #
-    # @param [String] message
-    #   Message to echo.
-    #
-    # @since 0.4.0
-    #
-    def echo(message)
-    end
-
-    #
     # Executes a Rake task.
     #
     # @param [Symbol, String] task

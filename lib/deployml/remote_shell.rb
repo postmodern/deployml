@@ -12,6 +12,9 @@ module DeploYML
     include Shell
     include Shellwords
 
+    # The URI of the remote shell
+    attr_reader :uri
+
     #
     # Initializes a remote shell session.
     #

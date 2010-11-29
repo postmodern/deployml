@@ -21,6 +21,17 @@ module DeploYML
     end
 
     #
+    # Place-holder method.
+    #
+    # @param [String] message
+    #   Message to echo.
+    #
+    # @since 0.4.0
+    #
+    def echo(message)
+    end
+
+    #
     # Executes a Rake task.
     #
     # @param [Symbol, String] task
@@ -31,6 +42,18 @@ module DeploYML
     #
     def rake(task,*args)
       run 'rake', rake_task(task,*args)
+    end
+
+    #
+    # Prints a status message.
+    #
+    # @param [String] message
+    #   The message to print.
+    #
+    # @since 0.4.0
+    #
+    def status(message)
+      echo ">>> #{message}".dump
     end
 
     protected

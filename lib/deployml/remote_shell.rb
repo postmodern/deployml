@@ -125,8 +125,11 @@ module DeploYML
         options += ['-p', @uri.port.to_s]
       end
 
+      # append the SSH URI
       options << ssh_uri
-      options += args
+
+      # append the additional arguments
+      args.each { |arg| options << arg.to_s }
 
       return system('ssh',*options)
     end

@@ -18,6 +18,9 @@ module DeploYML
     #   Additional arguments for the program.
     #
     def run(program,*args)
+      program = program.to_s
+      args = args.map { |arg| arg.to_s }
+
       system(program,*args)
     end
 

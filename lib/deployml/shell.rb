@@ -34,7 +34,7 @@ module DeploYML
     # @since 0.4.0
     #
     def status(message)
-      echo "#{Color::GREEN}\\>\\>\\> #{message}#{Color::CLEAR}"
+      echo "#{Color::GREEN}>>> #{message}#{Color::CLEAR}"
     end
 
     protected

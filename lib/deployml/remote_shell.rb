@@ -1,6 +1,7 @@
 require 'deployml/shell'
 
 require 'addressable/uri'
+require 'shellwords'
 
 module DeploYML
   #
@@ -9,6 +10,7 @@ module DeploYML
   class RemoteShell
 
     include Shell
+    include Shellwords
 
     #
     # Initializes a remote shell session.
@@ -88,7 +90,9 @@ module DeploYML
     #   A single command string.
     #
     def join
-      @history.map { |command| command.join(' ') }.join(' && ')
+      @history.map { |command|
+        command.map { |word| shellescape(word) }.join(' ')
+      }.join(' && ')
     end
 
     #

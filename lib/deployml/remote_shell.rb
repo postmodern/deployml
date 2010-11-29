@@ -78,12 +78,11 @@ module DeploYML
     #   If a block is given, then the directory will be changed back after
     #   the block has returned.
     #
-    def cd(path,&block)
+    def cd(path)
       @history << ['cd', path]
 
-      if block
-        block.call() if block
-
+      if block_given?
+        yield
         @history << ['cd', '-']
       end
     end

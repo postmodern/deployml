@@ -1,3 +1,27 @@
+### 0.4.0 / 2010-11-29
+
+* Require addressable ~> 2.2.0.
+* Added methods to {DeploYML::Environment} inorder to mirror
+  {DeploYML::Project}:
+  * `invoke`
+  * `setup!`
+  * `update!`
+  * `install!`
+  * `migrate!`
+  * `config!`
+  * `start!`
+  * `stop!`
+* Added {DeploYML::Shell#status} for printing ANSI colored status messages.
+* Added missing documentation.
+* Give the root directory passed to {DeploYML::Project#initialize} the
+  default of `Dir.pwd`.
+* If the destination URI has the scheme of `file:`, have
+  {DeploYML::Environment#remote_shell} return a {DeploYML::LocalShell}.
+  * This should facilitate local deploys.
+* Perform a forced pull in {DeploYML::Environment#update}.
+* Override {DeploYML::Environment#rake} in {DeploYML::Frameworks::Rails}.
+* Escape all arguments of all commands in {DeploYML::RemoteShell#join}.
+
 ### 0.3.0 / 2010-11-21
 
 * Initial release:

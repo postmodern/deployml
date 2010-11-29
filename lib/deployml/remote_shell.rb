@@ -56,7 +56,7 @@ module DeploYML
     # @param [String] message
     #   The message to echo.
     #
-    def each(message)
+    def echo(message)
       run 'echo', message
     end
 

@@ -1,8 +1,12 @@
+require 'thor/shell/color'
+
 module DeploYML
   #
   # Provides common methods used by both {LocalShell} and {RemoteShell}.
   #
   module Shell
+
+    include Thor::Shell
 
     def initialize
       yield self if block_given?
@@ -53,7 +57,7 @@ module DeploYML
     # @since 0.4.0
     #
     def status(message)
-      echo ">>> #{message}".dump
+      echo "#{Color::GREEN}>>> #{message}#{Color::CLEAR}"
     end
 
     protected

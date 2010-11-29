@@ -13,7 +13,9 @@ module DeploYML
     namespace 'deploy'
 
     desc 'exec', 'Runs a command on the deploy server'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Executes a command in the specified environment.
@@ -26,7 +28,9 @@ module DeploYML
     end
 
     desc 'rake', 'Executes a rake task on the deploy server'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
     method_option :args, :type => :array
 
     #
@@ -40,7 +44,9 @@ module DeploYML
     end
 
     desc 'ssh', 'Starts a SSH session with the deploy server'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Starts an SSH session with the specified environment.
@@ -50,7 +56,9 @@ module DeploYML
     end
 
     desc 'setup', 'Sets up the deployment repository for the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Sets up the specified environment.
@@ -64,7 +72,9 @@ module DeploYML
     end
 
     desc 'update', 'Updates the deployment repository of the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Updates the deployment repository of the specified environment.
@@ -78,7 +88,9 @@ module DeploYML
     end
 
     desc 'install', 'Installs the project on the deploy server'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Installs any needed dependencies in the specified environment.
@@ -92,7 +104,9 @@ module DeploYML
     end
 
     desc 'migrate', 'Migrates the database for the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Migrates the database for the specified environment.
@@ -106,7 +120,9 @@ module DeploYML
     end
 
     desc 'config', 'Configures the server for the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Configures the server for the specified environment.
@@ -120,7 +136,9 @@ module DeploYML
     end
 
     desc 'start', 'Starts the server for the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Starts the server in the specified environment.
@@ -134,7 +152,9 @@ module DeploYML
     end
 
     desc 'stop', 'Stops the server for the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Stops the server in the specified environment.
@@ -148,7 +168,9 @@ module DeploYML
     end
 
     desc 'restart', 'Restarts the server for the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Restarts the server in the specified environment.
@@ -162,7 +184,9 @@ module DeploYML
     end
 
     desc 'deploy', 'Cold-Deploys a new project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Cold-deploys into the specified environment.
@@ -176,7 +200,9 @@ module DeploYML
     end
 
     desc 'redeploy', 'Redeploys the project'
-    method_option :environment, :type => :string, :default => 'production'
+    method_option :environment, :type => :string,
+                                :default => 'production',
+                                :aliases => '-E'
 
     #
     # Redeploys into the specified environment.

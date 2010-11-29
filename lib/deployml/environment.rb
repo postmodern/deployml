@@ -274,7 +274,7 @@ module DeploYML
         if tasks.include?(:install)
           shell.status "Installing additional dependencies ..."
           install(shell)
-          shell.status "Installed."
+          shell.status "Dependencies installed."
         end
 
         if tasks.include?(:migrate)

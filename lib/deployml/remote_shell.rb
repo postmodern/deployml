@@ -15,6 +15,9 @@ module DeploYML
     # The URI of the remote shell
     attr_reader :uri
 
+    # The history of the Remote Shell
+    attr_reader :history
+
     #
     # Initializes a remote shell session.
     #

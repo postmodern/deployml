@@ -1,5 +1,7 @@
 require 'deployml/shell'
 
+require 'addressable/uri'
+
 module DeploYML
   #
   # Represents a shell running on a remote server.

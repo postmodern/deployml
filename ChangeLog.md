@@ -1,3 +1,13 @@
+### 0.4.1 / 2010-12-02
+
+* Added support for Ruby 1.8.6.
+* Added {DeploYML::Configuration#bundler}.
+* Auto-detect usage of [Bundler](http://gembundler.com/) by checking for a
+  `Gemfile` in project directories.
+* Fixed a Ruby 1.8.x specific bug where non-Strings were being passed to
+  `Kernel.system`.
+* Only print status messages if the mixin is enabled.
+
 ### 0.4.0 / 2010-11-29
 
 * Require addressable ~> 2.2.0.

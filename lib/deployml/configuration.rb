@@ -24,6 +24,9 @@ module DeploYML
     # The destination URI to upload the project to.
     attr_reader :dest
 
+    # Whether the project uses Bundler.
+    attr_reader :bundler
+
     # The framework used by the project
     attr_reader :framework
 
@@ -48,6 +51,10 @@ module DeploYML
     # @option config [String, Hash] :dest
     #   The destination URI to upload the project to.
     #
+    # @option config [Boolean] :bundler
+    #   Specifies whether the projects dependencies are controlled by
+    #   [Bundler](http://gembundler.com).
+    #
     # @option config [Symbol] :framework
     #   The framework used by the project.
     #
@@ -70,6 +77,7 @@ module DeploYML
       @server_name = nil
       @server_options = {}
 
+      @bundler = false
       @framework = nil
       @orm = nil
 
@@ -77,6 +85,8 @@ module DeploYML
       @debug = false
 
       config = normalize_hash(config)
+
+      @bundler = config[:bundler]
 
       if config[:framework]
         @framework = config[:framework].to_sym

@@ -262,41 +262,68 @@ module DeploYML
     protected
 
     #
-    # Loads the project configuration.
+    # Infers the configuration from the project root directory.
+    #
+    # @return [Hash{Symbol => Object}]
+    #   The infered configuration.
+    #
+    # @since 0.4.1
+    #
+    def infer_configuration
+      config = {}
+
+      # check for Bundler
+      if File.file?(File.join(@root,'Gemfile'))
+        config[:bundler] = true
+      end
+
+      return config
+    end
+
+    #
+    # Loads configuration from a YAML file.
+    #
+    # @param [String] path
+    #   The path to the configuration file.
+    #
+    # @return [Hash]
+    #   The loaded configuration.
     #
     # @raise [InvalidConfig]
-    #   The YAML configuration file did not contain a Hash.
+    #   The configuration file did not contain a YAML Hash.
     #
-    # @raise [MissingOption]
-    #   The `source` or `dest` options were not specified.
+    # @since 0.4.1
+    #
+    def load_configuration(path)
+      config = YAML.load_file(path)
+
+      unless config.kind_of?(Hash)
+        raise(InvalidConfig,"DeploYML file #{path.dump} does not contain a Hash")
+      end
+
+      return config
+    end
+
+    #
+    # Loads the project configuration.
     #
     # @since 0.3.0
     #
     def load_environments!
-      base_config = {}
-
-      load_config_data = lambda { |path|
-        config_data = YAML.load_file(path)
-
-        unless config_data.kind_of?(Hash)
-          raise(InvalidConfig,"DeploYML file '#{path}' does not contain a Hash")
-        end
-
-        config_data
-      }
+      base_config = infer_configuration
 
       if File.file?(@config_file)
-        base_config.merge!(load_config_data[@config_file])
+        base_config.merge!(load_configuration(@config_file))
       end
 
       @environments = {}
 
       if File.directory?(@environments_dir)
         Dir.glob(File.join(@environments_dir,'*.yml')) do |path|
-          config_data = base_config.merge(load_config_data[path])
+          config = base_config.merge(load_configuration(path))
           name = File.basename(path).sub(/\.yml$/,'').to_sym
 
-          @environments[name] = Environment.new(name,config_data)
+          @environments[name] = Environment.new(name,config)
         end
       else
         @environments[:production] = Environment.new(:production,base_config)

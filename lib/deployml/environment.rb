@@ -183,7 +183,7 @@ module DeploYML
     end
 
     #
-    # Place-holder method.
+    # Installs any additional dependencies.
     #
     # @param [RemoteShell] shell
     #   The remote shell to execute commands through.
@@ -191,6 +191,13 @@ module DeploYML
     # @since 0.3.0
     #
     def install(shell)
+      if @bundler
+        shell.status "Bundling dependencies ..."
+
+        shell.run 'bundle', 'install', '--deployment'
+
+        shell.status "Dependencies bundled."
+      end
     end
 
     #

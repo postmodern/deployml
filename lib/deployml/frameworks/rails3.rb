@@ -9,20 +9,6 @@ module DeploYML
       include Rails
 
       #
-      # Installs any dependencies using `bundle install --deployment`.
-      #
-      # @param [LocalShell, RemoteShell] shell
-      #   The shell to execute commands in.
-      #
-      def install(shell)
-        shell.status "Bundling dependencies ..."
-
-        shell.run 'bundle', 'install', '--deployment'
-
-        shell.status "Dependencies bundled."
-      end
-
-      #
       # Migrates the database using the `db:autoupgrade` if
       # [DataMapper](http://datamapper.org) is being used, or the typical
       # `db:migrate` task.

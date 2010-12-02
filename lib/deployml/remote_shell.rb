@@ -94,7 +94,7 @@ module DeploYML
     #
     def join
       @history.map { |command|
-        command.map { |word| shellescape(word) }.join(' ')
+        command.map { |word| shellescape(word.to_s) }.join(' ')
       }.join(' && ')
     end
 

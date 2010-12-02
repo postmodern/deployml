@@ -15,7 +15,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def migrate(shell)
+        shell.status "Migrating the ActiveRecord Database ..."
+
         shell.run 'rake', 'db:migrate', "RAILS_ENV=#{@environment}"
+
+        shell.status "ActiveRecord Database migrated."
       end
     end
   end

@@ -158,7 +158,11 @@ module DeploYML
     # @since 0.3.0
     #
     def setup(shell)
+      shell.status "Cloning #{@source} ..."
+
       shell.run 'git', 'clone', '--depth', 1, @source, @dest.path
+
+      shell.status "Cloned."
     end
 
     #
@@ -170,8 +174,12 @@ module DeploYML
     # @since 0.3.0
     #
     def update(shell)
+      shell.status "Updating #{@dest.path} ..."
+
       shell.run 'git', 'reset', '--hard', 'HEAD'
       shell.run 'git', 'pull', '-f'
+
+      shell.status "Updated."
     end
 
     #
@@ -254,52 +262,28 @@ module DeploYML
     def invoke(tasks)
       remote_shell do |shell|
         # setup the deployment repository
-        if tasks.include?(:setup)
-          shell.status "Cloning #{@source} ..."
-          setup(shell)
-          shell.status "Cloned."
-        end
+        setup(shell) if tasks.include?(:setup)
 
         # cd into the deployment repository
         shell.cd @dest.path
 
         # update the deployment repository
-        if tasks.include?(:update)
-          shell.status "Updating #{@dest.path} ..."
-          update(shell)
-          shell.status "Updated."
-        end
+        update(shell) if tasks.include?(:update)
 
         # framework tasks
-        if tasks.include?(:install)
-          shell.status "Installing additional dependencies ..."
-          install(shell)
-          shell.status "Dependencies installed."
-        end
+        install(shell) if tasks.include?(:install)
 
-        if tasks.include?(:migrate)
-          shell.status "Migrating database ..."
-          migrate(shell)
-          shell.status "Database migrated."
-        end
+        migrate(shell) if tasks.include?(:migrate)
 
         # server tasks
         if tasks.include?(:config)
-          shell.status "Configuring server ..."
           server_config(shell)
-          shell.status "Server configured."
         elsif tasks.include?(:start)
-          shell.status "Starting server ..."
           server_start(shell)
-          shell.status "Server started."
         elsif tasks.include?(:stop)
-          shell.status "Stopping server ..."
           server_stop(shell)
-          shell.status "Server stopped."
         elsif tasks.include?(:restart)
-          shell.status "Restarting server ..."
           server_restart(shell)
-          shell.status "Server restarted."
         end
       end
 

@@ -15,7 +15,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def install(shell)
+        shell.status "Bundling dependencies ..."
+
         shell.run 'bundle', 'install', '--deployment'
+
+        shell.status "Dependencies bundled."
       end
 
       #
@@ -27,14 +31,16 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def migrate(shell)
-        task = case @orm
-               when :datamapper
-                 'db:autoupgrade'
-               else
-                 'db:migrate'
-               end
+        case @orm
+        when :datamapper
+          shell.status "Running DataMapper auto-upgrades ..."
+          shell.run 'rake', 'db:autoupgrade', "RAILS_ENV=#{@environment}"
+        else
+          shell.status "Running ActiveRecord migrations ..."
+          shell.run 'rake', 'db:migrate', "RAILS_ENV=#{@environment}"
+        end
 
-        shell.run 'rake', task, "RAILS_ENV=#{@environment}"
+        shell.status "Database migrated."
       end
     end
   end

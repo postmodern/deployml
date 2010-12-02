@@ -14,7 +14,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_start(shell)
+        shell.status "Starting Apache ..."
+
         shell.run 'apachectl', 'start'
+
+        shell.status "Apache started."
       end
 
       #
@@ -24,7 +28,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_restart(shell)
+        shell.status "Restarting Apache ..."
+
         shell.run 'apachectl', 'restart'
+
+        shell.status "Apache restarted."
       end
 
       #
@@ -34,7 +42,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_stop(shell)
+        shell.status "Stopping Apache ..."
+
         shell.run 'apachectl', 'stop'
+
+        shell.status "Apache stoped."
       end
     end
   end

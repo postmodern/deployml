@@ -46,9 +46,12 @@ module DeploYML
           raise(MissingOption,"No 'config' option specified under server options",caller)
         end
 
-        options = ['-c', dest.path] + @mongrel.arguments
+        shell.status "Configuring Mongrel ..."
 
+        options = ['-c', dest.path] + @mongrel.arguments
         shell.run 'mongrel_rails', 'cluster::configure', *options
+
+        shell.status "Mongrel configured."
       end
 
       #
@@ -58,7 +61,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_start(shell)
+        shell.status "Starting Mongrel(s) ..."
+
         mongrel_cluster 'cluster::start'
+
+        shell.status "Mongrel(s) started."
       end
 
       #
@@ -68,7 +75,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_stop(shell)
+        shell.status "Stopping Mongrel(s) ..."
+
         mongrel_cluster 'cluster::stop'
+
+        shell.status "Mongrel(s) stopped."
       end
 
       #
@@ -78,7 +89,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_restart(shell)
+        shell.status "Restarting Mongrel(s) ..."
+
         mongrel_cluster 'cluster::restart'
+
+        shell.status "Mongrel(s) restarted."
       end
     end
   end

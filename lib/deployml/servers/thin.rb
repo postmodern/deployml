@@ -46,9 +46,12 @@ module DeploYML
           raise(MissingOption,"No 'config' option specified under the server options",caller)
         end
 
-        options = ['-c', dest.path] + @thin.arguments
+        shell.status "Configuring Thin ..."
 
+        options = ['-c', dest.path] + @thin.arguments
         shell.run 'thin', 'config', *options
+
+        shell.status "Thin configured."
       end
 
       #
@@ -58,7 +61,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_start(shell)
+        shell.status "Starting Thin ..."
+
         thin shell, 'start'
+
+        shell.status "Thin started."
       end
 
       #
@@ -68,7 +75,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_stop(shell)
+        shell.status "Stopping Thin ..."
+
         thin shell, 'stop'
+
+        shell.status "Thin stopped."
       end
 
       #
@@ -78,7 +89,11 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def server_restart(shell)
+        shell.status "Restarting Thin ..."
+
         thin shell, 'restart'
+
+        shell.status "Thin restarted."
       end
     end
   end

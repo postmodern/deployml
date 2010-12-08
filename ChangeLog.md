@@ -1,4 +1,4 @@
-### 0.4.1 / 2010-12-02
+### 0.4.1 / 2010-12-08
 
 * Added support for Ruby 1.8.6.
 * Added {DeploYML::Configuration#bundler}.

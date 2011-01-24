@@ -4,7 +4,7 @@ require 'deployml/options/mongrel'
 module DeploYML
   module Servers
     #
-    # Provides methods for configuring, starting, stoping and restarting
+    # Provides methods for configuring, starting, stopping and restarting
     # the [Mongrel](https://github.com/fauna/mongrel) web server.
     #
     module Mongrel

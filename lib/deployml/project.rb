@@ -72,7 +72,7 @@ module DeploYML
     end
 
     #
-    # Conveniance method for accessing the development environment.
+    # Convenience method for accessing the development environment.
     #
     # @return [Environment]
     #   The development environment.
@@ -84,7 +84,7 @@ module DeploYML
     end
 
     #
-    # Conveniance method for accessing the staging environment.
+    # Convenience method for accessing the staging environment.
     #
     # @return [Environment]
     #   The staging environment.
@@ -96,7 +96,7 @@ module DeploYML
     end
 
     #
-    # Conveniance method for accessing the production environment.
+    # Convenience method for accessing the production environment.
     #
     # @return [Environment]
     #   The production environment.
@@ -265,7 +265,7 @@ module DeploYML
     # Infers the configuration from the project root directory.
     #
     # @return [Hash{Symbol => Object}]
-    #   The infered configuration.
+    #   The inferred configuration.
     #
     # @since 0.4.1
     #

@@ -3,7 +3,7 @@ require 'deployml/exceptions/invalid_config'
 module DeploYML
   module Servers
     #
-    # Provides methods for starting, stoping and restarting the
+    # Provides methods for starting, stopping and restarting the
     # [Apache](http://httpd.apache.org/) web server.
     #
     module Apache

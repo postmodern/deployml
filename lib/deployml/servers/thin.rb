@@ -4,7 +4,7 @@ require 'deployml/options/thin'
 module DeploYML
   module Servers
     #
-    # Provides methods for configuring, starting, stoping and restarting
+    # Provides methods for configuring, starting, stopping and restarting
     # the [Thin](http://code.macournoyer.com/thin/) web server.
     #
     module Thin

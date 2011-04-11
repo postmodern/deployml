@@ -1,3 +1,10 @@
+### 0.4.2 / 2011-04-11
+
+* Require rprogram ~> 0.2.
+* Fixed a typo in `gemspec.yml` which crashed the Psych YAML parser.
+* Fixed typos in documentation.
+* Opt-in to [test.rubygems.org](http://test.rubygems.org/)
+
 ### 0.4.1 / 2010-12-08
 
 * Added support for Ruby 1.8.6.

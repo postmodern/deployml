@@ -42,6 +42,19 @@ describe Configuration do
     dest.path.should == '/srv/project'
   end
 
+  it "should parse 'dest' Arrays of URIs" do
+    config = Configuration.new(:dest => %w[
+      ssh://deploy@dev1.example.com/var/www/project1
+      ssh://deploy@dev2.example.com/var/www/project1
+      ssh://deploy@dev3.example.com/var/www/project1
+    ])
+    dest = config.dest
+
+    dest[0].host.should == 'dev1.example.com'
+    dest[1].host.should == 'dev2.example.com'
+    dest[2].host.should == 'dev3.example.com'
+  end
+
   it "should default the 'debug' option to false" do
     config = Configuration.new
 

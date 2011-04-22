@@ -125,6 +125,21 @@ module DeploYML
     protected
 
     #
+    # Normalizes an Array.
+    #
+    # @param [Array] array
+    #   The Array to normalize.
+    #
+    # @return [Array]
+    #   The normalized Array.
+    #
+    # @since 0.5.0
+    #
+    def normalize_array(array)
+      array.map { |value| normalize(value) }
+    end
+
+    #
     # Converts all the keys of a Hash to Symbols.
     #
     # @param [Hash{Object => Object}] hash
@@ -137,14 +152,32 @@ module DeploYML
       new_hash = {}
 
       hash.each do |key,value|
-        new_hash[key.to_sym] = if value.kind_of?(Hash)
-                                 normalize_hash(value)
-                               else
-                                 value
-                               end
+        new_hash[key.to_sym] = normalize(value)
       end
 
       return new_hash
+    end
+
+    #
+    # Normalizes a value.
+    #
+    # @param [Hash, Array, Object] value
+    #   The value to normalize.
+    #
+    # @return [Hash, Array, Object]
+    #   The normalized value.
+    #
+    # @since 0.5.0
+    #
+    def normalize(value)
+      case value
+      when Hash
+        normalize_hash(value)
+      when Array
+        normalize_array(value)
+      else
+        value
+      end
     end
 
     #

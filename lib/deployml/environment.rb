@@ -181,12 +181,12 @@ module DeploYML
     # @since 0.3.0
     #
     def update(shell)
-      shell.status "Updating #{shell.uri.path} ..."
+      shell.status "Updating #{shell.uri} ..."
 
       shell.run 'git', 'reset', '--hard', 'HEAD'
       shell.run 'git', 'pull', '-f'
 
-      shell.status "Updated."
+      shell.status "Updated #{shell.uri}."
     end
 
     #

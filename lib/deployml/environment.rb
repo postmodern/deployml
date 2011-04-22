@@ -432,7 +432,7 @@ module DeploYML
 
         extend FRAMEWORKS[@framework]
 
-        initialize_framework() if self.respond_to?(:initialize_framework)
+        initialize_framework if respond_to?(:initialize_framework)
       end
     end
 
@@ -451,7 +451,7 @@ module DeploYML
 
         extend SERVERS[@server_name]
 
-        initialize_server() if self.respond_to?(:initialize_server)
+        initialize_server if respond_to?(:initialize_server)
       end
     end
 

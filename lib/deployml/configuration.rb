@@ -215,7 +215,7 @@ module DeploYML
     def parse_dest(dest)
       case dest
       when Array
-        dest.map { |dest| parse_address(dest) }
+        dest.map { |address| parse_address(address) }
       else
         parse_address(dest)
       end

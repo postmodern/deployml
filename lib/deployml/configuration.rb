@@ -1,4 +1,5 @@
 require 'deployml/exceptions/missing_option'
+require 'deployml/exceptions/invalid_config'
 
 require 'addressable/uri'
 
@@ -48,8 +49,8 @@ module DeploYML
     # @option config [String] :source
     #   The source URI of the project Git repository.
     #
-    # @option config [String, Hash] :dest
-    #   The destination URI to upload the project to.
+    # @option config [Array<String, Hash>, String, Hash] :dest
+    #   The destination URI(s) to upload the project to.
     #
     # @option config [Boolean] :bundler
     #   Specifies whether the projects dependencies are controlled by
@@ -71,62 +72,53 @@ module DeploYML
     #   The `server` option Hash did not contain a `name` option.
     #
     def initialize(config={})
-      @source = nil
-      @dest = nil
-
-      @server_name = nil
-      @server_options = {}
-
-      @bundler = false
-      @framework = nil
-      @orm = nil
-
-      @environment = nil
-      @debug = false
-
       config = normalize_hash(config)
 
-      @bundler = config[:bundler]
+      @bundler = config.fetch(:bundler,false)
 
-      if config[:framework]
-        @framework = config[:framework].to_sym
-      end
+      @framework = if config[:framework]
+                     config[:framework].to_sym
+                   end
 
-      if config[:orm]
-        @orm = config[:orm].to_sym
-      end
+      @orm = if config[:orm]
+               config[:orm].to_sym
+             end
 
-      case config[:server]
-      when Symbol, String
-        @server_name = config[:server].to_sym
-      when Hash
-        unless config[:server].has_key?(:name)
-          raise(MissingOption,"the 'server' option must contain a 'name' option for which server to use",caller)
-        end
-
-        if config[:server].has_key?(:name)
-          @server_name = config[:server][:name].to_sym
-        end
-
-        if config[:server].has_key?(:options)
-          @server_options.merge!(config[:server][:options])
-        end
-      end
+      @server_name, @server_options = parse_server(config[:server])
 
       @source = config[:source]
-      @dest = case config[:dest]
-              when Hash
-                Addressable::URI.new(config[:dest])
-              when String
-                Addressable::URI.parse(config[:dest])
+      @dest = if config[:dest]
+                parse_dest(config[:dest])
               end
 
-      if config[:environment]
-        @environment = config[:environment].to_sym
-      end
+      @environment = if config[:environment]
+                       config[:environment].to_sym
+                     end
 
-      if config[:debug]
-        @debug = config[:debug]
+      @debug = config.fetch(:debug,false)
+    end
+
+    #
+    # Iterates over each destination.
+    #
+    # @yield [dest]
+    #   The given block will be passed each destination URI.
+    #
+    # @yieldparam [Addressable::URI] dest
+    #   A destination URI.
+    #
+    # @return [Enumerator]
+    #   If no block is given, an Enumerator object will be returned.
+    #
+    # @since 0.5.0
+    #
+    def each_dest(&block)
+      return enum_for(:each_dest) unless block_given?
+
+      if @dest.kind_of?(Array)
+        @dest.each(&block)
+      elsif @dest
+        yield @dest
       end
     end
 
@@ -153,6 +145,80 @@ module DeploYML
       end
 
       return new_hash
+    end
+
+    #
+    # Parses the value for the `server` setting.
+    #
+    # @return [Array<Symbol, Hash>]
+    #   The name of the server and additional options.
+    #
+    # @since 0.5.0
+    #
+    def parse_server(server)
+      name = nil
+      options = {}
+
+      case server
+      when Symbol, String
+        name = server.to_sym
+      when Hash
+        unless server.has_key?(:name)
+          raise(MissingOption,"the 'server' option must contain a 'name' option for which server to use",caller)
+        end
+
+        if server.has_key?(:name)
+          name = server[:name].to_sym
+        end
+
+        if server.has_key?(:options)
+          options.merge!(server[:options])
+        end
+      end
+
+      return [name, options]
+    end
+
+    #
+    # Parses an address.
+    #
+    # @param [Hash, String] address
+    #   The address to parse.
+    #
+    # @return [Addressable::URI]
+    #   The parsed address.
+    #
+    # @since 0.5.0
+    #
+    def parse_address(address)
+      case address
+      when Hash
+        Addressable::URI.new(address)
+      when String
+        Addressable::URI.parse(address)
+      else
+        raise(InvalidConfig,"invalid address: #{address.inspect}")
+      end
+    end
+
+    #
+    # Parses the value for the `dest` setting.
+    #
+    # @param [Array, Hash, String] dest
+    #   The value of the `dest` setting.
+    #
+    # @return [Array<Addressable::URI>, Addressable::URI]
+    #   The parsed `dest` value.
+    #
+    # @since 0.5.0
+    #
+    def parse_dest(dest)
+      case dest
+      when Array
+        dest.map { |dest| parse_address(dest) }
+      else
+        parse_address(dest)
+      end
     end
 
   end

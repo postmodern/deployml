@@ -10,9 +10,6 @@ module DeploYML
 
     include Shell
 
-    # The URI of the remote shell
-    attr_reader :uri
-
     # The history of the Remote Shell
     attr_reader :history
 
@@ -29,16 +26,9 @@ module DeploYML
     #   The remote shell session.
     #
     def initialize(uri,&block)
-      case uri
-      when Addressable::URI
-        @uri = uri
-      else
-        @uri = Addressable::URI.parse(uri.to_s)
-      end
-
       @history = []
 
-      super(&block)
+      super(uri,&block)
 
       replay if block
     end

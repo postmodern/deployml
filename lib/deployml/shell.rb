@@ -8,7 +8,29 @@ module DeploYML
 
     include Thor::Shell
 
-    def initialize
+    # The URI of the Shell.
+    attr_reader :uri
+
+    #
+    # Initializes a shell session.
+    #
+    # @param [Addressable::URI, String] uri
+    #   The URI of the shell.
+    #
+    # @yield [session]
+    #   If a block is given, it will be passed the new shell session.
+    #
+    # @yieldparam [ShellSession] session
+    #   The shell session.
+    #
+    def initialize(uri)
+      case uri
+      when Addressable::URI
+        @uri = uri
+      else
+        @uri = Addressable::URI.parse(uri.to_s)
+      end
+
       yield self if block_given?
     end
 

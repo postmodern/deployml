@@ -68,13 +68,13 @@ module DeploYML
     # @yieldparam [LocalShell] shell
     #   The remote shell session.
     #
-    # @return [LocalShell]
+    # @return [Array<LocalShell>]
     #   The local shell.
     #
     # @since 0.3.0
     #
     def local_shell(&block)
-      LocalShell.new(&block)
+      each_dest.map { |dest| LocalShell.new(dest,&block) }
     end
 
     #
@@ -83,20 +83,24 @@ module DeploYML
     # @yield [shell]
     #   If a block is given, it will be passed the new remote shell.
     #
-    # @yieldparam [RemoteShell] shell
+    # @yieldparam [LocalShell, RemoteShell] shell
     #   The remote shell.
     #
-    # @return [RemoteShell, LocalShell]
+    # @return [Array<RemoteShell, LocalShell>]
     #   The remote shell. If the destination is a local `file://` URI,
     #   a local shell will be returned instead.
     #
     # @since 0.3.0
     #
     def remote_shell(&block)
-      unless @dest.scheme == 'file'
-        RemoteShell.new(@dest,&block)
-      else
-        LocalShell.new(&block)
+      each_dest.map do |dest|
+        shell = if dest.scheme == 'file'
+                  LocalShell
+                else
+                  RemoteShell
+                end
+
+        shell.new(dest,&block)
       end
     end
 
@@ -110,7 +114,7 @@ module DeploYML
     #
     def exec(command)
       remote_shell do |shell|
-        shell.cd(@dest.path)
+        shell.cd(shell.uri.path)
         shell.run(command)
       end
 
@@ -127,7 +131,7 @@ module DeploYML
     #
     def rake(task,*args)
       remote_shell do |shell|
-        shell.cd(@dest.path)
+        shell.cd(shell.uri.path)
         shell.rake(task,*args)
       end
 
@@ -145,7 +149,10 @@ module DeploYML
     # @since 0.3.0
     #
     def ssh(*args)
-      RemoteShell.new(@dest).ssh(*args)
+      each_dest do |dest|
+        RemoteShell.new(dest).ssh(*args)
+      end
+
       return true
     end
 
@@ -160,7 +167,7 @@ module DeploYML
     def setup(shell)
       shell.status "Cloning #{@source} ..."
 
-      shell.run 'git', 'clone', '--depth', 1, @source, @dest.path
+      shell.run 'git', 'clone', '--depth', 1, @source, shell.uri.path
 
       shell.status "Cloned."
     end
@@ -174,7 +181,7 @@ module DeploYML
     # @since 0.3.0
     #
     def update(shell)
-      shell.status "Updating #{@dest.path} ..."
+      shell.status "Updating #{shell.uri.path} ..."
 
       shell.run 'git', 'reset', '--hard', 'HEAD'
       shell.run 'git', 'pull', '-f'
@@ -272,7 +279,7 @@ module DeploYML
         setup(shell) if tasks.include?(:setup)
 
         # cd into the deployment repository
-        shell.cd @dest.path
+        shell.cd(shell.uri.path)
 
         # update the deployment repository
         update(shell) if tasks.include?(:update)

@@ -19,11 +19,12 @@ describe Configuration do
     config = Configuration.new(
       :dest => 'ssh://user@www.example.com/srv/project'
     )
+    dest = config.dest
 
-    config.dest.scheme.should == 'ssh'
-    config.dest.user.should == 'user'
-    config.dest.host.should == 'www.example.com'
-    config.dest.path.should == '/srv/project'
+    dest.scheme.should == 'ssh'
+    dest.user.should == 'user'
+    dest.host.should == 'www.example.com'
+    dest.path.should == '/srv/project'
   end
 
   it "should parse 'dest' Hash URIs" do
@@ -33,11 +34,12 @@ describe Configuration do
         'host' => 'www.example.com',
         'path' => '/srv/project'
     })
+    dest = config.dest
 
-    config.dest.scheme.should == 'ssh'
-    config.dest.user.should == 'user'
-    config.dest.host.should == 'www.example.com'
-    config.dest.path.should == '/srv/project'
+    dest.scheme.should == 'ssh'
+    dest.user.should == 'user'
+    dest.host.should == 'www.example.com'
+    dest.path.should == '/srv/project'
   end
 
   it "should default the 'debug' option to false" do

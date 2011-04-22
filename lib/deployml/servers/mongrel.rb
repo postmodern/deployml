@@ -48,7 +48,7 @@ module DeploYML
 
         shell.status "Configuring Mongrel ..."
 
-        options = ['-c', dest.path] + @mongrel.arguments
+        options = ['-c', shell.uri.path] + @mongrel.arguments
         shell.run 'mongrel_rails', 'cluster::configure', *options
 
         shell.status "Mongrel configured."

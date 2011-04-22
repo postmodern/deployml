@@ -48,7 +48,7 @@ module DeploYML
 
         shell.status "Configuring Thin ..."
 
-        options = ['-c', dest.path] + @thin.arguments
+        options = ['-c', shell.uri.path] + @thin.arguments
         shell.run 'thin', 'config', *options
 
         shell.status "Thin configured."

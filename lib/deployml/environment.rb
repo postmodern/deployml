@@ -169,7 +169,7 @@ module DeploYML
 
       shell.run 'git', 'clone', '--depth', 1, @source, shell.uri.path
 
-      shell.status "Cloned."
+      shell.status "Cloned #{@source}."
     end
 
     #
@@ -181,12 +181,12 @@ module DeploYML
     # @since 0.3.0
     #
     def update(shell)
-      shell.status "Updating #{shell.uri} ..."
+      shell.status "Updating ..."
 
       shell.run 'git', 'reset', '--hard', 'HEAD'
       shell.run 'git', 'pull', '-f'
 
-      shell.status "Updated #{shell.uri}."
+      shell.status "Updated."
     end
 
     #

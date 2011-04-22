@@ -31,7 +31,11 @@ module DeploYML
         @uri = Addressable::URI.parse(uri.to_s)
       end
 
-      yield self if block_given?
+      if block_given?
+        status "Entered #{@uri}."
+        yield self
+        status "Leaving #{@uri} ..."
+      end
     end
 
     #

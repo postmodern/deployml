@@ -13,7 +13,7 @@ Git and SSH.
 ## Features
 
 * Requires only **one YAML file** (`config/deploy.yml`) with a minimum of
-  **two** things (`source` and `dest`).
+  **two** settings (`source` and `dest`).
 * Supports multiple deployment environments (`config/deploy/staging.yml`).
 * Supports [Git](http://www.git-scm.com/).
 * Can deploy Ruby web applications or static sites.

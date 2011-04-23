@@ -1,4 +1,5 @@
 require 'thor/shell/color'
+require 'shellwords'
 
 module DeploYML
   #
@@ -7,6 +8,7 @@ module DeploYML
   class Shell
 
     include Thor::Shell
+    include Shellwords
 
     # The URI of the Shell.
     attr_reader :uri
@@ -39,6 +41,20 @@ module DeploYML
     # @since 0.5.0
     #
     def run(program,*arguments)
+    end
+
+    #
+    # Runs a command in the shell.
+    #
+    # @param [String] command
+    #   The command to run.
+    #
+    # @see #run
+    #
+    # @since 0.5.0
+    #
+    def exec(command)
+      run(*shellwords(command))
     end
 
     #

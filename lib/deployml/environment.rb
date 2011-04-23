@@ -113,11 +113,9 @@ module DeploYML
     # @since 0.3.0
     #
     def exec(command)
-      arguments = command.split(/\s+/)
-
       remote_shell do |shell|
         shell.cd(shell.uri.path)
-        shell.run(*arguments)
+        shell.exec(command)
       end
 
       return true

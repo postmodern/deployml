@@ -85,4 +85,32 @@ describe Configuration do
     config.server_name.should == :thin
     config.server_options.should == {:address => '127.0.0.1'}
   end
+
+  it "should parse 'before' / 'after' command strings" do
+    config = Configuration.new(
+      :before => {
+        :install => "command1\ncommand2\n",
+        :update => "command3\ncommand4\n"
+      }
+    )
+
+    config.before[:install][0].should == 'command1'
+    config.before[:install][1].should == 'command2'
+    config.before[:update][0].should == 'command3'
+    config.before[:update][1].should == 'command4'
+  end
+
+  it "should parse 'before' / 'after' commands" do
+    config = Configuration.new(
+      :before => {
+        :install => %w[command1 command2],
+        :update => %w[command3 command4]
+      }
+    )
+
+    config.before[:install][0].should == 'command1'
+    config.before[:install][1].should == 'command2'
+    config.before[:update][0].should == 'command3'
+    config.before[:update][1].should == 'command4'
+  end
 end

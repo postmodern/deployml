@@ -13,6 +13,18 @@ module DeploYML
     # Default SCM to use
     DEFAULT_SCM = :rsync
 
+    # Valid task names
+    TASKS = [
+      :setup,
+      :update,
+      :install,
+      :migrate,
+      :config,
+      :start,
+      :stop,
+      :restart
+    ]
+
     # The server run the deployed project under
     attr_reader :server_name
 
@@ -39,6 +51,12 @@ module DeploYML
 
     # Specifies whether to enable debugging.
     attr_accessor :debug
+
+    # The arbitrary commands to run before various tasks
+    attr_reader :before
+
+    # The arbitrary commands to run after various tasks
+    attr_reader :after
 
     #
     # Creates a new {Configuration} using the given configuration.
@@ -119,6 +137,19 @@ module DeploYML
         @dest.each(&block)
       elsif @dest
         yield @dest
+      end
+
+      @before = {}
+      @after = {}
+
+      TASKS.each do |task|
+        if (config.has_key?(:before) && config[:before].has_key?(task))
+          @before[task] = parse_command(config[:before][task])
+        end
+
+        if (config.has_key?(:after) && config[:after].has_key?(task))
+          @after[task] = parse_command(config[:after][task])
+        end
       end
     end
 
@@ -251,6 +282,31 @@ module DeploYML
         dest.map { |address| parse_address(address) }
       else
         parse_address(dest)
+      end
+    end
+
+    #
+    # Parses a command.
+    #
+    # @param [Array, String] command
+    #   The command or commands to parse.
+    #
+    # @return [Array<String>]
+    #   The individual commands.
+    #
+    # @raise [InvalidConfig]
+    #   The command must be either an Array of a String.
+    #
+    # @since 0.5.0
+    #
+    def parse_command(command)
+      case command
+      when Array
+        command.map { |line| line.to_s }
+      when String
+        command.enum_for(:each_line).map { |line| line.chomp }
+      else
+        raise(InvalidConfig,"commands must be an Array or a String")
       end
     end
 

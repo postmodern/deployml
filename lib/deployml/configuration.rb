@@ -120,11 +120,11 @@ module DeploYML
 
       TASKS.each do |task|
         if (config.has_key?(:before) && config[:before].has_key?(task))
-          @before[task] = parse_command(config[:before][task])
+          @before[task] = parse_commands(config[:before][task])
         end
 
         if (config.has_key?(:after) && config[:after].has_key?(task))
-          @after[task] = parse_command(config[:after][task])
+          @after[task] = parse_commands(config[:after][task])
         end
       end
     end
@@ -299,7 +299,7 @@ module DeploYML
     #
     # @since 0.5.0
     #
-    def parse_command(command)
+    def parse_commands(command)
       case command
       when Array
         command.map { |line| line.to_s }

@@ -106,6 +106,7 @@ Specifying before/after commands:
         - mkdir tmp
         - mkdir tmp/pids
         - mkdir log
+      update: rake post_deploy
 
 ## Synopsis
 

@@ -6,9 +6,7 @@ module DeploYML
   #
   # Represents a shell running on a remote server.
   #
-  class RemoteShell
-
-    include Shell
+  class RemoteShell < Shell
 
     # The history of the Remote Shell
     attr_reader :history

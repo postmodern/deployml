@@ -4,9 +4,7 @@ module DeploYML
   #
   # Represents a shell running on the local system.
   #
-  class LocalShell
-
-    include Shell
+  class LocalShell < Shell
 
     #
     # Runs a program locally.

@@ -34,6 +34,22 @@ module DeploYML
     end
 
     #
+    # Place holder method.
+    #
+    # @since 0.5.0
+    #
+    def run(program,*arguments)
+    end
+
+    #
+    # Place holder method.
+    #
+    # @since 0.5.0
+    #
+    def echo(message)
+    end
+
+    #
     # Executes a Rake task.
     #
     # @param [Symbol, String] task

@@ -263,6 +263,84 @@ module DeploYML
     end
 
     #
+    # Place-holder method.
+    #
+    # @param [RemoteShell] shell
+    #   The remote shell to execute commands through.
+    #
+    # @since 0.5.0
+    #
+    def config(shell)
+      server_config(shell)
+    end
+
+    #
+    # Place-holder method.
+    #
+    # @param [RemoteShell] shell
+    #   The remote shell to execute commands through.
+    #
+    # @since 0.5.0
+    #
+    def start(shell)
+      server_start(shell)
+    end
+
+    #
+    # Place-holder method.
+    #
+    # @param [RemoteShell] shell
+    #   The remote shell to execute commands through.
+    #
+    # @since 0.5.0
+    #
+    def stop(shell)
+      server_stop(shell)
+    end
+
+    #
+    # Place-holder method.
+    #
+    # @param [RemoteShell] shell
+    #   The remote shell to execute commands through.
+    #
+    # @since 0.5.0
+    #
+    def restart(shell)
+      server_restart(shell)
+    end
+
+    #
+    # Invokes a task.
+    #
+    # @param [Symbol] task
+    #   The name of the task to run.
+    #
+    # @param [Shell] shell
+    #   The shell to run the task in.
+    #
+    # @raise [RuntimeError]
+    #   The task name was not known.
+    #
+    # @since 0.5.0
+    #
+    def invoke_task(task,shell)
+      unless TASKS.include?(task)
+        raise("invalid task: #{task}")
+      end
+
+      if @before.has_key?(task)
+        @before[task].each { |command| shell.run(command) }
+      end
+
+      send(task,shell) if respond_to?(task)
+
+      if @after.has_key?(task)
+        @after[task].each { |command| shell.run(command) }
+      end
+    end
+
+    #
     # Deploys the project.
     #
     # @param [Array<Symbol>] tasks
@@ -276,28 +354,27 @@ module DeploYML
     def invoke(tasks)
       remote_shell do |shell|
         # setup the deployment repository
-        setup(shell) if tasks.include?(:setup)
+        invoke_task(:setup,shell) if tasks.include?(:setup)
 
         # cd into the deployment repository
         shell.cd(shell.uri.path)
 
         # update the deployment repository
-        update(shell) if tasks.include?(:update)
+        invoke_task(:update,shell) if tasks.include?(:update)
 
         # framework tasks
-        install(shell) if tasks.include?(:install)
-
-        migrate(shell) if tasks.include?(:migrate)
+        invoke_task(:install,shell) if tasks.include?(:install)
+        ivoke_task(:migrate,shell) if tasks.include?(:migrate)
 
         # server tasks
         if tasks.include?(:config)
-          server_config(shell)
+          invoke_task(:config,shell)
         elsif tasks.include?(:start)
-          server_start(shell)
+          invoke_task(:start,shell)
         elsif tasks.include?(:stop)
-          server_stop(shell)
+          invoke_task(:stop,shell)
         elsif tasks.include?(:restart)
-          server_restart(shell)
+          invoke_task(:restart,shell)
         end
       end
 

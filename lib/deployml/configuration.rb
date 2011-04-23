@@ -114,6 +114,19 @@ module DeploYML
                      end
 
       @debug = config.fetch(:debug,false)
+
+      @before = {}
+      @after = {}
+
+      TASKS.each do |task|
+        if (config.has_key?(:before) && config[:before].has_key?(task))
+          @before[task] = parse_command(config[:before][task])
+        end
+
+        if (config.has_key?(:after) && config[:after].has_key?(task))
+          @after[task] = parse_command(config[:after][task])
+        end
+      end
     end
 
     #
@@ -137,19 +150,6 @@ module DeploYML
         @dest.each(&block)
       elsif @dest
         yield @dest
-      end
-
-      @before = {}
-      @after = {}
-
-      TASKS.each do |task|
-        if (config.has_key?(:before) && config[:before].has_key?(task))
-          @before[task] = parse_command(config[:before][task])
-        end
-
-        if (config.has_key?(:after) && config[:after].has_key?(task))
-          @after[task] = parse_command(config[:after][task])
-        end
       end
     end
 

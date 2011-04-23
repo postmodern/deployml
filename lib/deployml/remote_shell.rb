@@ -37,11 +37,11 @@ module DeploYML
     # @param [String] program
     #   The name or path of the program to run.
     #
-    # @param [Array<String>] args
+    # @param [Array<String>] arguments
     #   Additional arguments for the program.
     #
-    def run(program,*args)
-      @history << [program, *args]
+    def run(program,*arguments)
+      @history << [program, *arguments]
     end
 
     #
@@ -102,10 +102,10 @@ module DeploYML
     #
     # Starts a SSH session with the destination server.
     #
-    # @param [Array] args
+    # @param [Array] arguments
     #   Additional arguments to pass to SSH.
     #
-    def ssh(*args)
+    def ssh(*arguments)
       options = []
 
       # Add the -p option if an alternate destination port is given
@@ -117,7 +117,7 @@ module DeploYML
       options << ssh_uri
 
       # append the additional arguments
-      args.each { |arg| options << arg.to_s }
+      arguments.each { |arg| options << arg.to_s }
 
       return system('ssh',*options)
     end

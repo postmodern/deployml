@@ -55,11 +55,11 @@ module DeploYML
     # @param [Symbol, String] task
     #   Name of the Rake task to run.
     #
-    # @param [Array<String>] args
+    # @param [Array<String>] arguments
     #   Additional arguments for the Rake task.
     #
-    def rake(task,*args)
-      run 'rake', rake_task(task,*args)
+    def rake(task,*arguments)
+      run 'rake', rake_task(task,*arguments)
     end
 
     #
@@ -82,17 +82,17 @@ module DeploYML
     # @param [String, Symbol] name
     #   The name of the `rake` task.
     #
-    # @param [Array] args
+    # @param [Array] arguments
     #   Additional arguments to pass to the `rake` task.
     #
     # @param [String]
     #   The `rake` task name to be called.
     #
-    def rake_task(name,*args)
+    def rake_task(name,*arguments)
       name = name.to_s
 
-      unless args.empty?
-        name += ('[' + args.join(',') + ']')
+      unless arguments.empty?
+        name += ('[' + arguments.join(',') + ']')
       end
 
       return name

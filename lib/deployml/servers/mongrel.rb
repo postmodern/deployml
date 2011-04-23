@@ -22,11 +22,11 @@ module DeploYML
       # @param [LocalShell, RemoteShell] shell
       #   The shell to execute commands in.
       #
-      # @param [Array] args
+      # @param [Array] arguments
       #   Additional arguments to call `mongrel_rails` with.
       #
-      def mongrel_cluster(shell,*args)
-        options = args + ['-c', @mongrel.config]
+      def mongrel_cluster(shell,*arguments)
+        options = arguments + ['-c', @mongrel.config]
 
         shell.run 'mongrel_rails', *options
       end

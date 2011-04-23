@@ -22,11 +22,11 @@ module DeploYML
       # @param [LocalShell, RemoteShell] shell
       #   The shell to execute commands in.
       #
-      # @param [Array] args
+      # @param [Array] arguments
       #   Additional arguments to call `thin` with.
       #
-      def thin(shell,*args)
-        options = args + ['-C', @thin.config, '-s', @thin.servers]
+      def thin(shell,*arguments)
+        options = arguments + ['-C', @thin.config, '-s', @thin.servers]
 
         shell.run 'thin', *options
       end

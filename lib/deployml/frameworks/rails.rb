@@ -10,10 +10,10 @@ module DeploYML
       #
       # @see {Environment#rake}
       #
-      def rake(task,*args)
-        args += ["RAILS_ENV=#{@environment}"]
+      def rake(task,*arguments)
+        arguments += ["RAILS_ENV=#{@environment}"]
 
-        super(task,*args)
+        super(task,*arguments)
       end
     end
   end

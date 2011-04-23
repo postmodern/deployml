@@ -129,10 +129,10 @@ module DeploYML
     #
     # @since 0.3.0
     #
-    def rake(task,*args)
+    def rake(task,*arguments)
       remote_shell do |shell|
         shell.cd(shell.uri.path)
-        shell.rake(task,*args)
+        shell.rake(task,*arguments)
       end
 
       return true
@@ -141,16 +141,16 @@ module DeploYML
     #
     # Starts an SSH session with the destination server.
     #
-    # @param [Array] args
+    # @param [Array] arguments
     #   Additional arguments to pass to SSH.
     #
     # @return [true]
     #
     # @since 0.3.0
     #
-    def ssh(*args)
+    def ssh(*arguments)
       each_dest do |dest|
-        RemoteShell.new(dest).ssh(*args)
+        RemoteShell.new(dest).ssh(*arguments)
       end
 
       return true

@@ -12,14 +12,14 @@ module DeploYML
     # @param [String] program
     #   The name or path of the program to run.
     #
-    # @param [Array<String>] args
+    # @param [Array<String>] arguments
     #   Additional arguments for the program.
     #
-    def run(program,*args)
+    def run(program,*arguments)
       program = program.to_s
-      args = args.map { |arg| arg.to_s }
+      arguments = arguments.map { |arg| arg.to_s }
 
-      system(program,*args)
+      system(program,*arguments)
     end
 
     #

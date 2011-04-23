@@ -14,8 +14,19 @@ describe RemoteShell do
     subject.uri.path.should == '/path'
   end
 
-  it "should convert normal URIs to SSH URIs" do
-    subject.ssh_uri.should == 'deploy@www.example.com'
+  describe "#ssh_uri" do
+    it "should convert normal URIs to SSH URIs" do
+      subject.ssh_uri.should == 'deploy@www.example.com'
+    end
+
+    it "must require a URI with a host component" do
+      bad_uri = Addressable::URI.parse('deploy@www.example.com:/var/www')
+      shell = RemoteShell.new(bad_uri)
+
+      lambda {
+        shell.ssh_uri
+      }.should raise_error(InvalidConfig)
+    end
   end
 
   it "should enqueue programs to run" do

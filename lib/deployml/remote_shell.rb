@@ -1,3 +1,4 @@
+require 'deployml/exceptions/invalid_config'
 require 'deployml/shell'
 
 require 'addressable/uri'
@@ -92,7 +93,14 @@ module DeploYML
     # @return [String]
     #   The SSH compatible URI.
     #
+    # @raise [InvalidConfig]
+    #   The URI of the shell does not have a host component.
+    #
     def ssh_uri
+      unless @uri.host
+        raise(InvalidConfig,"URI does not have a host: #{@uri}",caller)
+      end
+
       new_uri = @uri.host
       new_uri = "#{@uri.user}@#{new_uri}" if @uri.user
 

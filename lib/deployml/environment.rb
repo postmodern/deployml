@@ -159,7 +159,7 @@ module DeploYML
     #
     # Sets up the deployment repository for the project.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -175,7 +175,7 @@ module DeploYML
     #
     # Updates the deployed repository for the project.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -192,7 +192,7 @@ module DeploYML
     #
     # Installs any additional dependencies.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -210,7 +210,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -221,7 +221,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -232,7 +232,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -243,7 +243,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -254,7 +254,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.3.0
@@ -265,7 +265,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.5.0
@@ -277,7 +277,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.5.0
@@ -289,7 +289,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.5.0
@@ -301,7 +301,7 @@ module DeploYML
     #
     # Place-holder method.
     #
-    # @param [RemoteShell] shell
+    # @param [Shell] shell
     #   The remote shell to execute commands through.
     #
     # @since 0.5.0

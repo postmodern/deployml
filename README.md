@@ -69,9 +69,9 @@ Specifying a `server` with options:
       name: thin
       options:
         servers: 4
-	deamonize: true
-	socket: /var/run/thin.sock
-	rackup: true
+    deamonize: true
+    socket: /var/run/thin.sock
+    rackup: true
 
 Multiple environments:
 

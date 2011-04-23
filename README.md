@@ -15,6 +15,7 @@ Git and SSH.
 * Requires only **one YAML file** (`config/deploy.yml`) with a minimum of
   **two** settings (`source` and `dest`).
 * Supports multiple deployment environments (`config/deploy/staging.yml`).
+* Supports multiple deployment destinations.
 * Supports [Git](http://www.git-scm.com/).
 * Can deploy Ruby web applications or static sites.
 * Supports common Web Servers:
@@ -45,6 +46,14 @@ Specifying `dest` URI as a Hash:
       user: deploy
       host: www.example.com
       path: /var/www/site
+
+Specify multiple `dest` URIs:
+
+    source: git@github.com:user/project.git
+    dest:
+      - deploy@www1.example.com/var/www/site
+      - deploy@www2.example.com/var/www/site
+      - deploy@www3.example.com/var/www/site
 
 Specifying a `server` option:
 

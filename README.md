@@ -96,6 +96,17 @@ Multiple environments:
         config: /etc/thin/example.yml
         socket: /tmp/thin.example.sock
 
+Specifying before/after commands:
+
+    before:
+      restart: rm public/some/file
+    
+    after:
+      install:
+        - mkdir tmp
+        - mkdir tmp/pids
+        - mkdir log
+
 ## Synopsis
 
 Cold-Deploy a new project:

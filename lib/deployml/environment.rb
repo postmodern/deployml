@@ -46,11 +46,11 @@ module DeploYML
       super(config)
 
       unless @source
-        raise(MissingOption,":source option is missing for the #{@name} environment")
+        raise(MissingOption,":source option is missing for the #{@name} environment",caller)
       end
 
       unless @dest
-        raise(MissingOption,":dest option is missing for the #{@name} environment")
+        raise(MissingOption,":dest option is missing for the #{@name} environment",caller)
       end
 
       @environment ||= name.to_sym
@@ -434,7 +434,7 @@ module DeploYML
     def load_framework!
       if @orm
         unless FRAMEWORKS.has_key?(@framework)
-          raise(UnknownFramework,"Unknown framework #{@framework}")
+          raise(UnknownFramework,"Unknown framework #{@framework}",caller)
         end
 
         extend FRAMEWORKS[@framework]
@@ -453,7 +453,7 @@ module DeploYML
     def load_server!
       if @server_name
         unless SERVERS.has_key?(@server_name)
-          raise(UnknownServer,"Unknown server name #{@server_name}")
+          raise(UnknownServer,"Unknown server name #{@server_name}",caller)
         end
 
         extend SERVERS[@server_name]

@@ -230,7 +230,7 @@ module DeploYML
       when String
         Addressable::URI.parse(address)
       else
-        raise(InvalidConfig,"invalid address: #{address.inspect}")
+        raise(InvalidConfig,"invalid address: #{address.inspect}",caller)
       end
     end
 

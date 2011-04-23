@@ -43,7 +43,7 @@ module DeploYML
       @environments_dir = File.join(@root,CONFIG_DIR,ENVIRONMENTS_DIR)
 
       unless (File.file?(@config_file) || File.directory?(@environments_dir))
-        raise(ConfigNotFound,"could not find '#{CONFIG_FILE}' or '#{ENVIRONMENTS_DIR}' in #{root}")
+        raise(ConfigNotFound,"could not find '#{CONFIG_FILE}' or '#{ENVIRONMENTS_DIR}' in #{root}",caller)
       end
 
       load_environments!
@@ -65,7 +65,7 @@ module DeploYML
       name = name.to_sym
 
       unless @environments[name]
-        raise(UnknownEnvironment,"unknown environment: #{name}")
+        raise(UnknownEnvironment,"unknown environment: #{name}",caller)
       end
 
       return @environments[name]
@@ -298,7 +298,7 @@ module DeploYML
       config = YAML.load_file(path)
 
       unless config.kind_of?(Hash)
-        raise(InvalidConfig,"DeploYML file #{path.dump} does not contain a Hash")
+        raise(InvalidConfig,"DeploYML file #{path.dump} does not contain a Hash",caller)
       end
 
       return config

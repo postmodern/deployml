@@ -29,7 +29,7 @@
   * `start!`
   * `stop!`
 * Added {DeploYML::Shell#status} for printing ANSI colored status messages.
-* Added {DeploYML::RemoteShell#uri}.
+* Added `DeploYML::RemoteShell#uri`.
 * Added {DeploYML::RemoteShell#history}.
 * Added missing documentation.
 * Give the root directory passed to {DeploYML::Project#initialize} the

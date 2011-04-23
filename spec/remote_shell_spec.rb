@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'deployml/remote_shell'
 
 describe RemoteShell do
-  let(:uri) { 'ssh://deploy@www.example.com/path' }
+  let(:uri) { Addressable::URI.parse('ssh://deploy@www.example.com/path') }
 
   subject { RemoteShell.new(uri) }
 

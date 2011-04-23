@@ -24,12 +24,7 @@ module DeploYML
     #   The shell session.
     #
     def initialize(uri)
-      case uri
-      when Addressable::URI
-        @uri = uri
-      else
-        @uri = Addressable::URI.parse(uri.to_s)
-      end
+      @uri = uri
 
       if block_given?
         status "Entered #{@uri}."

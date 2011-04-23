@@ -330,13 +330,13 @@ module DeploYML
       end
 
       if @before.has_key?(task)
-        @before[task].each { |command| shell.run(command) }
+        @before[task].each { |command| shell.exec(command) }
       end
 
       send(task,shell) if respond_to?(task)
 
       if @after.has_key?(task)
-        @after[task].each { |command| shell.run(command) }
+        @after[task].each { |command| shell.exec(command) }
       end
     end
 

@@ -32,7 +32,7 @@ Git and SSH.
 * Supports any Operating System that supports Ruby and SSH.
 * Provides a simple command-line interface using Thor.
 
-## Examples
+## Configuration Examples
 
 Specifying `source` and `dest` URIs as Strings:
 

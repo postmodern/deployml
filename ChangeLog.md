@@ -1,3 +1,24 @@
+### 0.5.0 / 2011-04-22
+
+* Added support for specifying multiple `dest` URIs.
+* Added support for specifying `before` and `after` commands.
+* Added {DeploYML::Configuration#each_dest}.
+* Added {DeploYML::Configuration#normalize}.
+* Added {DeploYML::Configuration#normalize_array}.
+* Added {DeploYML::Configuration#parse_address}.
+* Added {DeploYML::Configuration#parse_dest}.
+* Added {DeploYML::Configuration#parse_commands}.
+* Added {DeploYML::Environment#invoke_task}.
+* Added {DeploYML::Environment#config}.
+* Added {DeploYML::Environment#start}.
+* Added {DeploYML::Environment#stop}.
+* Added {DeploYML::Environment#restart}.
+* Added {DeploYML::Shell#uri}.
+* Added {DeploYML::Shell#exec}.
+* Converted {DeploYML::Shell} into a Class.
+* Raise an exception in {DeploYML::RemoteShell#ssh_uri} if the Shell URI
+  does not have a host component.
+
 ### 0.4.2 / 2011-04-11
 
 * Require rprogram ~> 0.2.

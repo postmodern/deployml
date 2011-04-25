@@ -364,7 +364,7 @@ module DeploYML
 
         # framework tasks
         invoke_task(:install,shell) if tasks.include?(:install)
-        ivoke_task(:migrate,shell) if tasks.include?(:migrate)
+        invoke_task(:migrate,shell) if tasks.include?(:migrate)
 
         # server tasks
         if tasks.include?(:config)

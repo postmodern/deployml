@@ -44,17 +44,14 @@ module DeploYML
     end
 
     #
-    # Runs a command in the shell.
+    # Place holder method.
     #
     # @param [String] command
-    #   The command to run.
-    #
-    # @see #run
+    #   The command to execute.
     #
     # @since 0.5.0
     #
     def exec(command)
-      run(*shellwords(command))
     end
 
     #

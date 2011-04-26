@@ -23,6 +23,18 @@ module DeploYML
     end
 
     #
+    # Executes a command.
+    #
+    # @param [String] command
+    #   The command to be executed.
+    #
+    # @since 0.5.2
+    #
+    def exec(command)
+      system(command)
+    end
+
+    #
     # Prints out a message.
     #
     # @param [String] message

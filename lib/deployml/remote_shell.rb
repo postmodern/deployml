@@ -46,6 +46,18 @@ module DeploYML
     end
 
     #
+    # Adds a command to be executed.
+    #
+    # @param [String] command
+    #   The command string.
+    #
+    # @since 0.5.2
+    #
+    def exec(command)
+      @history << [command]
+    end
+
+    #
     # Enqueues an `echo` command to be ran in the session.
     #
     # @param [String] message
@@ -82,9 +94,16 @@ module DeploYML
     #   A single command string.
     #
     def join
-      @history.map { |command|
-        command.map { |word| shellescape(word.to_s) }.join(' ')
-      }.join(' && ')
+      commands = []
+
+      @history.each do |command|
+        program = command[0]
+        arguments = command[1..-1].map { |word| shellescape(word.to_s) }
+
+        commands << [command, *arguments].join(' ')
+      end
+
+      return commands.join(' && ')
     end
 
     #

@@ -156,44 +156,5 @@ module DeploYML
       ssh(self.join) unless @history.empty?
     end
 
-    protected
-
-    #
-    # Escapes a string so that it can be safely used in a Bourne shell
-    # command line.
-    #
-    # Note that a resulted string should be used unquoted and is not
-    # intended for use in double quotes nor in single quotes.
-    #
-    # @param [String] str
-    #   The string to escape.
-    #
-    # @return [String]
-    #   The shell-escaped string.
-    #
-    # @example
-    #   open("| grep #{Shellwords.escape(pattern)} file") { |pipe|
-    #     # ...
-    #   }
-    #
-    # @note Vendored from `shellwords.rb` line 72 from Ruby 1.9.2.
-    #
-    def shellescape(str)
-      # An empty argument will be skipped, so return empty quotes.
-      return "''" if str.empty?
-
-      str = str.dup
-
-      # Process as a single byte sequence because not all shell
-      # implementations are multibyte aware.
-      str.gsub!(/([^A-Za-z0-9_\-.,:\/@\n])/n, "\\\\\\1")
-
-      # A LF cannot be escaped with a backslash because a backslash + LF
-      # combo is regarded as line continuation and simply ignored.
-      str.gsub!(/\n/, "'\n'")
-
-      return str
-    end
-
   end
 end

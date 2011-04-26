@@ -1,3 +1,7 @@
+### 0.5.1 / 2011-04-25
+
+* Emergency typo fix for {DeploYML::Environment#invoke}.
+
 ### 0.5.0 / 2011-04-22
 
 * Added support for specifying multiple `dest` URIs.

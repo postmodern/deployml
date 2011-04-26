@@ -100,7 +100,7 @@ module DeploYML
         program = command[0]
         arguments = command[1..-1].map { |word| shellescape(word.to_s) }
 
-        commands << [command, *arguments].join(' ')
+        commands << [program, *arguments].join(' ')
       end
 
       return commands.join(' && ')

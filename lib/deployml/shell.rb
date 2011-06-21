@@ -64,6 +64,30 @@ module DeploYML
     end
 
     #
+    # Executes a Ruby program.
+    #
+    # @param [Symbol, String] program
+    #   Name of the Ruby program to run.
+    #
+    # @param [Array<String>] arguments
+    #   Additional arguments for the Ruby program.
+    #
+    # @since 0.6.0
+    #
+    def ruby(program,*arguments)
+      command = [program, *arguments]
+
+      # assume that `.rb` scripts do not have a `#!/usr/bin/env ruby`
+      command.unshift('ruby') if program[-3,3] == '.rb'
+
+      if (@environment && @environment.bundler)
+        command.unshift('bundler','exec')
+      end
+
+      run(*command)
+    end
+
+    #
     # Executes a Rake task.
     #
     # @param [Symbol, String] task
@@ -73,13 +97,7 @@ module DeploYML
     #   Additional arguments for the Rake task.
     #
     def rake(task,*arguments)
-      arguments = ['rake', rake_task(task,*arguments)]
-
-      if (@environment && @environment.bundler)
-        arguments.unshift('bundler','exec')
-      end
-
-      run(*arguments)
+      ruby('rake', rake_task(task,*arguments))
     end
 
     #

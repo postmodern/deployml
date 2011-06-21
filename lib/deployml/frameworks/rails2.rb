@@ -17,7 +17,7 @@ module DeploYML
       def migrate(shell)
         shell.status "Migrating the ActiveRecord Database ..."
 
-        shell.run 'rake', 'db:migrate', "RAILS_ENV=#{@environment}"
+        shell.ruby 'rake', 'db:migrate', "RAILS_ENV=#{@environment}"
 
         shell.status "ActiveRecord Database migrated."
       end

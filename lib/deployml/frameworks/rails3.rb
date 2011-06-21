@@ -20,10 +20,10 @@ module DeploYML
         case @orm
         when :datamapper
           shell.status "Running DataMapper auto-upgrades ..."
-          shell.run 'rake', 'db:autoupgrade', "RAILS_ENV=#{@environment}"
+          shell.ruby 'db:autoupgrade', "RAILS_ENV=#{@environment}"
         else
           shell.status "Running ActiveRecord migrations ..."
-          shell.run 'rake', 'db:migrate', "RAILS_ENV=#{@environment}"
+          shell.ruby 'db:migrate', "RAILS_ENV=#{@environment}"
         end
 
         shell.status "Database migrated."

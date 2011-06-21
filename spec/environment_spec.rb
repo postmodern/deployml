@@ -8,7 +8,7 @@ describe Environment do
     Environment.new(name, {
       'source' => 'git@github.com:user/project.git',
       'dest' => 'ssh://user@www.example.com/srv/project',
-      'framework' => 'rails3',
+      'framework' => 'rails',
       'orm' => 'datamapper',
       'server' => {
         'name' => 'thin',
@@ -25,7 +25,7 @@ describe Environment do
   end
 
   it "should include the framework mixin" do
-    subject.should be_kind_of(Frameworks::Rails3)
+    subject.should be_kind_of(Frameworks::Rails)
   end
 
   it "should include the server mixin" do

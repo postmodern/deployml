@@ -23,8 +23,7 @@ module DeploYML
 
     # Mapping of possible 'framework' names to their mixins.
     FRAMEWORKS = {
-      :rails2 => Frameworks::Rails2,
-      :rails3 => Frameworks::Rails3
+      :rails => Frameworks::Rails
     }
 
     #

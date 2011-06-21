@@ -94,7 +94,10 @@ module DeploYML
 
       @bundler = config.fetch(:bundler,false)
 
-      @framework = if config[:framework]
+      @framework = case config[:framework]
+                   when /^rails/
+                     :rails
+                   when String, Symbol
                      config[:framework].to_sym
                    end
 

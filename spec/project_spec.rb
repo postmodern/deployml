@@ -59,7 +59,7 @@ describe Project do
       project = Project.new(project_dir(:rails))
 
       project.environments.all? { |name,env|
-        env.framework == :rails3 && env.orm == :datamapper
+        env.framework == :rails && env.orm == :datamapper
       }.should == true
     end
   end

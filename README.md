@@ -77,7 +77,7 @@ Multiple environments:
 
     # config/deploy.yml
     source: git@github.com:user/project.git
-    framework: rails3
+    framework: rails
     orm: datamapper
 
     # config/deploy/staging.yml

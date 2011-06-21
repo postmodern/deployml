@@ -74,7 +74,7 @@ module DeploYML
     # @since 0.3.0
     #
     def local_shell(&block)
-      each_dest.map { |dest| LocalShell.new(dest,&block) }
+      each_dest.map { |dest| LocalShell.new(dest,self,&block) }
     end
 
     #
@@ -100,7 +100,7 @@ module DeploYML
                   RemoteShell
                 end
 
-        shell.new(dest,&block)
+        shell.new(dest,self,&block)
       end
     end
 

@@ -25,8 +25,9 @@ module DeploYML
     # @yieldparam [ShellSession] session
     #   The shell session.
     #
-    def initialize(uri)
+    def initialize(uri,environment=nil)
       @uri = uri
+      @environment = environment
 
       if block_given?
         status "Entered #{@uri}."
@@ -72,7 +73,13 @@ module DeploYML
     #   Additional arguments for the Rake task.
     #
     def rake(task,*arguments)
-      run 'rake', rake_task(task,*arguments)
+      arguments = ['rake', rake_task(task,*arguments)]
+
+      if (@environment && @environment.bundler)
+        arguments.unshift('bundler','exec')
+      end
+
+      run(*arguments)
     end
 
     #

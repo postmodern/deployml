@@ -19,6 +19,9 @@ module DeploYML
     # @param [Addressable::URI, String] uri
     #   The URI of the shell.
     #
+    # @param [Environment] environment
+    #   The environment the shell is connected to.
+    #
     # @yield [session]
     #   If a block is given, it will be passed the new shell session.
     #
@@ -72,7 +75,7 @@ module DeploYML
     # @param [Array<String>] arguments
     #   Additional arguments for the Ruby program.
     #
-    # @since 0.6.0
+    # @since 0.5.2
     #
     def ruby(program,*arguments)
       command = [program, *arguments]

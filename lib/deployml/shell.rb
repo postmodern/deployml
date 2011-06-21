@@ -84,7 +84,7 @@ module DeploYML
       command.unshift('ruby') if program[-3,3] == '.rb'
 
       if (@environment && @environment.bundler)
-        command.unshift('bundler','exec')
+        command.unshift('bundle','exec')
       end
 
       run(*command)

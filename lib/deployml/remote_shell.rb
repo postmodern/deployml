@@ -18,16 +18,19 @@ module DeploYML
     # @param [Addressable::URI, String] uri
     #   The URI of the host to connect to.
     #
+    # @param [Environment] environment
+    #   The environment the shell is connected to.
+    #
     # @yield [session]
     #   If a block is given, it will be passed the new remote shell session.
     #
     # @yieldparam [ShellSession] session
     #   The remote shell session.
     #
-    def initialize(uri,&block)
+    def initialize(uri,environment=nil,&block)
       @history = []
 
-      super(uri,&block)
+      super(uri,environment,&block)
 
       replay if block
     end

@@ -69,9 +69,9 @@ describe RemoteShell do
   end
 
   it "should escape all command arguments" do
-    subject.run 'the program'
+    subject.run 'program arg1 arg2'
     subject.run 'echo', '>>> status'
 
-    subject.join.should == "the\\ program && echo \\>\\>\\>\\ status"
+    subject.join.should == "program arg1 arg2 && echo \\>\\>\\>\\ status"
   end
 end

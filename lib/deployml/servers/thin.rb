@@ -28,7 +28,7 @@ module DeploYML
       def thin(shell,*arguments)
         options = arguments + ['-C', @thin.config, '-s', @thin.servers]
 
-        shell.run 'thin', *options
+        shell.ruby 'thin', *options
       end
 
       #
@@ -49,7 +49,7 @@ module DeploYML
         shell.status "Configuring Thin ..."
 
         options = ['-c', shell.uri.path] + @thin.arguments
-        shell.run 'thin', 'config', *options
+        shell.ruby 'thin', 'config', *options
 
         shell.status "Thin configured."
       end

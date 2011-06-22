@@ -1,3 +1,15 @@
+### 0.5.2 / 2011-06-21
+
+* Added {DeploYML::Shell#ruby}.
+* Override {DeploYML::LocalShell#exec} and {DeploYML::RemoteShell#exec}
+  to prevent full commands from being escaped.
+* Ensure that {DeploYML::Shell#ruby} and {DeploYML::Shell#rake} will
+  prefix commands with `bundle exec`, if Bundler is enabled.
+  * All `thin` and `mongrel_cluster` commands now support running under
+    `bundle exec`.
+* Merged `DeploYML::Frameworks::Rails2` and `DeploYML::Frameworks::Rails3`
+  into {DeploYML::Frameworks::Rails}.
+
 ### 0.5.1 / 2011-04-25
 
 * Emergency typo fix for {DeploYML::Environment#invoke}.

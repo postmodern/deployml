@@ -83,6 +83,7 @@ module DeploYML
       # assume that `.rb` scripts do not have a `#!/usr/bin/env ruby`
       command.unshift('ruby') if program[-3,3] == '.rb'
 
+      # if the environment uses bundler, run all ruby commands via `bundle exec`
       if (@environment && @environment.bundler)
         command.unshift('bundle','exec')
       end

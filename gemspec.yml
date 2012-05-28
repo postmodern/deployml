@@ -7,7 +7,7 @@ description:
 license: MIT
 authors: Postmodern
 email: postmodern.mod3@gmail.com
-homepage: https://github.com/postmodern/deployml
+homepage: https://github.com/postmodern/deployml#readme
 has_yard: true
 
 required_ruby_version: ">= 1.8.6"

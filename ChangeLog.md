@@ -1,3 +1,8 @@
+### 0.5.3 / 2012-05-27
+
+* Require addressable ~> 2.2.
+* Require thor ~> 0.14.
+
 ### 0.5.2 / 2011-06-21
 
 * Added {DeploYML::Shell#ruby}.

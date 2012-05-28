@@ -1,7 +1,7 @@
 # DeploYML
 
-* [Source](http://github.com/postmodern/deployml)
-* [Issues](http://github.com/postmodern/deployml/issues)
+* [Source](https://github.com/postmodern/deployml)
+* [Issues](https://github.com/postmodern/deployml/issues)
 * [Documentation](http://rubydoc.info/gems/deployml/frames)
 * [Email](mailto:postmodern.mod3 at gmail.com)
 
@@ -138,8 +138,8 @@ List available tasks:
 
 * [ruby](http://www.ruby-lang.org/) >= 1.8.6
 * [addressable](http://addressable.rubyforge.org/) ~> 2.2.0
-* [rprogram](http://github.com/postmodern/rprogram) ~> 0.2
-* [thor](http://github.com/wycats/thor) ~> 0.14
+* [rprogram](https://github.com/postmodern/rprogram) ~> 0.2
+* [thor](https://github.com/wycats/thor) ~> 0.14
 
 ## Install
 

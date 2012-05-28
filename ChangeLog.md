@@ -1,3 +1,8 @@
+### 0.5.4 / 2012-05-28
+
+* Fixed a typo in the gemspec, which incorrectly set
+  `required_rubygems_version` to the same value as `required_ruby_version`.
+
 ### 0.5.3 / 2012-05-27
 
 * Require addressable ~> 2.2.

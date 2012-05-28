@@ -164,7 +164,7 @@ module DeploYML
     # @param [Array] arguments
     #   Additional arguments to pass to the `rake` task.
     #
-    # @param [String]
+    # @return [String]
     #   The `rake` task name to be called.
     #
     def rake_task(name,*arguments)

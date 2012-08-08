@@ -25,15 +25,8 @@ module DeploYML
       #   The shell to execute commands in.
       #
       def migrate(shell)
-        case @orm
-        when :datamapper
-          shell.status "Running DataMapper auto-upgrades ..."
-          shell.ruby 'rake', 'db:autoupgrade', "RAILS_ENV=#{@environment}"
-        else
-          shell.status "Running ActiveRecord migrations ..."
-          shell.ruby 'rake', 'db:migrate', "RAILS_ENV=#{@environment}"
-        end
-
+        shell.status "Migrating the Database up ..."
+        shell.ruby 'rake', 'db:migrate', "RAILS_ENV=#{@environment}"
         shell.status "Database migrated."
       end
     end
